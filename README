@@ -1,5 +1,9 @@
 Pure javascript implementation of ephemeris calculations for sun, planets, comets, asteroids and stars.
 
-This implementation based on Steve Moshier (http://www.moshier.net).
+The initial implementation was done by mivion and it was based on Steve Moshier's work (http://www.moshier.net).
+
+The index.html file calculates the current planetary positions by default, and you can enter in a UTC time to get the positions. 
+
+The original index.html file can be found at ephemerides.html. Click the equal sign to populate the Body drop down. Select the planetary body, and click one of the buttons again to calculate the Longitude.
 
 Licensed under GPL version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
