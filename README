@@ -2,7 +2,9 @@ Pure javascript implementation of ephemeris calculations for sun, planets, comet
 
 The initial implementation was done by mivion and it was based on Steve Moshier's work (http://www.moshier.net).
 
-The index.html file calculates the current planetary positions by default, and you can enter in a UTC time to get the positions. 
+The index.html file will by default calculate the planetary positions at the time of the page load. You can also calculate the positions for a specific time by entering in a time in the text area in the format of dd.mm.yyyy hh:mm:ss.sss. You will need to convert the time to UTC.
+
+A demo page can be seen here: http://astrology.kentbye.com/index.html
 
 The original index.html file can be found at ephemerides.html. Click the equal sign to populate the Body drop down. Select the planetary body, and click one of the buttons again to calculate the Longitude.
 
