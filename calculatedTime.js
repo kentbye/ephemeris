@@ -1,7 +1,7 @@
 $ns.calculatedTime = function () {
 	var textAreas = document.body.getElementsByTagName ('textarea');
 	var ids;
-	var signs = ["Zero Offset","Aries","Taurus","Gemini","Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagitarrius", "Capricorn", "Aquarius", "Pisces"];
+	var signs = ["Zero Offset","Aries","Taurus","Gemini","Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
 	var $Longitude360String = "";
     
     // Get the entered date from the form
