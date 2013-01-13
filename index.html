@@ -1,6 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head>
+<!doctype html>
+<html>
+  <head>
     <title>Current Astrological Positions | Calculate Natal Planets with Swiss Ephemeris</title>
     <style type='text/css'>
         * {
@@ -28,10 +28,6 @@
             width: 70%;
             resize: none;
             /*height: 70px;*/
-        }
-
-        select {
-            width: 100%;
         }
 
         body {
@@ -100,7 +96,12 @@
     <textarea id='$const.date' rows='1'>01.09.1976 05:05:00</textarea></br>
     (dd.mm.yyyy hh:mm:ss)<br/>
         
-
+    
+    <form id="currentdate">
+      <select id="year">
+      </select>
+    </form>    
+    
     <p>
        <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime ()'>
     </p>
