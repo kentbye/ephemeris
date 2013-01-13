@@ -8,9 +8,8 @@ $ns.currenttime = function () {
     var hours = currentTime.getUTCHours();
     var minutes = currentTime.getUTCMinutes();
     var seconds = currentTime.getUTCSeconds();
-    var milliseconds = currentTime.getUTCMilliseconds();
 
-    document.getElementById("$const.date").innerHTML = day + "." + month + "." + year + " " + hours+":"+minutes+":"+seconds+"."+milliseconds;
+    document.getElementById("$const.date").innerHTML = day + "." + month + "." + year + " " + hours+":"+minutes+":"+seconds;
 
     $e.calculatedTime ();
 
