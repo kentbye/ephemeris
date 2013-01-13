@@ -13,11 +13,13 @@ $ns.currenttime = function () {
 
     // Populate the Current Date into Dropdowns
     var yearselect = document.getElementById("year"), year;
-    var yeargenerate = function(max){
-          do{
-            yearselect.add(new Option(year++, max--), null);}
-            while(max>0);
-          }(5);
+    
+    for(var i = year + 10; i > 1899 ; i--) {
+        var yr = document.createElement("option");
+        yr.textContent = i;
+        yr.value = i;
+        yearselect.appendChild(yr);
+    }
 
     // Calculate the current positions of the planets
     $e.calculatedTime ();
