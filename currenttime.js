@@ -1,6 +1,4 @@
 $ns.currenttime = function () {
-	var textAreas = document.body.getElementsByTagName('textarea');
-
     var currentTime = new Date();
     var year = currentTime.getUTCFullYear();
     var month = currentTime.getUTCMonth() + 1;
@@ -16,9 +14,6 @@ $ns.currenttime = function () {
     var minutefield = document.getElementById("minutefield");
     var secondfield = document.getElementById("secondfield");
     var leadingZero = "";
-
-    document.getElementById("$const.date").innerHTML = day + "." + month + "." + year + " " + hours+":"+minutes+":"+seconds;
-
 
     // Populate the month dropdown
     for(var i=1; i<13; i++) {
