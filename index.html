@@ -36,6 +36,27 @@
             padding: 0;
             background: #dcdcdc;
         }
+        
+
+		label, select {
+		    display: inline-block;
+		    width: 100px;
+		}
+		
+		label {
+		    position: relative;
+		    top: -1.2em;
+		    left: 5px;
+		}
+		
+		select {
+		    margin: 1.5em 0 0 -100px;
+		}
+		
+		#datewrapper {
+		    width: 430px;
+		}
+
     </style>
 
     <script type='text/javascript' src='index.js' charset='utf-8'></script>
@@ -96,11 +117,28 @@
     <textarea id='$const.date' rows='1'>01.09.1976 05:05:00</textarea></br>
     (dd.mm.yyyy hh:mm:ss)<br/>
         
-    
-    <form id="currentdate">
-      <select id="year">
-      </select>
-    </form>    
+    <div id="datewrapper">
+	    <form id="dateinput">
+	      <label for = "monthfield">Month</label>
+	      <select id = "monthfield">
+	      </select>
+	      <label for = "dayfield">Day</label>
+	      <select id = "dayfield">
+	      </select>
+	      <label for = "yearfield">Year</label>
+	      <select id = "yearfield">
+	      </select>
+	      <label for = "hourfield">Hour</label>
+	      <select id = "hourfield">
+	      </select>
+	      <label for = "minutefield">Minute</label>
+	      <select id = "minutefield">
+	      </select>
+	      <label for = "secondfield">Second</label>
+	      <select id = "secondfield">
+	      </select>
+	    </form>
+    </div>
     
     <p>
        <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime ()'>
