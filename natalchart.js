@@ -2,6 +2,19 @@ $ns.natalchart = function ($planets) {
   var ctx = document.getElementById('canvas').getContext('2d');
   var planetDegree;
   var center;
+  var $planetcolor = {
+		sun: "#feb400",
+		moon: "#b2b2b2",
+		mercury: "#abc600",
+		venus: "#1bc2c2i",
+		mars: "#be0000",
+		jupiter: "#0000cb",
+		saturn: "#a28868",
+		chiron: "#000000",
+		uranus: "#bc00ca",
+		neptune: "#116f43",
+		pluto: "#6b0000"
+  };
     
   ctx.save();
   // Clear out the canvas for multiple executions
@@ -33,7 +46,7 @@ $ns.natalchart = function ($planets) {
     ctx.beginPath();
     ctx.rotate(Math.PI / 18);
     // Outer wheel ticks
-    ctx.moveTo(195-15, 0);
+    ctx.moveTo(195-10, 0);
     ctx.lineTo(195, 0);
     ctx.stroke();
     // Inner Wheel ticks
@@ -99,10 +112,10 @@ $ns.natalchart = function ($planets) {
 	  ctx.save();
 	  ctx.beginPath();
 	  // TODO: Have different colors for the differnt planets
-	  ctx.strokeStyle = '#FF0000';
+	  ctx.strokeStyle = $planetcolor[key];
 	  planetDegree = $planets[key];
 	  // Need a combination of rotation and subtracting from 360 to get the 
-	  ctx.arc(0, 0, center, ((360.1-planetDegree)*Math.PI)/180, ((360-planetDegree-0.1)* Math.PI)/180, true);
+	  ctx.arc(0, 0, center, ((360.15-planetDegree)*Math.PI)/180, ((360-planetDegree-0.15)* Math.PI)/180, true);
 	  // TODO: Add the Planet Glyphs and degrees
 	  ctx.stroke();
 	  ctx.restore();
