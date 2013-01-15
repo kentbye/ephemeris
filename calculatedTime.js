@@ -7,6 +7,7 @@ $ns.calculatedTime = function () {
     var secondfield = document.getElementById("secondfield");
 	var signs = ["Zero Offset","Aries","Taurus","Gemini","Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
 	var $Longitude360String = "";
+	var $planetLongitude = Array();
         
 	inputdate = {
 		day: parseInt(dayfield.value),
@@ -16,7 +17,6 @@ $ns.calculatedTime = function () {
 		minutes: parseInt(minutefield.value),
 		seconds: parseInt(secondfield.value)
 	};
-    console.log(inputdate);
 	$const.date = inputdate;
     
 	$processor.init ();
@@ -30,9 +30,12 @@ $ns.calculatedTime = function () {
           $astrologicalSign = signs[Math.ceil($const.body.position.apparentLongitude/30)];
           document.getElementById(key).innerHTML = key + " = " + $astrologicalSign + " " + $const.body.position.apparentLongitude30String;
           $Longitude360String = $Longitude360String + "<br/>" + key + " = " + $const.body.position.apparentLongitude;
+          $planetLongitude[key] = parseFloat($const.body.position.apparentLongitude);
         }
       }
     }
+    
+    $e.natalchart($planetLongitude);
     
     document.getElementById("Longitude360").innerHTML = $Longitude360String;
 
