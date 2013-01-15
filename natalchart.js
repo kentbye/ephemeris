@@ -2,6 +2,20 @@ $ns.natalchart = function ($planets) {
   var ctx = document.getElementById('canvas').getContext('2d');
   var planetDegree;
   var center;
+
+  var $planetColor = {
+		sun: "#feb400",
+		moon: "#b2b2b2",
+		mercury: "#abc600",
+		venus: "#1bc2c2i",
+		mars: "#be0000",
+		jupiter: "#0000cb",
+		saturn: "#a28868",
+		chiron: "#666666",
+		uranus: "#bc00ca",
+		neptune: "#116f43",
+		pluto: "#6b0000"
+  };
     
   ctx.save();
   // Clear out the canvas for multiple executions
@@ -91,20 +105,6 @@ $ns.natalchart = function ($planets) {
   ctx.stroke();
   ctx.restore();
 
-  var $planetcolor = {
-		sun: "#feb400",
-		moon: "#b2b2b2",
-		mercury: "#abc600",
-		venus: "#1bc2c2i",
-		mars: "#be0000",
-		jupiter: "#0000cb",
-		saturn: "#a28868",
-		chiron: "#666666",
-		uranus: "#bc00ca",
-		neptune: "#116f43",
-		pluto: "#6b0000"
-  };
-
   // Draw Planet Degree
   // Go from the outside wheel to the inside circle
   ctx.lineWidth = 195-70;
@@ -112,7 +112,7 @@ $ns.natalchart = function ($planets) {
   for (var key in $planets) {
 	  ctx.save();
 	  ctx.beginPath();
-	  ctx.strokeStyle = $planetcolor[key];
+	  ctx.strokeStyle = $planetColor[key];
 	  planetDegree = $planets[key];
 	  // Need a combination of rotation and subtracting from 360 to get the proper degree mapping.
 	  ctx.arc(0, 0, center, ((360.15-planetDegree)*Math.PI)/180, ((360-planetDegree-0.15)* Math.PI)/180, true);
