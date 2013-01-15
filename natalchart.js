@@ -121,6 +121,6 @@ $ns.natalchart = function ($planets) {
 	  ctx.restore();
   }
 
-  // Reset all of the transforms for the next run. There might be a better way to do this.
-  ctx.mozCurrentTransform = [1, 0, 0, 1, 0, 0];
+  // Reset all of the transforms for the next run.
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
 };
