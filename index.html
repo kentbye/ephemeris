@@ -4,7 +4,7 @@
     <title>Current Astrological Positions | Calculate Natal Planets with Swiss Ephemeris</title>
     <style type='text/css'>
         * {
-            font: 22pt Tahoma;
+            font: 20pt Tahoma;
         }
 
         input[type=button] {
@@ -19,21 +19,10 @@
             border-color: white;
         }
 
-        textarea {
-            padding: 0;
-            margin: 0;
-            border-style: inset;
-            border-width: 1px;
-            box-sizing: border-box;
-            width: 70%;
-            resize: none;
-            /*height: 70px;*/
-        }
-
         body {
-            width: 800px;
+            width: 430px;
             margin: auto;
-            padding: 0;
+            padding-left: 15px;
         }
         
 
@@ -53,12 +42,18 @@
 		}
 		
 		#datewrapper {
+		    
 		    width: 430px;
 		}
 		
 		.attribution {
 		    width: 430px;
 		}
+
+		.planets {
+			margin: 0 0 20px 20px;
+		}
+
 
     </style>
 
@@ -70,7 +65,6 @@
     <script type='text/javascript' src='natalchart.js' charset='utf-8'></script>    
 
     <script type='text/javascript' src='astronomy/index.js' charset='utf-8'></script>
-
     <script type='text/javascript' src='astronomy/moshier/index.js' charset='utf-8'></script>
     <script type='text/javascript' src='astronomy/moshier/constant.js' charset='utf-8'></script>
     <script type='text/javascript' src='astronomy/moshier/julian.js' charset='utf-8'></script>
@@ -116,9 +110,24 @@
 
 </head>
 <body onload='$e.currenttime ()'>
+    <canvas id="canvas" width="400" height="400"></canvas>
 
-    Enter Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
+    <div class="planets">
+	    <div id="sun">sun</div>
+	    <div id="moon">moon</div>
+	    <div id="mercury">mercury</div>
+	    <div id="venus">venus</div>
+	    <div id="mars">mars</div>
+	    <div id="jupiter">jupiter</div>
+	    <div id="saturn">saturn</div>
+	    <div id="uranus">uranus</div>
+	    <div id="neptune">neptune</div>
+	    <div id="pluto">pluto</div>
+	    <div id="chiron">chiron</div>
+    </div>
+    
     <div id="datewrapper">
+    Enter Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
 	    <form id="dateinput">
 	      <label for = "monthfield">Month</label>
 	      <select id = "monthfield">
@@ -145,20 +154,6 @@
        <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime ()'>
     </p>
 
-    <canvas id="canvas" width="400" height="400"></canvas>
-
-    <div id = "sun">sun</div>
-    <div id = "moon">moon</div>
-    <div id = "mercury">mercury</div>
-    <div id = "venus">venus</div>
-    <div id = "mars">mars</div>
-    <div id = "jupiter">jupiter</div>
-    <div id = "saturn">saturn</div>
-    <div id = "uranus">uranus</div>
-    <div id = "neptune">neptune</div>
-    <div id = "pluto">pluto</div>
-    <div id = "chiron">chiron</div>
-    
     <div id = "Longitude360"></div>
 
     <div class="attribution">
