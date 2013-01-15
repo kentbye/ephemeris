@@ -9,7 +9,7 @@ $ns.calculatedTime = function () {
 	var $Longitude360String = "";
 	var $planetLongitude = Array();
         
-	inputdate = {
+	var $inputdate = {
 		day: parseInt(dayfield.value),
 		month: parseInt(monthfield.value),
 		year: parseInt(yearfield.value),
@@ -17,7 +17,7 @@ $ns.calculatedTime = function () {
 		minutes: parseInt(minutefield.value),
 		seconds: parseInt(secondfield.value)
 	};
-	$const.date = inputdate;
+	$const.date = $inputdate;
     
 	$processor.init ();
     
@@ -26,7 +26,7 @@ $ns.calculatedTime = function () {
       if (key != 'init' &&  key != 'earth' &&  key != 'sirius'){
         if ($moshier.body.hasOwnProperty(key)) {
           $const.body = $moshier.body[key];
-          $processor.calc (inputdate, $const.body);
+          $processor.calc ($inputdate, $const.body);
           $astrologicalSign = signs[Math.ceil($const.body.position.apparentLongitude/30)];
           document.getElementById(key).innerHTML = key + " = " + $astrologicalSign + " " + $const.body.position.apparentLongitude30String;
           $Longitude360String = $Longitude360String + "<br/>" + key + " = " + $const.body.position.apparentLongitude;

@@ -1,54 +1,62 @@
 $ns.natalchart = function ($planets) {
   var ctx = document.getElementById('canvas').getContext('2d');
   var planetDegree;
-  var i;
+  var center;
+    
   ctx.save();
-  ctx.clearRect(0, 0, 500, 500);
-  ctx.translate(225, 225);
-  ctx.scale(1.75, 1.75);
+  // Clear out the canvas for multiple executions
+  ctx.clearRect(0, 0, 400, 400);
+  // Move the 0,0 point to the center of the canvas
+  ctx.translate(200, 200);
+  // Rotate to get the zero point of Aries to be on the left-hand side
   ctx.rotate((2*Math.PI)/2);
-  
   ctx.strokeStyle = "black";
   ctx.fillStyle = "white";
   ctx.lineWidth = 1;
 
   // Sign Cusps marks
   ctx.save();
+  ctx.lineWidth = 0.75;
   for (var i = 0; i < 12; i++) {
     ctx.beginPath();
     ctx.rotate(Math.PI / 6);
-    ctx.moveTo(90, 0);
-    ctx.lineTo(120, 0);
+    ctx.moveTo(195-60, 0);
+    ctx.lineTo(195, 0);
     ctx.stroke();
   }
   ctx.restore();
 
   // Decan marks
   ctx.save();
+  ctx.lineWidth = 0.25;
   for (var i = 0; i < 36; i++) {
     ctx.beginPath();
     ctx.rotate(Math.PI / 18);
-    ctx.moveTo(112, 0);
-    ctx.lineTo(120, 0);
+    // Outer wheel ticks
+    ctx.moveTo(195-15, 0);
+    ctx.lineTo(195, 0);
     ctx.stroke();
-    ctx.moveTo(90, 0);
-    ctx.lineTo(92, 0);
+    // Inner Wheel ticks
+    ctx.moveTo(195-60, 0);
+    ctx.lineTo(195-60+6, 0);
     ctx.stroke();
 
   }
   ctx.restore();
   
-  // Minute marks
+  // Degree marks
   ctx.save();
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 0.1;
   for (i = 0; i < 360; i++) {
     if (i % 30 != 0) {
       ctx.beginPath();
-      ctx.moveTo(117, 0);
-      ctx.lineTo(120, 0);
+      // Outer wheel ticks
+      ctx.moveTo(195-5, 0);
+      ctx.lineTo(195, 0);
       ctx.stroke();
-      ctx.moveTo(90, 0);
-      ctx.lineTo(91, 0);
+      // Inner wheel ticks
+      ctx.moveTo(195-60, 0);
+      ctx.lineTo(195-60+3, 0);
       ctx.stroke();
     }
     ctx.rotate(Math.PI / 180);
@@ -56,44 +64,50 @@ $ns.natalchart = function ($planets) {
   ctx.restore();
   ctx.fillStyle = "black";
 
-  // Draw outside wheel
+  // Draw outside wheel with radius of 195
   ctx.save();
   ctx.beginPath();
   ctx.lineWidth = 1;
   ctx.strokeStyle = '#000000';
-  ctx.arc(0, 0, 120, 0, Math.PI * 2, true);
+  ctx.arc(0, 0, 195, 0, Math.PI * 2, true);
   ctx.stroke();
   ctx.restore();
 
-  // Draw inside wheel
+  // Draw inside wheel with radius of 60 less than outside
   ctx.save();  
   ctx.beginPath();
   ctx.lineWidth = 1;
   ctx.strokeStyle = '#000000';
-  ctx.arc(0, 0, 90, 0, Math.PI * 2, true);
+  ctx.arc(0, 0, 195-60, 0, Math.PI * 2, true);
   ctx.stroke();
   ctx.restore();
 
-  // Draw inside circle
+  // Draw inside circle with radius of 70 
   ctx.save();  
   ctx.beginPath();
   ctx.lineWidth = 1;
   ctx.strokeStyle = '#000000';
-  ctx.arc(0, 0, 50, 0, Math.PI * 2, true);
+  ctx.arc(0, 0, 70, 0, Math.PI * 2, true);
   ctx.stroke();
   ctx.restore();
 
-  
   // Draw Planet Degree
+  // Go from the outside wheel to the inside circle
+  ctx.lineWidth = 195-70;
+  center = 195 - (195-70)/2;
   for (var key in $planets) {
 	  ctx.save();
 	  ctx.beginPath();
-	  ctx.lineWidth = 70;
+	  // TODO: Have different colors for the differnt planets
 	  ctx.strokeStyle = '#FF0000';
 	  planetDegree = $planets[key];
-	  ctx.arc(0, 0, 85, ((360.25-planetDegree)*Math.PI)/180, ((360-planetDegree-0.25)* Math.PI)/180, true);
+	  // Need a combination of rotation and subtracting from 360 to get the 
+	  ctx.arc(0, 0, center, ((360.1-planetDegree)*Math.PI)/180, ((360-planetDegree-0.1)* Math.PI)/180, true);
+	  // TODO: Add the Planet Glyphs and degrees
 	  ctx.stroke();
 	  ctx.restore();
   }
 
+  // Reset all of the transforms for the next run. There might be a better way to do this.
+  ctx.mozCurrentTransform = [1, 0, 0, 1, 0, 0];
 };
