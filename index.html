@@ -11,6 +11,8 @@
             border-style: outset;
             border-width: 1px;
             border-color: white;
+            height: 75px;
+            margin-right: 5px;
         }
 
         input[type=button]:active {
@@ -20,7 +22,7 @@
         }
 
         body {
-            width: 430px;
+            width: 450px;
             margin: auto;
             padding-left: 15px;
         }
@@ -112,12 +114,13 @@
 <body onload='$e.currenttime ()'>
 
     <canvas id="canvas" width="400" height="400"></canvas>
-    <input type='button' value='-y' onclick='$e.increment(-31557600)'>
-    <input type='button' value='-d' onclick='$e.increment(-86400)'>
-    <input type='button' value='-m' onclick='$e.increment(-60)'>
-    <input type='button' value='+m' onclick='$e.increment(60)'>
-    <input type='button' value='+d' onclick='$e.increment(86400)'>
-    <input type='button' value='+y' onclick='$e.increment(31557600)'>
+    
+    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
+    <input type='button' value='-mth' onclick='$e.increment(-2678400)'>
+    <input type='button' value='-dy' onclick='$e.increment(-86400)'>
+    <input type='button' value='+dy' onclick='$e.increment(86400)'>
+    <input type='button' value='+mth' onclick='$e.increment(2678400)'>
+    <input type='button' value='+yr' onclick='$e.increment(31557600)'>
 
     <div id="datewrapper">
     Enter Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
