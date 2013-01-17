@@ -110,22 +110,15 @@
 
 </head>
 <body onload='$e.currenttime ()'>
-    <canvas id="canvas" width="400" height="400"></canvas>
 
-    <div class="planets">
-	    <div id="sun">sun</div>
-	    <div id="moon">moon</div>
-	    <div id="mercury">mercury</div>
-	    <div id="venus">venus</div>
-	    <div id="mars">mars</div>
-	    <div id="jupiter">jupiter</div>
-	    <div id="saturn">saturn</div>
-	    <div id="uranus">uranus</div>
-	    <div id="neptune">neptune</div>
-	    <div id="pluto">pluto</div>
-	    <div id="chiron">chiron</div>
-    </div>
-    
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <input type='button' value='-y' onclick='$e.increment(-31557600)'>
+    <input type='button' value='-d' onclick='$e.increment(-86400)'>
+    <input type='button' value='-m' onclick='$e.increment(-60)'>
+    <input type='button' value='+m' onclick='$e.increment(60)'>
+    <input type='button' value='+d' onclick='$e.increment(86400)'>
+    <input type='button' value='+y' onclick='$e.increment(31557600)'>
+
     <div id="datewrapper">
     Enter Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
 	    <form id="dateinput">
@@ -148,6 +141,20 @@
 	      <select id = "secondfield">
 	      </select>
 	    </form>
+    </div>
+
+    <div class="planets">
+	    <div id="sun">sun</div>
+	    <div id="moon">moon</div>
+	    <div id="mercury">mercury</div>
+	    <div id="venus">venus</div>
+	    <div id="mars">mars</div>
+	    <div id="jupiter">jupiter</div>
+	    <div id="saturn">saturn</div>
+	    <div id="uranus">uranus</div>
+	    <div id="neptune">neptune</div>
+	    <div id="pluto">pluto</div>
+	    <div id="chiron">chiron</div>
     </div>
     
     <p>

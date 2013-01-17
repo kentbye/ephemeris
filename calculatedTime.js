@@ -38,15 +38,47 @@ $ns.inputTime = function () {
     var hourfield = document.getElementById("hourfield");
     var minutefield = document.getElementById("minutefield");
     var secondfield = document.getElementById("secondfield");
-	        
+    var day = parseInt(dayfield.value) 
+    var month = parseInt(monthfield.value) 
+    var year = parseInt(yearfield.value)
+    var hours = parseInt(hourfield.value)
+    var minutes = parseInt(minutefield.value)
+    var seconds = parseInt(secondfield.value)
+	var myDate = new Date(month+" "+day+", "+year+" "+hours+":"+minutes+":"+seconds);
+    var myEpoch = myDate.getTime()/1000.0;
+	
 	var $inputdate = {
-		day: parseInt(dayfield.value),
-		month: parseInt(monthfield.value),
-		year: parseInt(yearfield.value),
-		hours: parseInt(hourfield.value),
-		minutes: parseInt(minutefield.value),
-		seconds: parseInt(secondfield.value)
+		day: day,
+		month: month,
+		year: year,
+		hours: hours,
+		minutes: minutes,
+		seconds: seconds,
+		epoch: myEpoch
 	};
-
+  
     return $inputdate;
 };
+
+$ns.increment = function (timeDelta) {
+	var monthfield = document.getElementById("monthfield")
+	var dayfield = document.getElementById("dayfield")
+	var yearfield = document.getElementById("yearfield");
+	var hourfield = document.getElementById("hourfield");
+	var minutefield = document.getElementById("minutefield");
+	var secondfield = document.getElementById("secondfield");
+	var epoch;
+	var $inputtime = $e.inputTime();
+	epoch = $inputtime.epoch + timeDelta;
+	var incrementedDate = new Date(1000*epoch);
+	
+	console.log(incrementedDate);
+	monthfield.value = incrementedDate.getMonth() + 1;
+	dayfield.value = incrementedDate.getDate();
+	yearfield.value = incrementedDate.getFullYear();
+	hourfield.value = incrementedDate.getHours();
+	minutefield.value = incrementedDate.getMinutes();
+	secondfield.value = incrementedDate.getSeconds();
+	
+	$e.calculatedTime();
+}
