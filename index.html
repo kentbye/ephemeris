@@ -4,7 +4,7 @@
     <title>Current Astrological Positions | Calculate Natal Planets with Swiss Ephemeris</title>
     <style type='text/css'>
         * {
-            font: 18pt Tahoma;
+            font: 16pt Tahoma;
         }
 
         input[type=button] {
@@ -112,7 +112,7 @@
 
 </head>
 <body onload='$e.currenttime ()'>
-
+    <div id="charttime"></div>
     <canvas id="canvas" width="400" height="400"></canvas>
     
     <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
@@ -121,6 +121,11 @@
     <input type='button' value='+dy' onclick='$e.increment(86400)'>
     <input type='button' value='+mth' onclick='$e.increment(2678400)'>
     <input type='button' value='+yr' onclick='$e.increment(31557600)'>
+
+    <input type='button' value='Animate' onclick='$e.animateStart()'>
+    <input type='button' value='Stop' onclick='$e.animateStop()'>
+
+
 
     <div id="datewrapper">
     Enter Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)

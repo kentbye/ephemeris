@@ -34,7 +34,7 @@ $ns.currenttime = function () {
     dayfield.value = day;
 
     // Populate the Year Dropdown
-    for(var i = year + 10; i > 1899 ; i--) {
+    for(var i = year + 100; i > 1899 ; i--) {
         var yearOption = document.createElement("option");
         yearOption.textContent = i;
         yearOption.value = i;

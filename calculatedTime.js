@@ -1,11 +1,18 @@
 $ns.calculatedTime = function () {
 	var $planetLongitude = Array();
 	var $inputdate = $e.inputTime();
+
+	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
+	var correctedEpoch = $inputdate.epoch - ($inputdate.timezoneoffset)*60;
+    var chartDate = new Date(1000*(correctedEpoch));
+    
 	$const.date = $inputdate;
     
 	$processor.init ();
     $planetLongitude = $e.calculateLongitude($inputdate);
     $e.natalchart($planetLongitude);
+    
+    document.getElementById("charttime").innerHTML = chartDate;
 };
 
 // Get the current Plantary Longitude values and display the values to the screen.
@@ -20,10 +27,10 @@ $ns.calculateLongitude = function ($inputdate) {
         if ($moshier.body.hasOwnProperty(key)) {
           $const.body = $moshier.body[key];
           $processor.calc ($inputdate, $const.body);
+          $planetLongitude[key] = Math.round(parseFloat($const.body.position.apparentLongitude)*10000)/10000;
           $astrologicalSign = signs[Math.ceil($const.body.position.apparentLongitude/30)];
           document.getElementById(key).innerHTML = key + " = " + $astrologicalSign + " " + $const.body.position.apparentLongitude30String;
-          $Longitude360String = $Longitude360String + "<br/>" + key + " = " + $const.body.position.apparentLongitude;
-          $planetLongitude[key] = parseFloat($const.body.position.apparentLongitude);
+          $Longitude360String = $Longitude360String + "<br/>" + key + " = " + $planetLongitude[key];
         }
       }
     }
@@ -46,6 +53,7 @@ $ns.inputTime = function () {
     var seconds = parseInt(secondfield.value)
 	var myDate = new Date(month+" "+day+", "+year+" "+hours+":"+minutes+":"+seconds);
     var myEpoch = myDate.getTime()/1000.0;
+	var timezoneoffset = myDate.getTimezoneOffset();
 	
 	var $inputdate = {
 		day: day,
@@ -54,7 +62,8 @@ $ns.inputTime = function () {
 		hours: hours,
 		minutes: minutes,
 		seconds: seconds,
-		epoch: myEpoch
+		epoch: myEpoch,
+		timezoneoffset: timezoneoffset
 	};
   
     return $inputdate;
@@ -72,7 +81,6 @@ $ns.increment = function (timeDelta) {
 	epoch = $inputtime.epoch + timeDelta;
 	var incrementedDate = new Date(1000*epoch);
 	
-	console.log(incrementedDate);
 	monthfield.value = incrementedDate.getMonth() + 1;
 	dayfield.value = incrementedDate.getDate();
 	yearfield.value = incrementedDate.getFullYear();
@@ -82,3 +90,18 @@ $ns.increment = function (timeDelta) {
 	
 	$e.calculatedTime();
 }
+
+var timerId = null;
+
+$ns.animateStart = function ()  {
+	if (timerId) return;
+	// Default to advancing 1 day at a time
+	timerId = setInterval("$e.increment("+86400+")", 50);
+}
+
+$ns.animateStop = function ()  {
+	clearInterval(timerId);
+	timerId = null;
+} 
+
+
