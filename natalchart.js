@@ -1,7 +1,19 @@
 $ns.natalchart = function ($planets) {
   var ctx = document.getElementById('canvas').getContext('2d');
-  var planetDegree;
-  var center;
+  var planetX;
+  var planetY;
+  var innerX;
+  var innerY;
+  var middleX;
+  var middleY; 
+  var outerX;
+  var outerY;
+  var glyphX;
+  var glyphY;
+  var signDegree;
+
+  var signImageArray = new Array();
+  var planetImageArray = new Array();
 
   var $planetColor = {
 		sun: "#feb400",
@@ -111,8 +123,6 @@ $ns.natalchart = function ($planets) {
   var dot10 = new Image();
   dot10.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDRTg1NkNGRDVBQjQxMUUyQTQ5MkZDNzJBQjhENUQzNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDRTg1NkNGRTVBQjQxMUUyQTQ5MkZDNzJBQjhENUQzNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkNFODU2Q0ZCNUFCNDExRTJBNDkyRkM3MkFCOEQ1RDM3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkNFODU2Q0ZDNUFCNDExRTJBNDkyRkM3MkFCOEQ1RDM3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bZ0RAgAAAAZQTFRF/yYAAAAADyLIpwAAAA5JREFUeNpiYKAnAAgwAABuAAEcD8SQAAAAAElFTkSuQmCC';
 
-  var signImageArray = new Array();
-
   // Aries glyph image
   signImageArray[0] = new Image();
   signImageArray[0].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAdCAMAAAATgvWLAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RkY4RDcxMDg1OUQyMTFFMjlCOEFBNkYwRjBEMzY1RjAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RkY4RDcxMDc1OUQyMTFFMjlCOEFBNkYwRjBEMzY1RjAiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOjA1ODAxMTc0MDcyMDY4MTE4MDgzQjdGMUNBNzNBQTE4IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA1ODAxMTc0MDcyMDY4MTE4MDgzQjdGMUNBNzNBQTE4Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+AlN1bgAAADBQTFRF2igT4EpC/fLx41tV9cjH+uTk+NbV6H153jgs87q45mxo8Kup642K7Zya2B4A////50d4GgAAABB0Uk5T////////////////////AOAjXRkAAADHSURBVHja7FEJjsQwCHPI3Q7m/79d0qhtKnUfMNIgRUHGGIfARiRVTbaGDCiPDH4UHAG96rkeCGMeDAlsVfXTyJAnYfdicI1AFGdsZ69LQY7E63NmQjAUXgaKy/rVnSAnhB1ab3vevJucUhPaEHV5QWQbtH4jKTwZPqAEhgVJDTWuawBdYu2pEcrnGI+yOqsQcsurV/Ie4Q0d9nFs6y+M3sbi5k7J/KbhCsdOTept5cEQtDJ/zrK8+7j+1uwfp/ZjfDPjT4ABANEbMxV7J4urAAAAAElFTkSuQmCC';
@@ -161,8 +171,6 @@ $ns.natalchart = function ($planets) {
   signImageArray[11] = new Image();
   signImageArray[11].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAdCAMAAACZrWzKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo0NzZBMjQxMTVBQzMxMUUyQTQ5MkZDNzJBQjhENUQzNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0NzZBMjQxMjVBQzMxMUUyQTQ5MkZDNzJBQjhENUQzNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjQ3NkEyNDBGNUFDMzExRTJBNDkyRkM3MkFCOEQ1RDM3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjQ3NkEyNDEwNUFDMzExRTJBNDkyRkM3MkFCOEQ1RDM3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+06EBfAAAADBQTFRFCYbY8ff9x970qM7vuNbyU6LhiLzqKI/cP5ne4+/5d7Pm1eb3ZqvkmcXsAH3W////RP/YPgAAABB0Uk5T////////////////////AOAjXRkAAADeSURBVHjabJJbFgQRDESDdLdnZf+7naBlODN+xBUlUsjJn+Eo5J8NXwtJJT7pjSYkCQg7zYiiWGf4PRc8sKaT6XvgkYElAvfCz4w7bgDSpAFTkebBla7JkBcLpqBI0egyTLoq8splw5euWg/qCk4cD6xPQGw6dJ5PJnGhdm0bTw1OqLzsaczt3SEhn9lZAb1sTiGm88oVOMO87j4LHD3kA6tknB4er4QZlLee+F6SuWAdbJubdTaNhvRlViZa7nhQ+lrMw1jFkcr+IUIvkaTFcn6fQF6I289nS7f/CDAAP8EgJch0O5gAAAAASUVORK5CYII=';
 ;
-
-  var planetImageArray = new Array();
   
   // Sun glyph image
   planetImageArray['sun'] = new Image();
@@ -253,24 +261,32 @@ $ns.natalchart = function ($planets) {
       // Draw the planet degree line
 	  ctx.strokeStyle = $planetColor[key];
 	  ctx.fillStyle = $planetColor[key];
-	  planetDegree = $planets[key];
-	  var innerx = 70 * Math.cos((180-(planetDegree))*Math.PI/180) + (canvas.width/2);
-	  var innery = 70 * Math.sin((180-(planetDegree))*Math.PI/180) + (canvas.height/2);
-	  var outerx = 195 * Math.cos((180-(planetDegree))*Math.PI/180) + (canvas.width/2);
-	  var outery = 195 * Math.sin((180-(planetDegree))*Math.PI/180) + (canvas.height/2);
-	  ctx.moveTo(innerx, innery);
-      ctx.lineTo(outerx, outery);
+      planetX = Math.cos((180-($planets[key]))*Math.PI/180);
+      planetY = Math.sin((180-($planets[key]))*Math.PI/180);
+	  innerX = 70 * planetX + (canvas.width/2);
+	  innerY = 70 * planetY + (canvas.height/2);
+	  middleX = 125 * planetX + (canvas.width/2);
+	  middleY = 125 * planetY + (canvas.height/2); 
+	  outerX = 195 * planetX + (canvas.width/2);
+	  outerY = 195 * planetY + (canvas.height/2);
+	  ctx.moveTo(innerX, innerY);
+      ctx.lineTo(outerX, outerY);
 	  ctx.stroke();
 
       // Draw aspect dot on inner circle
-	  ctx.moveTo(innerx, innery);
-      ctx.arc(innerx, innery, 2, 0, Math.PI * 2, true);
+	  ctx.moveTo(innerX, innerY);
+      ctx.arc(innerX, innerY, 2, 0, Math.PI * 2, true);
       ctx.fill();
         
       // Place planetary glyph
-	  var x = 210 * Math.cos((180-(planetDegree))*Math.PI/180) + (canvas.width/2) - 15;
-	  var y = 210 * Math.sin((180-(planetDegree))*Math.PI/180) + (canvas.height/2) - 15;
-	  ctx.drawImage(planetImageArray[key],x,y);	  
+	  glyphX = 210 * planetX + (canvas.width/2) - 15;
+	  glyphY = 210 * planetY + (canvas.height/2) - 15;
+	  ctx.drawImage(planetImageArray[key],glyphX,glyphY);	  
+	  
+	  ctx.font = "14px Arial";
+      signDegree = Math.floor($planets[key] % 30);
+
+      ctx.fillText(signDegree, middleX-7, middleY+5);
 
 	  ctx.restore();
   }
