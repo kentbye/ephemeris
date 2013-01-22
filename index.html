@@ -56,6 +56,22 @@
 			margin: 0 0 20px 20px;
 		}
 
+        #container {
+          position: relative; 
+          height: 460px; 
+          width: 460px;
+        }
+	    #chartcanvas { 
+	      z-index: 0;
+	    }
+	    
+	    #planetcanvas { 
+	      position: absolute; 
+	      top: 0px; 
+	      left: 0px; 
+	      z-index: 1;
+	    }
+
 
     </style>
 
@@ -113,18 +129,23 @@
 </head>
 <body onload='$e.currenttime ()'>
     <div id="charttime"></div>
-    <canvas id="canvas" width="460" height="460"></canvas>
     
-    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
-    <input type='button' value='-mth' onclick='$e.increment(-2678400)'>
-    <input type='button' value='-dy' onclick='$e.increment(-86400)'>
-    <input type='button' value='+dy' onclick='$e.increment(86400)'>
-    <input type='button' value='+mth' onclick='$e.increment(2678400)'>
-    <input type='button' value='+yr' onclick='$e.increment(31557600)'>
-
-    <input type='button' value='Animate' onclick='$e.animateStart()'>
-    <input type='button' value='Stop' onclick='$e.animateStop()'>
-
+    <div id="container">
+      <canvas id="chartcanvas" width = "460" height = "460" ></canvas>
+      <canvas id="planetcanvas" width = "460" height = "460" ></canvas>
+    </div>
+    
+    <div id="increment-buttons" style="clear: both;">    
+	    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
+	    <input type='button' value='-mth' onclick='$e.increment(-2678400)'>
+	    <input type='button' value='-dy' onclick='$e.increment(-86400)'>
+	    <input type='button' value='+dy' onclick='$e.increment(86400)'>
+	    <input type='button' value='+mth' onclick='$e.increment(2678400)'>
+	    <input type='button' value='+yr' onclick='$e.increment(31557600)'>
+	
+	    <input type='button' value='Animate' onclick='$e.animateStart()'>
+	    <input type='button' value='Stop' onclick='$e.animateStop()'>
+    </div>
 
 
     <div id="datewrapper">
@@ -168,9 +189,6 @@
 	    <div id="chiron">chiron</div>
     </div>
     
-
-    <div id = "Longitude360"></div>
-
     <div class="attribution">
     <p>Source code: <a href="https://github.com/kentbye/ephemeris">github</a></p>
     </div>

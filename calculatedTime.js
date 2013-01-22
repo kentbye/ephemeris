@@ -18,7 +18,6 @@ $ns.calculatedTime = function () {
 // Get the current Plantary Longitude values and display the values to the screen.
 $ns.calculateLongitude = function ($inputdate) {
 	var signs = ["Zero Offset","Aries","Taurus","Gemini","Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
-	var $Longitude360String = "";
 	var $planetLongitude = Array();
 
     //  Loop through each of the planets in the moshier array and calculate the Longitude
@@ -30,11 +29,9 @@ $ns.calculateLongitude = function ($inputdate) {
           $planetLongitude[key] = Math.round(parseFloat($const.body.position.apparentLongitude)*10000)/10000;
           $astrologicalSign = signs[Math.ceil($const.body.position.apparentLongitude/30)];
           document.getElementById(key).innerHTML = key + " = " + $astrologicalSign + " " + $const.body.position.apparentLongitude30String;
-          $Longitude360String = $Longitude360String + "<br/>" + key + " = " + $planetLongitude[key];
         }
       }
     }
-    document.getElementById("Longitude360").innerHTML = $Longitude360String;
     return $planetLongitude;
 };
 
