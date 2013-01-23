@@ -224,17 +224,6 @@ $ns.natalchart = function ($planets) {
   ctx.stroke();
   ctx.restore();
 
-  // Draw the Sign Glyphs
-  ctx.save();
-  for(var i=0; i<12; i++){
-    ctx.save();
-    // Radius * Angle(+15 degrees from cusp (with 180 correction for Aries zero-point)) + Center Point (minus half the width of a glyph)
-    var x = (outerWheelRadius-15) * Math.cos((180-15-(i*30))*Math.PI/180) + (chartcanvas.width/2)-10;
-    var y = (outerWheelRadius-15) * Math.sin((180-15-(i*30))*Math.PI/180) + (chartcanvas.height/2)-10;
-    ctx.drawImage(signImageArray[i],x,y,20,20);
-    ctx.restore();
-  }
-  ctx.restore();
 
   // Reset transform to the upper right-hand corner
   ctx.setTransform(1, 0, 0, 1, 0, 0);   
@@ -421,6 +410,6 @@ $ns.natalchart = function ($planets) {
     ctx.restore();
   }
   ctx.restore();
-
+  ctx.setTransform(1, 0, 0, 1, 0, 0);   
 
 };
