@@ -317,6 +317,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 	  ctx.restore();
   }
 
+  // TODO: Abstract out natal planets to the planetcanvas to speed up animations
   for (var key in $natalPlanets) {
 	  ctx.save();
 
