@@ -286,6 +286,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
   // Draw the Natal Planets and sign glpyhs, if not animating. If animating, then once is enough.
   if ($natalPlanets) {
         var ctx = document.getElementById('natalcanvas').getContext('2d');
+        ctx.clearRect(0, 0, natalcanvas.width, natalcanvas.height);
 		for (var key in $natalPlanets) {
 		  ctx.save();
 		
