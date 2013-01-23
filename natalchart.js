@@ -236,22 +236,20 @@ $ns.natalchart = function ($planets) {
   }
   ctx.restore();
 
-  ctx = document.getElementById('planetcanvas').getContext('2d');
   // Reset transform to the upper right-hand corner
   ctx.setTransform(1, 0, 0, 1, 0, 0);   
-  ctx.clearRect(0, 0, planetcanvas.width, planetcanvas.height);
   
 /*
   // Draw Debugging Grid marks every 10 units
   ctx.save();
   ctx.lineWidth = 0.25;
-  for (var i = 0; i < planetcanvas.height/10+1; i++) {
+  for (var i = 0; i < chartcanvas.height/10+1; i++) {
     ctx.beginPath();
     ctx.moveTo(10*i, 0);
-    ctx.lineTo(10*i, planetcanvas.height);
+    ctx.lineTo(10*i, chartcanvas.height);
     ctx.stroke();
     ctx.moveTo(0, 10*i);
-    ctx.lineTo(planetcanvas.width, 10*i);
+    ctx.lineTo(chartcanvas.width, 10*i);
     ctx.stroke();
 
   }
@@ -260,13 +258,13 @@ $ns.natalchart = function ($planets) {
   // Draw Debugging Grid marks every 50 units
   ctx.save();
   ctx.lineWidth = 0.5;
-  for (var i = 0; i < planetcanvas.height/50+1; i++) {
+  for (var i = 0; i < chartcanvas.height/50+1; i++) {
     ctx.beginPath();
     ctx.moveTo(50*i, 0);
-    ctx.lineTo(50*i, planetcanvas.height);
+    ctx.lineTo(50*i, chartcanvas.height);
     ctx.stroke();
     ctx.moveTo(0, 50*i);
-    ctx.lineTo(planetcanvas.width, 50*i);
+    ctx.lineTo(chartcanvas.width, 50*i);
     ctx.stroke();
   }
   ctx.restore();
@@ -287,10 +285,10 @@ $ns.natalchart = function ($planets) {
       planetX = Math.cos((180-($planets[key]))*Math.PI/180);
       planetY = Math.sin((180-($planets[key]))*Math.PI/180);
 
-	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (planetcanvas.width/2);
-	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (planetcanvas.height/2);
-	  outerX = outerWheelRadius * planetX + (planetcanvas.width/2);
-	  outerY = outerWheelRadius * planetY + (planetcanvas.height/2);
+	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (chartcanvas.width/2);
+	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (chartcanvas.height/2);
+	  outerX = outerWheelRadius * planetX + (chartcanvas.width/2);
+	  outerY = outerWheelRadius * planetY + (chartcanvas.height/2);
 	  ctx.moveTo(innerX, innerY);
       ctx.lineTo(outerX, outerY);
       ctx.stroke();
@@ -301,28 +299,28 @@ $ns.natalchart = function ($planets) {
       ctx.fill();
         
       // Place glyph of transiting planet
-	  planetGlyphX = 185 * planetX + (planetcanvas.width/2) - 10;
-	  planetGlyphY = 185 * planetY + (planetcanvas.height/2) - 10;
+	  planetGlyphX = 185 * planetX + (chartcanvas.width/2) - 10;
+	  planetGlyphY = 185 * planetY + (chartcanvas.height/2) - 10;
 	  ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 20, 20);
 	  	  
       // Place degree of transiting planet
-      degreeX = 168 * planetX + (planetcanvas.width/2);
-	  degreeY = 168 * planetY + (planetcanvas.height/2); 
+      degreeX = 168 * planetX + (chartcanvas.width/2);
+	  degreeY = 168 * planetY + (chartcanvas.height/2); 
       signDegree = Math.floor($planets[key] % 30);
       ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-7, degreeY+5);
       
       // Place glyph of transiting planet's sign
-      signGlyphX = 153 * planetX + (planetcanvas.width/2);
-	  signGlyphY = 153 * planetY + (planetcanvas.height/2); 
+      signGlyphX = 153 * planetX + (chartcanvas.width/2);
+	  signGlyphY = 153 * planetY + (chartcanvas.height/2); 
       planetSign = Math.floor($planets[key] / 30);
       ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
 
       // Draw the transiting planet degree line on middle circle
       ctx.lineWidth = 1;
-      tickStartX = middleCircleRadius * planetX + (planetcanvas.width/2);
-      tickStartY = middleCircleRadius * planetY + (planetcanvas.width/2);
-      tickStopX = (middleCircleRadius + 5) * planetX + (planetcanvas.width/2);
-      tickStopY = (middleCircleRadius + 5) * planetY + (planetcanvas.width/2);
+      tickStartX = middleCircleRadius * planetX + (chartcanvas.width/2);
+      tickStartY = middleCircleRadius * planetY + (chartcanvas.width/2);
+      tickStopX = (middleCircleRadius + 5) * planetX + (chartcanvas.width/2);
+      tickStopY = (middleCircleRadius + 5) * planetY + (chartcanvas.width/2);
 	  ctx.moveTo(tickStartX, tickStartY);
       ctx.lineTo(tickStopX, tickStopY);
       ctx.stroke();
@@ -355,10 +353,10 @@ $ns.natalchart = function ($planets) {
       planetX = Math.cos((180-($natalPlanets[key]))*Math.PI/180);
       planetY = Math.sin((180-($natalPlanets[key]))*Math.PI/180);
 
-	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (planetcanvas.width/2);
-	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (planetcanvas.height/2);
-	  outerX = outerWheelRadius * planetX + (planetcanvas.width/2);
-	  outerY = outerWheelRadius * planetY + (planetcanvas.height/2);
+	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (chartcanvas.width/2);
+	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (chartcanvas.height/2);
+	  outerX = outerWheelRadius * planetX + (chartcanvas.width/2);
+	  outerY = outerWheelRadius * planetY + (chartcanvas.height/2);
 	  ctx.lineWidth = 1;
 	  ctx.moveTo(innerX, innerY);
       ctx.lineTo(outerX, outerY);
@@ -371,28 +369,28 @@ $ns.natalchart = function ($planets) {
       ctx.fill();
         
       // Place glyph of natal planet
-	  planetGlyphX = 125 * planetX + (planetcanvas.width/2) - 10;
-	  planetGlyphY = 125 * planetY + (planetcanvas.height/2) - 10;
+	  planetGlyphX = 125 * planetX + (chartcanvas.width/2) - 10;
+	  planetGlyphY = 125 * planetY + (chartcanvas.height/2) - 10;
 	  ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 20, 20);
 	  	  
       // Place degree of natal planet
-      degreeX = 108 * planetX + (planetcanvas.width/2);
-	  degreeY = 108 * planetY + (planetcanvas.height/2); 
+      degreeX = 108 * planetX + (chartcanvas.width/2);
+	  degreeY = 108 * planetY + (chartcanvas.height/2); 
       signDegree = Math.floor($natalPlanets[key] % 30);
       ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-7, degreeY+5);
       
       // Place glyph of natal planet's sign
-      signGlyphX = 93 * planetX + (planetcanvas.width/2);
-	  signGlyphY = 93 * planetY + (planetcanvas.height/2); 
+      signGlyphX = 93 * planetX + (chartcanvas.width/2);
+	  signGlyphY = 93 * planetY + (chartcanvas.height/2); 
       planetSign = Math.floor($natalPlanets[key] / 30);
       ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
       
       // Draw the natal planet degree line on inner circle
       ctx.lineWidth = 1;
-      tickStartX = innerCircleRadius * planetX + (planetcanvas.width/2);
-      tickStartY = innerCircleRadius * planetY + (planetcanvas.width/2);
-      tickStopX = (innerCircleRadius + 5) * planetX + (planetcanvas.width/2);
-      tickStopY = (innerCircleRadius + 5) * planetY + (planetcanvas.width/2);
+      tickStartX = innerCircleRadius * planetX + (chartcanvas.width/2);
+      tickStartY = innerCircleRadius * planetY + (chartcanvas.width/2);
+      tickStopX = (innerCircleRadius + 5) * planetX + (chartcanvas.width/2);
+      tickStopY = (innerCircleRadius + 5) * planetY + (chartcanvas.width/2);
 	  ctx.moveTo(tickStartX, tickStartY);
       ctx.lineTo(tickStopX, tickStopY);
       ctx.stroke();
@@ -401,15 +399,28 @@ $ns.natalchart = function ($planets) {
       ctx.lineWidth = 1;
       transitingPlanetX = Math.cos((180-($planets[key]))*Math.PI/180);
       transitingPlanetY = Math.sin((180-($planets[key]))*Math.PI/180);
-      innerTickStartX = innerCircleRadius * transitingPlanetX + (planetcanvas.width/2);
-      innerTickStartY = innerCircleRadius * transitingPlanetY + (planetcanvas.width/2);
-      innerTickStopX = (innerCircleRadius - 5) * transitingPlanetX + (planetcanvas.width/2);
-      innerTickStopY = (innerCircleRadius - 5) * transitingPlanetY + (planetcanvas.width/2);
+      innerTickStartX = innerCircleRadius * transitingPlanetX + (chartcanvas.width/2);
+      innerTickStartY = innerCircleRadius * transitingPlanetY + (chartcanvas.width/2);
+      innerTickStopX = (innerCircleRadius - 5) * transitingPlanetX + (chartcanvas.width/2);
+      innerTickStopY = (innerCircleRadius - 5) * transitingPlanetY + (chartcanvas.width/2);
 	  ctx.moveTo(innerTickStartX, innerTickStartY);
       ctx.lineTo(innerTickStopX, innerTickStopY);
       ctx.stroke();
       
 	  ctx.restore();
   }
+
+  // Draw the Sign Glyphs
+  ctx.save();
+  for(var i=0; i<12; i++){
+    ctx.save();
+    // Radius * Angle(+15 degrees from cusp (with 180 correction for Aries zero-point)) + Center Point (minus half the width of a glyph)
+    var x = (outerWheelRadius-15) * Math.cos((180-15-(i*30))*Math.PI/180) + (chartcanvas.width/2)-10;
+    var y = (outerWheelRadius-15) * Math.sin((180-15-(i*30))*Math.PI/180) + (chartcanvas.height/2)-10;
+    ctx.drawImage(signImageArray[i],x,y,20,20);
+    ctx.restore();
+  }
+  ctx.restore();
+
 
 };
