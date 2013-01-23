@@ -74,7 +74,7 @@ $ns.inputTime = function (planet) {
     var hours = parseInt(hourfield.value)
     var minutes = parseInt(minutefield.value)
     var seconds = parseInt(secondfield.value)
-	var myDate = new Date(month+" "+day+", "+year+" "+hours+":"+minutes+":"+seconds);
+	var myDate = new Date(month+"/"+day+"/"+year+" "+hours+":"+minutes+":"+seconds);
     var myEpoch = myDate.getTime()/1000.0;
 	var timezoneoffset = myDate.getTimezoneOffset();
 	
@@ -101,8 +101,11 @@ $ns.increment = function (timeDelta) {
 	var secondfield = document.getElementById("transitsecondfield");
 	var epoch;
 	var $inputtime = $e.inputTime("transit");
+
 	epoch = $inputtime.epoch + timeDelta;
 	var incrementedDate = new Date(1000*epoch);
+/* 	console.log($inputtime); */
+
 	
 	monthfield.value = incrementedDate.getMonth() + 1;
 	dayfield.value = incrementedDate.getDate();
