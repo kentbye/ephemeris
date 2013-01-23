@@ -1,4 +1,4 @@
-$ns.natalchart = function ($planets) {
+$ns.natalchart = function ($transitPlanets, $natalPlanets) {
   var ctx = document.getElementById('chartcanvas').getContext('2d');
   var planetX, planetY;
   var transitingPlanetX, transitingPlanetY;
@@ -263,7 +263,7 @@ $ns.natalchart = function ($planets) {
   // Go from the outside wheel to the inside circle
   ctx.font = "12px Arial";
 
-  for (var key in $planets) {
+  for (var key in $transitPlanets) {
 	  ctx.save();
 
       // Draw the transiting planet degree line on outer circle
@@ -271,8 +271,8 @@ $ns.natalchart = function ($planets) {
 	  ctx.lineWidth = 0.5;
 	  ctx.strokeStyle = $planetColor[key];
 	  ctx.fillStyle = $planetColor[key];
-      planetX = Math.cos((180-($planets[key]))*Math.PI/180);
-      planetY = Math.sin((180-($planets[key]))*Math.PI/180);
+      planetX = Math.cos((180-($transitPlanets[key]))*Math.PI/180);
+      planetY = Math.sin((180-($transitPlanets[key]))*Math.PI/180);
 
 	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (chartcanvas.width/2);
 	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (chartcanvas.height/2);
@@ -295,13 +295,13 @@ $ns.natalchart = function ($planets) {
       // Place degree of transiting planet
       degreeX = 168 * planetX + (chartcanvas.width/2);
 	  degreeY = 168 * planetY + (chartcanvas.height/2); 
-      signDegree = Math.floor($planets[key] % 30);
+      signDegree = Math.floor($transitPlanets[key] % 30);
       ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-7, degreeY+5);
       
       // Place glyph of transiting planet's sign
       signGlyphX = 153 * planetX + (chartcanvas.width/2);
 	  signGlyphY = 153 * planetY + (chartcanvas.height/2); 
-      planetSign = Math.floor($planets[key] / 30);
+      planetSign = Math.floor($transitPlanets[key] / 30);
       ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
 
       // Draw the transiting planet degree line on middle circle
@@ -316,21 +316,6 @@ $ns.natalchart = function ($planets) {
       
 	  ctx.restore();
   }
-
-  // Hard-code in a natal planet positions
-  // TODO: Make this dynamic, but also automatically load
-  var $natalPlanets = Array();
-  $natalPlanets['sun'] = 158.8865;
-  $natalPlanets['mercury'] = 185.2024;
-  $natalPlanets['venus'] = 179.3508;
-  $natalPlanets['moon'] = 249.6862;
-  $natalPlanets['mars'] = 185.1203;
-  $natalPlanets['jupiter'] = 60.6419;
-  $natalPlanets['saturn'] = 130.7797;
-  $natalPlanets['uranus'] = 214.17;
-  $natalPlanets['neptune'] = 251.2195;
-  $natalPlanets['pluto'] = 190.3388;
-  $natalPlanets['chiron'] = 32.0094;
 
   for (var key in $natalPlanets) {
 	  ctx.save();
@@ -386,8 +371,8 @@ $ns.natalchart = function ($planets) {
       
       // Draw the transiting planet degree line on inner circle
       ctx.lineWidth = 1;
-      transitingPlanetX = Math.cos((180-($planets[key]))*Math.PI/180);
-      transitingPlanetY = Math.sin((180-($planets[key]))*Math.PI/180);
+      transitingPlanetX = Math.cos((180-($transitPlanets[key]))*Math.PI/180);
+      transitingPlanetY = Math.sin((180-($transitPlanets[key]))*Math.PI/180);
       innerTickStartX = innerCircleRadius * transitingPlanetX + (chartcanvas.width/2);
       innerTickStartY = innerCircleRadius * transitingPlanetY + (chartcanvas.width/2);
       innerTickStopX = (innerCircleRadius - 5) * transitingPlanetX + (chartcanvas.width/2);

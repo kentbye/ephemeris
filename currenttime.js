@@ -6,13 +6,21 @@ $ns.currenttime = function () {
     var hours = currentTime.getUTCHours();
     var minutes = currentTime.getUTCMinutes();
     var seconds = currentTime.getUTCSeconds();
-    var monthfield = document.getElementById("monthfield")
     var monthtext=['Zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
-    var dayfield = document.getElementById("dayfield")
-    var yearfield = document.getElementById("yearfield");
-    var hourfield = document.getElementById("hourfield");
-    var minutefield = document.getElementById("minutefield");
-    var secondfield = document.getElementById("secondfield");
+    var transitmonthfield = document.getElementById("transitmonthfield")
+    var transitdayfield = document.getElementById("transitdayfield")
+    var transityearfield = document.getElementById("transityearfield");
+    var transithourfield = document.getElementById("transithourfield");
+    var transitminutefield = document.getElementById("transitminutefield");
+    var transitsecondfield = document.getElementById("transitsecondfield");
+    var natalmonthfield = document.getElementById("natalmonthfield")
+    var nataldayfield = document.getElementById("nataldayfield")
+    var natalyearfield = document.getElementById("natalyearfield");
+    var natalhourfield = document.getElementById("natalhourfield");
+    var natalminutefield = document.getElementById("natalminutefield");
+    var natalsecondfield = document.getElementById("natalsecondfield");
+
+
     var leadingZero = "";
 
     // Populate the month dropdown
@@ -20,27 +28,40 @@ $ns.currenttime = function () {
         var monthOption = document.createElement("option");
         monthOption.textContent = monthtext[i];
         monthOption.value = i;
-        monthfield.appendChild(monthOption);
+        transitmonthfield.appendChild(monthOption);
+        var natalMonthOption = document.createElement("option");
+        natalMonthOption.textContent = monthtext[i];
+        natalMonthOption.value = i;
+        natalmonthfield.appendChild(natalMonthOption);
     }
-    monthfield.value = month;
+    transitmonthfield.value = month;
 
     // Populate the Day Dropdown
     for(var i=1; i<32; i++) {
         var dayOption = document.createElement("option");
         dayOption.textContent = i;
         dayOption.value = i;
-        dayfield.appendChild(dayOption);
+        transitdayfield.appendChild(dayOption);
+        var natalDayOption = document.createElement("option");
+        natalDayOption.textContent = i;
+        natalDayOption.value = i;
+        nataldayfield.appendChild(natalDayOption);
     }
-    dayfield.value = day;
+    transitdayfield.value = day;
 
     // Populate the Year Dropdown
     for(var i = year + 100; i > 1899 ; i--) {
         var yearOption = document.createElement("option");
         yearOption.textContent = i;
         yearOption.value = i;
-        yearfield.appendChild(yearOption);
+        transityearfield.appendChild(yearOption);
+        var natalYearOption = document.createElement("option");
+        natalYearOption.textContent = i;
+        natalYearOption.value = i;
+        natalyearfield.appendChild(natalYearOption);
     }
-    yearfield.value = year;
+    transityearfield.value = year;
+    natalyearfield.value = 1976;
 
     // Populate the Hour Dropdown
     leadingZero = "0";
@@ -49,9 +70,13 @@ $ns.currenttime = function () {
         if(i>9) leadingZero = "";
         hourOption.textContent = leadingZero + i;
         hourOption.value = i;
-        hourfield.appendChild(hourOption);
+        transithourfield.appendChild(hourOption);
+        var natalHourOption = document.createElement("option");
+        natalHourOption.textContent = leadingZero + i;
+        natalHourOption.value = i;
+        natalhourfield.appendChild(natalHourOption);
     }
-    hourfield.value = hours;
+    transithourfield.value = hours;
 
     // Populate the Minute Dropdown
     leadingZero = "0";
@@ -60,9 +85,13 @@ $ns.currenttime = function () {
         if(i>9) leadingZero = "";
         minuteOption.textContent = leadingZero + i;
         minuteOption.value = i;
-        minutefield.appendChild(minuteOption);
+        transitminutefield.appendChild(minuteOption);
+        var natalMinuteOption = document.createElement("option");
+        natalMinuteOption.textContent = leadingZero + i;
+        natalMinuteOption.value = i;
+        natalminutefield.appendChild(natalMinuteOption);
     }
-    minutefield.value = minutes;
+    transitminutefield.value = minutes;
 
     // Populate the Second Dropdown
     leadingZero = "0";
@@ -71,9 +100,13 @@ $ns.currenttime = function () {
         if(i>9) leadingZero = "";
         secondOption.textContent = leadingZero + i;
         secondOption.value = i;
-        secondfield.appendChild(secondOption);
+        transitsecondfield.appendChild(secondOption);
+        var natalSecondOption = document.createElement("option");
+        natalSecondOption.textContent = leadingZero + i;
+        natalSecondOption.value = i;
+        natalsecondfield.appendChild(natalSecondOption);
     }
-    secondfield.value = seconds;
+    transitsecondfield.value = seconds;
     
     // Calculate the current positions of the planets
     $e.calculatedTime ();

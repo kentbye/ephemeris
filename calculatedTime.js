@@ -1,18 +1,25 @@
 $ns.calculatedTime = function () {
-	var $planetLongitude = Array();
-	var $inputdate = $e.inputTime();
+	var $transitPlanetLongitude = Array();
+	var $natalPlanetLongitude = Array();
+	var $transitInputDate = $e.inputTime("transit");
+	var $natalInputDate = $e.inputTime("natal");
 
 	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
-	var correctedEpoch = $inputdate.epoch - ($inputdate.timezoneoffset)*60;
+	var correctedEpoch = $transitInputDate.epoch - ($transitInputDate.timezoneoffset)*60;
     var chartDate = new Date(1000*(correctedEpoch));
-    
-	$const.date = $inputdate;
-    
-	$processor.init ();
-    $planetLongitude = $e.calculateLongitude($inputdate);
-    $e.natalchart($planetLongitude);
-    
     document.getElementById("charttime").innerHTML = chartDate;
+
+
+    // TODO: Remove the natal planets from being re-rendered during increment() animations
+	$const.date = $natalInputDate;
+	$processor.init ();
+    $natalPlanetLongitude = $e.calculateLongitude($natalInputDate);
+
+    $const.date = $transitInputDate;
+    $transitPlanetLongitude = $e.calculateLongitude($transitInputDate);
+
+    $e.natalchart($transitPlanetLongitude, $natalPlanetLongitude);
+    
 };
 
 // Get the current Plantary Longitude values and display the values to the screen.
@@ -35,13 +42,24 @@ $ns.calculateLongitude = function ($inputdate) {
     return $planetLongitude;
 };
 
-$ns.inputTime = function () {
-    var monthfield = document.getElementById("monthfield")
-    var dayfield = document.getElementById("dayfield")
-    var yearfield = document.getElementById("yearfield");
-    var hourfield = document.getElementById("hourfield");
-    var minutefield = document.getElementById("minutefield");
-    var secondfield = document.getElementById("secondfield");
+$ns.inputTime = function (planet) {
+    if (planet == "transit") {
+	    var monthfield = document.getElementById("transitmonthfield")
+	    var dayfield = document.getElementById("transitdayfield")
+	    var yearfield = document.getElementById("transityearfield");
+	    var hourfield = document.getElementById("transithourfield");
+	    var minutefield = document.getElementById("transitminutefield");
+	    var secondfield = document.getElementById("transitsecondfield");
+      }
+    else {
+	    var monthfield = document.getElementById("natalmonthfield")
+	    var dayfield = document.getElementById("nataldayfield")
+	    var yearfield = document.getElementById("natalyearfield");
+	    var hourfield = document.getElementById("natalhourfield");
+	    var minutefield = document.getElementById("natalminutefield");
+	    var secondfield = document.getElementById("natalsecondfield");
+    }
+
     var day = parseInt(dayfield.value) 
     var month = parseInt(monthfield.value) 
     var year = parseInt(yearfield.value)
@@ -67,14 +85,14 @@ $ns.inputTime = function () {
 };
 
 $ns.increment = function (timeDelta) {
-	var monthfield = document.getElementById("monthfield")
-	var dayfield = document.getElementById("dayfield")
-	var yearfield = document.getElementById("yearfield");
-	var hourfield = document.getElementById("hourfield");
-	var minutefield = document.getElementById("minutefield");
-	var secondfield = document.getElementById("secondfield");
+	var monthfield = document.getElementById("transitmonthfield")
+	var dayfield = document.getElementById("transitdayfield")
+	var yearfield = document.getElementById("transityearfield");
+	var hourfield = document.getElementById("transithourfield");
+	var minutefield = document.getElementById("transitminutefield");
+	var secondfield = document.getElementById("transitsecondfield");
 	var epoch;
-	var $inputtime = $e.inputTime();
+	var $inputtime = $e.inputTime("transit");
 	epoch = $inputtime.epoch + timeDelta;
 	var incrementedDate = new Date(1000*epoch);
 	
