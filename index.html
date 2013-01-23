@@ -64,12 +64,17 @@
 	    #chartcanvas { 
 	      z-index: 0;
 	    }
-	    
-	    #planetcanvas { 
+	    #natalcanvas { 
 	      position: absolute; 
 	      top: 0px; 
 	      left: 0px; 
 	      z-index: 1;
+	    }
+	    #transitcanvas { 
+	      position: absolute; 
+	      top: 0px; 
+	      left: 0px; 
+	      z-index: 2;
 	    }
 
 
@@ -132,7 +137,8 @@
     
     <div id="container">
       <canvas id="chartcanvas" width = "460" height = "460" ></canvas>
-      <canvas id="planetcanvas" width = "460" height = "460" ></canvas>
+      <canvas id="transitcanvas" width = "460" height = "460" ></canvas>
+      <canvas id="natalcanvas" width = "460" height = "460" ></canvas>
     </div>
     
     <div id="increment-buttons" style="clear: both;">    

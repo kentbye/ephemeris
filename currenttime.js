@@ -7,7 +7,7 @@ $ns.currenttime = function () {
     var minutes = currentTime.getUTCMinutes();
     var seconds = currentTime.getUTCSeconds();
     var defaultNatalYear;
-    var monthtext=['Zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+    var monthtext=['Zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var transitmonthfield = document.getElementById("transitmonthfield")
     var transitdayfield = document.getElementById("transitdayfield")
     var transityearfield = document.getElementById("transityearfield");
@@ -20,7 +20,6 @@ $ns.currenttime = function () {
     var natalhourfield = document.getElementById("natalhourfield");
     var natalminutefield = document.getElementById("natalminutefield");
     var natalsecondfield = document.getElementById("natalsecondfield");
-
 
     var leadingZero = "";
 

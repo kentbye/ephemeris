@@ -32,14 +32,6 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 		pluto: "#6b0000"
   };
 
-  // Debugging Image to help determine placement. Hard to see, and typically use the dot10 instead.
-  var dot = new Image();
-  dot.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDRTg1NkNGOTVBQjQxMUUyQTQ5MkZDNzJBQjhENUQzNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDRTg1NkNGQTVBQjQxMUUyQTQ5MkZDNzJBQjhENUQzNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkNFODU2Q0Y3NUFCNDExRTJBNDkyRkM3MkFCOEQ1RDM3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkNFODU2Q0Y4NUFCNDExRTJBNDkyRkM3MkFCOEQ1RDM3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+mR4DOgAAAAZQTFRF/yYAAAAADyLIpwAAAAxJREFUeNpiYAAIMAAAAgABT21Z4QAAAABJRU5ErkJggg==';
-
-  // Debugging Image to help determine placement, which is the upper left-hand corner of the square
-  var dot10 = new Image();
-  dot10.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDRTg1NkNGRDVBQjQxMUUyQTQ5MkZDNzJBQjhENUQzNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDRTg1NkNGRTVBQjQxMUUyQTQ5MkZDNzJBQjhENUQzNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkNFODU2Q0ZCNUFCNDExRTJBNDkyRkM3MkFCOEQ1RDM3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkNFODU2Q0ZDNUFCNDExRTJBNDkyRkM3MkFCOEQ1RDM3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bZ0RAgAAAAZQTFRF/yYAAAAADyLIpwAAAA5JREFUeNpiYKAnAAgwAABuAAEcD8SQAAAAAElFTkSuQmCC';
-
   // Aries glyph image
   signImageArray[0] = new Image();
   signImageArray[0].src =  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxNzM3Q0E1ODVDNTQxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxNzM3Q0E1OTVDNTQxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjE3MzdDQTU2NUM1NDExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjE3MzdDQTU3NUM1NDExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+lsWFJAAAADBQTFRF/SMJ/0lA//Lx/1tU/8nI/+Xl/9fW/356/zUn/7u5/2xo/62q/46L/52b+xgA////TS/DvQAAABB0Uk5T////////////////////AOAjXRkAAACwSURBVHja7JPJDsMgDERtlgBJZvj/v63JSqqoai49lQuynz0eQEj9uOQbDCD0WReAuGMIbQl2GFOL6WPDTpmBOZO6NNTJkAJKGQyPW5tpiGu7wWVSEK2CdEw0MLmtaE2M4nE68jaGLEcc9IKL6VLPOGRJvj+muerKkxfwok4OnZckjhxjZ46HstUWqTNPNx0u7fTrtTDedHO9luoS78QlD+8v1uObB/3j3+Onf+wlwABgKTC0gUhKrgAAAABJRU5ErkJggg==';
@@ -136,134 +128,108 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
   ctx.save();
 // Clear out the chartcanvas for multiple executions
   ctx.setTransform(1, 0, 0, 1, 0, 0);   
-  ctx.clearRect(0, 0, chartcanvas.width, chartcanvas.height);
-  // Move the 0,0 point to the center of the chartcanvas
-  ctx.translate(chartcanvas.width/2, chartcanvas.height/2);
-  ctx.strokeStyle = "black";
-  ctx.fillStyle = "white";
-  ctx.lineWidth = 1;
-
-  // Sign Cusps marks
-  ctx.save();
-  ctx.lineWidth = 0.75;
-  for (var i = 0; i < 12; i++) {
-    ctx.beginPath();
-    ctx.rotate(Math.PI / 6);
-    ctx.moveTo(outerWheelRadius, 0);
-    ctx.lineTo(innerCircleRadius, 0);
-    ctx.stroke();
-  }
-  ctx.restore();
-
-  // Decan marks
-  ctx.save();
-  ctx.lineWidth = 0.25;
-  for (var i = 0; i < 36; i++) {
-    ctx.beginPath();
-    ctx.rotate(Math.PI / 18);
-    // Outer wheel ticks
-    ctx.moveTo(outerWheelRadius-10, 0);
-    ctx.lineTo(outerWheelRadius, 0);
-    ctx.stroke();
-    // Inner Wheel ticks
-    ctx.moveTo(outerWheelRadius-chartSignWidth, 0);
-    ctx.lineTo(outerWheelRadius-chartSignWidth+6, 0);
-    ctx.stroke();
-
-  }
-  ctx.restore();
   
-  // Degree marks
-  ctx.save();
-  ctx.lineWidth = 0.1;
-  for (i = 0; i < 360; i++) {
-    if (i % 30 != 0) {
-      ctx.beginPath();
-      // Outer wheel ticks
-      ctx.moveTo(outerWheelRadius-5, 0);
-      ctx.lineTo(outerWheelRadius, 0);
-      ctx.stroke();
-      // Inner wheel ticks
-      ctx.moveTo(outerWheelRadius-chartSignWidth, 0);
-      ctx.lineTo(outerWheelRadius-chartSignWidth+3, 0);
-      ctx.stroke();
-    }
-    ctx.rotate(Math.PI / 180);
-  }
-  ctx.restore();
-  ctx.fillStyle = "black";
-
-  // Draw outside wheel
-  ctx.save();
-  ctx.beginPath();
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = '#000000';
-  ctx.arc(0, 0, outerWheelRadius, 0, Math.PI * 2, true);
-  ctx.stroke();
-  ctx.restore();
-
-  // Draw inside wheel with radius of chartSignWidth less than outside
-  ctx.save();  
-  ctx.beginPath();
-  ctx.arc(0, 0, outerWheelRadius-chartSignWidth, 0, Math.PI * 2, true);
-  ctx.stroke();
-  ctx.restore();
-
-  // Draw middle circle with radius of middleCircleRadius
-  ctx.save();  
-  ctx.beginPath();
-  ctx.arc(0, 0, middleCircleRadius, 0, Math.PI * 2, true);
-  ctx.stroke();
-  ctx.restore();
-
-
-  // Draw inside circle with radius of innerCircleRadius 
-  ctx.save();  
-  ctx.beginPath();
-  ctx.arc(0, 0, innerCircleRadius, 0, Math.PI * 2, true);
-  ctx.stroke();
-  ctx.restore();
-
+  // If animating, then there is no need to rerender the baseline chart
+  if ($natalPlanets) {
+	  ctx.clearRect(0, 0, chartcanvas.width, chartcanvas.height);
+	  // Move the 0,0 point to the center of the chartcanvas
+	  ctx.translate(chartcanvas.width/2, chartcanvas.height/2);
+	  ctx.strokeStyle = "black";
+	  ctx.fillStyle = "white";
+	  ctx.lineWidth = 1;
+	
+	  // Sign Cusps marks
+	  ctx.save();
+	  ctx.lineWidth = 0.75;
+	  for (var i = 0; i < 12; i++) {
+	    ctx.beginPath();
+	    ctx.rotate(Math.PI / 6);
+	    ctx.moveTo(outerWheelRadius, 0);
+	    ctx.lineTo(innerCircleRadius, 0);
+	    ctx.stroke();
+	  }
+	  ctx.restore();
+	
+	  // Decan marks
+	  ctx.save();
+	  ctx.lineWidth = 0.25;
+	  for (var i = 0; i < 36; i++) {
+	    ctx.beginPath();
+	    ctx.rotate(Math.PI / 18);
+	    // Outer wheel ticks
+	    ctx.moveTo(outerWheelRadius-10, 0);
+	    ctx.lineTo(outerWheelRadius, 0);
+	    ctx.stroke();
+	    // Inner Wheel ticks
+	    ctx.moveTo(outerWheelRadius-chartSignWidth, 0);
+	    ctx.lineTo(outerWheelRadius-chartSignWidth+6, 0);
+	    ctx.stroke();
+	
+	  }
+	  ctx.restore();
+	  
+	  // Degree marks
+	  ctx.save();
+	  ctx.lineWidth = 0.1;
+	  for (i = 0; i < 360; i++) {
+	    if (i % 30 != 0) {
+	      ctx.beginPath();
+	      // Outer wheel ticks
+	      ctx.moveTo(outerWheelRadius-5, 0);
+	      ctx.lineTo(outerWheelRadius, 0);
+	      ctx.stroke();
+	      // Inner wheel ticks
+	      ctx.moveTo(outerWheelRadius-chartSignWidth, 0);
+	      ctx.lineTo(outerWheelRadius-chartSignWidth+3, 0);
+	      ctx.stroke();
+	    }
+	    ctx.rotate(Math.PI / 180);
+	  }
+	  ctx.restore();
+	  ctx.fillStyle = "black";
+	
+	  // Draw outside wheel
+	  ctx.save();
+	  ctx.beginPath();
+	  ctx.lineWidth = 1;
+	  ctx.strokeStyle = '#000000';
+	  ctx.arc(0, 0, outerWheelRadius, 0, Math.PI * 2, true);
+	  ctx.stroke();
+	  ctx.restore();
+	
+	  // Draw inside wheel with radius of chartSignWidth less than outside
+	  ctx.save();  
+	  ctx.beginPath();
+	  ctx.arc(0, 0, outerWheelRadius-chartSignWidth, 0, Math.PI * 2, true);
+	  ctx.stroke();
+	  ctx.restore();
+	
+	  // Draw middle circle with radius of middleCircleRadius
+	  ctx.save();  
+	  ctx.beginPath();
+	  ctx.arc(0, 0, middleCircleRadius, 0, Math.PI * 2, true);
+	  ctx.stroke();
+	  ctx.restore();
+	
+	
+	  // Draw inside circle with radius of innerCircleRadius 
+	  ctx.save();  
+	  ctx.beginPath();
+	  ctx.arc(0, 0, innerCircleRadius, 0, Math.PI * 2, true);
+	  ctx.stroke();
+	  ctx.restore();
+  };
 
   // Reset transform to the upper right-hand corner
   ctx.setTransform(1, 0, 0, 1, 0, 0);   
   
-/*
-  // Draw Debugging Grid marks every 10 units
-  ctx.save();
-  ctx.lineWidth = 0.25;
-  for (var i = 0; i < chartcanvas.height/10+1; i++) {
-    ctx.beginPath();
-    ctx.moveTo(10*i, 0);
-    ctx.lineTo(10*i, chartcanvas.height);
-    ctx.stroke();
-    ctx.moveTo(0, 10*i);
-    ctx.lineTo(chartcanvas.width, 10*i);
-    ctx.stroke();
-
-  }
-  ctx.restore();
-
-  // Draw Debugging Grid marks every 50 units
-  ctx.save();
-  ctx.lineWidth = 0.5;
-  for (var i = 0; i < chartcanvas.height/50+1; i++) {
-    ctx.beginPath();
-    ctx.moveTo(50*i, 0);
-    ctx.lineTo(50*i, chartcanvas.height);
-    ctx.stroke();
-    ctx.moveTo(0, 50*i);
-    ctx.lineTo(chartcanvas.width, 50*i);
-    ctx.stroke();
-  }
-  ctx.restore();
-*/
-  
   // Draw Planet Degree
   // Go from the outside wheel to the inside circle
+  var ctx = document.getElementById('transitcanvas').getContext('2d');
   ctx.font = "12px Arial";
-
+  ctx.clearRect(0, 0, transitcanvas.width, transitcanvas.height);
   for (var key in $transitPlanets) {
+
 	  ctx.save();
 
       // Draw the transiting planet degree line on outer circle
@@ -274,10 +240,10 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
       planetX = Math.cos((180-($transitPlanets[key]))*Math.PI/180);
       planetY = Math.sin((180-($transitPlanets[key]))*Math.PI/180);
 
-	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (chartcanvas.width/2);
-	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (chartcanvas.height/2);
-	  outerX = outerWheelRadius * planetX + (chartcanvas.width/2);
-	  outerY = outerWheelRadius * planetY + (chartcanvas.height/2);
+	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (transitcanvas.width/2);
+	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (transitcanvas.height/2);
+	  outerX = outerWheelRadius * planetX + (transitcanvas.width/2);
+	  outerY = outerWheelRadius * planetY + (transitcanvas.height/2);
 	  ctx.moveTo(innerX, innerY);
       ctx.lineTo(outerX, outerY);
       ctx.stroke();
@@ -288,28 +254,28 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
       ctx.fill();
         
       // Place glyph of transiting planet
-	  planetGlyphX = 185 * planetX + (chartcanvas.width/2) - 10;
-	  planetGlyphY = 185 * planetY + (chartcanvas.height/2) - 10;
+	  planetGlyphX = 185 * planetX + (transitcanvas.width/2) - 10;
+	  planetGlyphY = 185 * planetY + (transitcanvas.height/2) - 10;
 	  ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 20, 20);
 	  	  
       // Place degree of transiting planet
-      degreeX = 168 * planetX + (chartcanvas.width/2);
-	  degreeY = 168 * planetY + (chartcanvas.height/2); 
+      degreeX = 168 * planetX + (transitcanvas.width/2);
+	  degreeY = 168 * planetY + (transitcanvas.height/2); 
       signDegree = Math.floor($transitPlanets[key] % 30);
       ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-7, degreeY+5);
       
       // Place glyph of transiting planet's sign
-      signGlyphX = 153 * planetX + (chartcanvas.width/2);
-	  signGlyphY = 153 * planetY + (chartcanvas.height/2); 
+      signGlyphX = 153 * planetX + (transitcanvas.width/2);
+	  signGlyphY = 153 * planetY + (transitcanvas.height/2); 
       planetSign = Math.floor($transitPlanets[key] / 30);
       ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
 
       // Draw the transiting planet degree line on middle circle
       ctx.lineWidth = 1;
-      tickStartX = middleCircleRadius * planetX + (chartcanvas.width/2);
-      tickStartY = middleCircleRadius * planetY + (chartcanvas.width/2);
-      tickStopX = (middleCircleRadius + 5) * planetX + (chartcanvas.width/2);
-      tickStopY = (middleCircleRadius + 5) * planetY + (chartcanvas.width/2);
+      tickStartX = middleCircleRadius * planetX + (transitcanvas.width/2);
+      tickStartY = middleCircleRadius * planetY + (transitcanvas.height/2);
+      tickStopX = (middleCircleRadius + 5) * planetX + (transitcanvas.width/2);
+      tickStopY = (middleCircleRadius + 5) * planetY + (transitcanvas.height/2);
 	  ctx.moveTo(tickStartX, tickStartY);
       ctx.lineTo(tickStopX, tickStopY);
       ctx.stroke();
@@ -317,84 +283,88 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 	  ctx.restore();
   }
 
-  // TODO: Abstract out natal planets to the planetcanvas to speed up animations
-  for (var key in $natalPlanets) {
-	  ctx.save();
-
-      // Draw the natal planet degree line on outer circle
-	  ctx.beginPath();
-	  ctx.strokeStyle = $planetColor[key];
-	  ctx.fillStyle = $planetColor[key];
-      planetX = Math.cos((180-($natalPlanets[key]))*Math.PI/180);
-      planetY = Math.sin((180-($natalPlanets[key]))*Math.PI/180);
-
-	  innerX = (outerWheelRadius - chartSignWidth) * planetX + (chartcanvas.width/2);
-	  innerY = (outerWheelRadius - chartSignWidth) * planetY + (chartcanvas.height/2);
-	  outerX = outerWheelRadius * planetX + (chartcanvas.width/2);
-	  outerY = outerWheelRadius * planetY + (chartcanvas.height/2);
-	  ctx.lineWidth = 1;
-	  ctx.moveTo(innerX, innerY);
-      ctx.lineTo(outerX, outerY);
-      ctx.stroke();
-
-      // Draw planetary position dot the inside of the outer circle
-	  ctx.lineWidth = 0.5;
-	  ctx.moveTo(innerX, innerY);
-      ctx.arc(innerX, innerY, 3, 0, Math.PI * 2, true);
-      ctx.fill();
-        
-      // Place glyph of natal planet
-	  planetGlyphX = 125 * planetX + (chartcanvas.width/2) - 10;
-	  planetGlyphY = 125 * planetY + (chartcanvas.height/2) - 10;
-	  ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 20, 20);
-	  	  
-      // Place degree of natal planet
-      degreeX = 108 * planetX + (chartcanvas.width/2);
-	  degreeY = 108 * planetY + (chartcanvas.height/2); 
-      signDegree = Math.floor($natalPlanets[key] % 30);
-      ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-7, degreeY+5);
-      
-      // Place glyph of natal planet's sign
-      signGlyphX = 93 * planetX + (chartcanvas.width/2);
-	  signGlyphY = 93 * planetY + (chartcanvas.height/2); 
-      planetSign = Math.floor($natalPlanets[key] / 30);
-      ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
-      
-      // Draw the natal planet degree line on inner circle
-      ctx.lineWidth = 1;
-      tickStartX = innerCircleRadius * planetX + (chartcanvas.width/2);
-      tickStartY = innerCircleRadius * planetY + (chartcanvas.width/2);
-      tickStopX = (innerCircleRadius + 5) * planetX + (chartcanvas.width/2);
-      tickStopY = (innerCircleRadius + 5) * planetY + (chartcanvas.width/2);
-	  ctx.moveTo(tickStartX, tickStartY);
-      ctx.lineTo(tickStopX, tickStopY);
-      ctx.stroke();
-      
-      // Draw the transiting planet degree line on inner circle
-      ctx.lineWidth = 1;
-      transitingPlanetX = Math.cos((180-($transitPlanets[key]))*Math.PI/180);
-      transitingPlanetY = Math.sin((180-($transitPlanets[key]))*Math.PI/180);
-      innerTickStartX = innerCircleRadius * transitingPlanetX + (chartcanvas.width/2);
-      innerTickStartY = innerCircleRadius * transitingPlanetY + (chartcanvas.width/2);
-      innerTickStopX = (innerCircleRadius - 5) * transitingPlanetX + (chartcanvas.width/2);
-      innerTickStopY = (innerCircleRadius - 5) * transitingPlanetY + (chartcanvas.width/2);
-	  ctx.moveTo(innerTickStartX, innerTickStartY);
-      ctx.lineTo(innerTickStopX, innerTickStopY);
-      ctx.stroke();
-      
-	  ctx.restore();
-  }
-
-  // Draw the Sign Glyphs
-  ctx.save();
-  for(var i=0; i<12; i++){
-    ctx.save();
-    // Radius * Angle(+15 degrees from cusp (with 180 correction for Aries zero-point)) + Center Point (minus half the width of a glyph)
-    var x = (outerWheelRadius-15) * Math.cos((180-15-(i*30))*Math.PI/180) + (chartcanvas.width/2)-10;
-    var y = (outerWheelRadius-15) * Math.sin((180-15-(i*30))*Math.PI/180) + (chartcanvas.height/2)-10;
-    ctx.drawImage(signImageArray[i],x,y,20,20);
-    ctx.restore();
-  }
+  // Draw the Natal Planets and sign glpyhs, if not animating. If animating, then once is enough.
+  if ($natalPlanets) {
+        var ctx = document.getElementById('natalcanvas').getContext('2d');
+		for (var key in $natalPlanets) {
+		  ctx.save();
+		
+		  // Draw the natal planet degree line on outer circle
+		  ctx.beginPath();
+		  ctx.strokeStyle = $planetColor[key];
+		  ctx.fillStyle = $planetColor[key];
+		  planetX = Math.cos((180-($natalPlanets[key]))*Math.PI/180);
+		  planetY = Math.sin((180-($natalPlanets[key]))*Math.PI/180);
+		
+		  innerX = (outerWheelRadius - chartSignWidth) * planetX + (natalcanvas.width/2);
+		  innerY = (outerWheelRadius - chartSignWidth) * planetY + (natalcanvas.height/2);
+		  outerX = outerWheelRadius * planetX + (natalcanvas.width/2);
+		  outerY = outerWheelRadius * planetY + (natalcanvas.height/2);
+		  ctx.lineWidth = 1;
+		  ctx.moveTo(innerX, innerY);
+		  ctx.lineTo(outerX, outerY);
+		  ctx.stroke();
+		
+		  // Draw planetary position dot the inside of the outer circle
+		  ctx.lineWidth = 0.5;
+		  ctx.moveTo(innerX, innerY);
+		  ctx.arc(innerX, innerY, 3, 0, Math.PI * 2, true);
+		  ctx.fill();
+		    
+		  // Place glyph of natal planet
+		  planetGlyphX = 125 * planetX + (natalcanvas.width/2) - 10;
+		  planetGlyphY = 125 * planetY + (natalcanvas.height/2) - 10;
+		  ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 20, 20);
+		  	  
+		  // Place degree of natal planet
+		  degreeX = 108 * planetX + (natalcanvas.width/2);
+		  degreeY = 108 * planetY + (natalcanvas.height/2); 
+		  signDegree = Math.floor($natalPlanets[key] % 30);
+		  ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-7, degreeY+5);
+		  
+		  // Place glyph of natal planet's sign
+		  signGlyphX = 93 * planetX + (natalcanvas.width/2);
+		  signGlyphY = 93 * planetY + (natalcanvas.height/2); 
+		  planetSign = Math.floor($natalPlanets[key] / 30);
+		  ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
+		  
+		  // Draw the natal planet degree line on inner circle
+		  ctx.lineWidth = 1;
+		  tickStartX = innerCircleRadius * planetX + (natalcanvas.width/2);
+		  tickStartY = innerCircleRadius * planetY + (natalcanvas.height/2);
+		  tickStopX = (innerCircleRadius + 5) * planetX + (natalcanvas.width/2);
+		  tickStopY = (innerCircleRadius + 5) * planetY + (natalcanvas.height/2);
+		  ctx.moveTo(tickStartX, tickStartY);
+		  ctx.lineTo(tickStopX, tickStopY);
+		  ctx.stroke();
+		  
+		  // Draw the transiting planet degree line on inner circle
+		  ctx.lineWidth = 1;
+		  transitingPlanetX = Math.cos((180-($transitPlanets[key]))*Math.PI/180);
+		  transitingPlanetY = Math.sin((180-($transitPlanets[key]))*Math.PI/180);
+		  innerTickStartX = innerCircleRadius * transitingPlanetX + (natalcanvas.width/2);
+		  innerTickStartY = innerCircleRadius * transitingPlanetY + (natalcanvas.height/2);
+		  innerTickStopX = (innerCircleRadius - 5) * transitingPlanetX + (natalcanvas.width/2);
+		  innerTickStopY = (innerCircleRadius - 5) * transitingPlanetY + (natalcanvas.height/2);
+		  ctx.moveTo(innerTickStartX, innerTickStartY);
+		  ctx.lineTo(innerTickStopX, innerTickStopY);
+		  ctx.stroke();
+		  
+		  ctx.restore();
+		};
+		
+		// Draw the Sign Glyphs
+		ctx.save();
+		for(var i=0; i<12; i++){
+		  ctx.save();
+		  // Radius * Angle(+15 degrees from cusp (with 180 correction for Aries zero-point)) + Center Point (minus half the width of a glyph)
+		  var x = (outerWheelRadius-15) * Math.cos((180-15-(i*30))*Math.PI/180) + (natalcanvas.width/2)-10;
+		  var y = (outerWheelRadius-15) * Math.sin((180-15-(i*30))*Math.PI/180) + (natalcanvas.height/2)-10;
+		  ctx.drawImage(signImageArray[i],x,y,20,20);
+		  ctx.restore();
+		};
+  };
+  
   ctx.restore();
   ctx.setTransform(1, 0, 0, 1, 0, 0);   
 

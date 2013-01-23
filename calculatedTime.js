@@ -18,7 +18,6 @@ $ns.calculatedTime = function () {
     var chartDate = new Date(1000*(correctedEpoch));
     document.getElementById("charttime").innerHTML = chartDate;
 
-    // TODO: Remove the natal planets from being re-rendered during increment() animations
 	$const.date = $natalInputDate;
 	$processor.init ();
     $natalPlanetLongitude = $e.calculateLongitude($natalInputDate);
@@ -114,8 +113,21 @@ $ns.increment = function (timeDelta) {
 	minutefield.value = incrementedDate.getMinutes();
 	secondfield.value = incrementedDate.getSeconds();
 	
-	// TODO: Potentially pass in an itreation argument or copy specific code that is more optimized
-	$e.calculatedTime();
+	var $transitPlanetLongitude = Array();
+	var $natalPlanetLongitude = Array();
+	
+	var $transitInputDate = $e.inputTime("transit");
+	
+	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
+	var correctedEpoch = $transitInputDate.epoch - ($transitInputDate.timezoneoffset)*60;
+    var chartDate = new Date(1000*(correctedEpoch));
+    document.getElementById("charttime").innerHTML = chartDate;
+
+    $const.date = $transitInputDate;
+	$processor.init ();
+    $transitPlanetLongitude = $e.calculateLongitude($transitInputDate);
+
+    $e.natalchart($transitPlanetLongitude, null);
 }
 
 var timerId = null;
