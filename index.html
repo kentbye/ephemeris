@@ -140,7 +140,7 @@
       <canvas id="transitcanvas" width = "460" height = "460" ></canvas>
       <canvas id="natalcanvas" width = "460" height = "460" ></canvas>
     </div>
-    
+    <div id="daysfromnatal"></div>    
     <div id="increment-buttons" style="clear: both;">    
 	    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
 	    <input type='button' value='-mth' onclick='$e.increment(-2678400)'>
@@ -198,7 +198,7 @@
 	    </form>
     </div>
     <p>
-       <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime ()'>
+       <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
     </p>
 
     <div class="planets">
