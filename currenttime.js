@@ -36,7 +36,6 @@ $ns.currenttime = function () {
         natalmonthfield.appendChild(natalMonthOption);
     }
     transitmonthfield.value = month;
-    natalmonthfield.value = getCookieValue("natalmonth");
 
     // Populate the Day Dropdown
     for(var i=1; i<32; i++) {
@@ -50,7 +49,6 @@ $ns.currenttime = function () {
         nataldayfield.appendChild(natalDayOption);
     }
     transitdayfield.value = day;
-    nataldayfield.value = getCookieValue("natalday");
 
     // Populate the Year Dropdown
     for(var i = year + 100; i > 1899 ; i--) {
@@ -65,13 +63,6 @@ $ns.currenttime = function () {
     }
     transityearfield.value = year;
 
-    // Set the default natal year to a reasonable year, otherwise there is a lot of scrolling
-    defaultNatalYear = getCookieValue("natalyear");
-    if (defaultNatalYear) {
-	  natalyearfield.value = defaultNatalYear;    
-    } else {
-	  natalyearfield.value = 1970;	    
-    }
 
     // Populate the Hour Dropdown
     leadingZero = "0";
@@ -87,7 +78,6 @@ $ns.currenttime = function () {
         natalhourfield.appendChild(natalHourOption);
     }
     transithourfield.value = hours;
-    natalhourfield.value = getCookieValue("natalhours");
 
     // Populate the Minute Dropdown
     leadingZero = "0";
@@ -103,7 +93,6 @@ $ns.currenttime = function () {
         natalminutefield.appendChild(natalMinuteOption);
     }
     transitminutefield.value = minutes;
-    natalminutefield.value = getCookieValue("natalminutes");    
 
     // Populate the Second Dropdown
     leadingZero = "0";
@@ -119,7 +108,24 @@ $ns.currenttime = function () {
         natalsecondfield.appendChild(natalSecondOption);
     }
     transitsecondfield.value = seconds;
-    natalsecondfield.value = getCookieValue("natalseconds");
+
+    // Set the default natal year to a reasonable year, otherwise there is a lot of scrolling
+    defaultNatalYear = getCookieValue("natalyear");
+    if (defaultNatalYear) {
+      natalmonthfield.value = getCookieValue("natalmonth");
+      nataldayfield.value = getCookieValue("natalday");
+	  natalyearfield.value = defaultNatalYear;
+      natalhourfield.value = getCookieValue("natalhours");
+      natalminutefield.value = getCookieValue("natalminutes");
+      natalsecondfield.value = getCookieValue("natalseconds");
+    } else {
+      natalmonthfield.value = 1;
+      nataldayfield.value = 1;
+	  natalyearfield.value = 1970;
+	  natalhourfield.value = 0;
+      natalminutefield.value = 0;
+      natalsecondfield.value = 0;
+    }
 
     // Calculate the current positions of the planets
     $e.calculatedTime ();
