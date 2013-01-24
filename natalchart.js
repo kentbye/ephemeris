@@ -17,6 +17,8 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
   var middleCircleRadius = innerCircleRadius + 60;
   var signImageArray = new Array();
   var planetImageArray = new Array();
+  var aspectImageArray = new Array();
+
 
   var $planetColor = {
 		sun: "#feb400",
@@ -124,6 +126,30 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
   planetImageArray['chiron'] = new Image();
   planetImageArray['chiron'].src =  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxNzM3Q0E1NDVDNTQxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxNzM3Q0E1NTVDNTQxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjE3MzdDQTUyNUM1NDExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjE3MzdDQTUzNUM1NDExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+2al9ZgAAADBQTFRFs7OzhISEzs7OxsbGmJiY19fXq6ur7+/vvLy8jo6O9/f3oaGh5+fn39/fenp6////ObXkHAAAABB0Uk5T////////////////////AOAjXRkAAACnSURBVHja1NPbDsMgCABQLPYCQ/r/f1tMXALDuef5ou2JhovC7Qa3JncY4D+a6ssmOXjBQrLY7TVz0MQUNLHqtowcgufQqvfM7H2St/dZ1X4U9e94v6pqATxnvBNh2y6ypgAnBh0rLHaEfDCqvreIOXFkcjGJa/pg++PiUcXIxd8STAw+HuMzMveU21hT7jcfPeF+gNSyT6rWoPSLqhX5S83zE3wEGAAw5jDOCa91MAAAAABJRU5ErkJggg==';
 
+  // opposition glyph image
+  aspectImageArray['oppose'] = new Image();
+  aspectImageArray['oppose'].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENEQyMDBCNjVEMjcxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENEQyMDBCNzVEMjcxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkQ0RDIwMEI0NUQyNzExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkQ0RDIwMEI1NUQyNzExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+FlRouwAAADBQTFRF6X97/O7t2ygT+eHg5m9r87i399TT76ak41xW9cbE4UtD3jsw7ZuZ/vn52B4A////U8G50gAAABB0Uk5T////////////////////AOAjXRkAAADySURBVHjajJPhEoQgCIRFMRR1e/+3PS3NJrub45fTFyi7YPafYV6+kXBgcV+wT2hh5RXnStiwBfILjkBodR0DfsElINF5Umh5YtdyztiAzay13WjAwv/AJUGeuFWc98TlaYowFIOlpTEDmNL7z0tjucoBzZIV4DIw0ZFRaq4yzqj0xJ5V1cSdQpWM9hjUJvbdknL9ruNecjQMbTRIlNBcyovfxwv7U9c+KIH7masHT3yT6Xa8sEcq04MFxyrdFHnBTfgxZLDuied4uHS5cWvsGK6yl01nnfuc5yYYN+nkdQ36YCf/ZUtITDBCfy7R//gjwAAvNy6NgU83YgAAAABJRU5ErkJggg==';
+
+  // conjunction glyph image
+  aspectImageArray['conjunct'] = new Image();
+  aspectImageArray['conjunct'].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENEQyMDBCMjVEMjcxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENEQyMDBCMzVEMjcxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkQ0RDIwMEIwNUQyNzExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkQ0RDIwMEIxNUQyNzExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8++qgPYwAAADBQTFRFmJiYhYWFy8vLvLy86Ojo/Pz8a2trPDw8FBQUq6ur8fHx+Pj41tbWV1dXAAAA////9FmWKgAAABB0Uk5T////////////////////AOAjXRkAAADfSURBVHjalNPZDsQgCAVQqnUH5///dq52w3ZqMrw06REiovSZBk0smRlTrUwzDe/cdH0tvukb7/qb3aG/+VTFzrmHHpwtefFkdpVVn1pJoW4hPGjnLICIwCf4qLRx0+itYUO9iFKwW5Bj9y14sBkmZpB7/YEvTnFBsmo+hxpZ8RrPJntgddJcq9cnZmKlqzrZGzMaKxfzk70bistwwYadUtuqVYzOrO4byyXr5JA1r0E59q37amdu2iQsFjhG09WX2zOwfVQiId51mzcf4x4P/LwtJUmbd1j4jzeG+AowAJ/FLroHIZg0AAAAAElFTkSuQmCC';
+
+  // square glyph image
+  aspectImageArray['square'] = new Image();
+  aspectImageArray['square'].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1MjIwN0VEMzVEMjgxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1MjIwN0VENDVEMjgxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkQ0RDIwMEI4NUQyNzExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjUyMjA3RUQyNUQyODExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+OD/ruwAAAAxQTFRF41tV7Zya2B4A////162OIQAAAAR0Uk5T////AEAqqfQAAAAuSURBVHjaYmBmwAOYGZiZ8ACipJmxglHpUenBJs2IFRCbzvFJM+IBQGm8ACDAAAlpCNsZH9VlAAAAAElFTkSuQmCC';
+
+  // trine glyph image
+  aspectImageArray['trine'] = new Image();
+  aspectImageArray['trine'].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENEQyMDBBRTVEMjcxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENEQyMDBBRjVEMjcxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkY4NTI4NzBCNUM2MzExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkY4NTI4NzBDNUM2MzExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+BxGAywAAADBQTFRFtdTxdrPm+vz+Zark3uz5mMTsSZ3gAILXFInZ8Pb8z+P25/H6L5LciLzqAH3W////WNcKCwAAABB0Uk5T////////////////////AOAjXRkAAADKSURBVHjarJNtD4MgDIQPUMqLdP//364wFJhIsmT9YuSJ9O5a8VoWfsLACuvD6QXemfdnvDlmio9YsZR5woHYGOYwx9rKzZHY6ilG0SXqMMP+4MOXh/MTnOpnckm6YzFVm4qE7Yab5NCZOzGonammDpcpd90YpY8fMIawW/Qf7F0x1Xl0scNpyKIoUQ1vonWcs2EKF7b1ZZiOPbHoUt9LVtshb1Cf8jgBZBu0T3a0RI8cgmzBvShHD102aF5GI6ZFRfzzJ/qutwADAM2YLv3OLoBnAAAAAElFTkSuQmCC';
+
+  // sextile glyph image
+  aspectImageArray['sextile'] = new Image();
+  aspectImageArray['sextile'].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGODUyODcwNTVDNjMxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGODUyODcwNjVDNjMxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkY4NTI4NzAzNUM2MzExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkY4NTI4NzA0NUM2MzExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bqlkXAAAADBQTFRFGovawNrzP5neqM7v1eb3iLzquNbyZ6zkkMHrfLbo8ff9x970U6Lhd7PmAH3W////1tJ33AAAABB0Uk5T////////////////////AOAjXRkAAACfSURBVHjarNNRDoQgDATQEVC0Wrz/bQ1ESgvGTTbOZ1+oMlGcr8EHTMsAvjG55DvlxMIxpc75ntTT1rOyerZ10frmxpvKxZQrbfcuPneqasmOdVq16taKR2g9EQ5JXp/TJjP29JLjF9MuqctZJgG2yW1i0x+MukDe9IuhZ9Mvxp61Y1DjGFU7HvT2pbLvtLgjWe65/1Ap0le/wb98CTAAz4YwZLlY1R4AAAAASUVORK5CYII=';
+
+  // quincunx glyph image
+  aspectImageArray['quincunx'] = new Image();
+  aspectImageArray['quincunx'].src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1MjIwN0VEQjVEMjgxMUUyOEFCOUE4RTNEQTdENzFFRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1MjIwN0VEQzVEMjgxMUUyOEFCOUE4RTNEQTdENzFFRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjUyMjA3RUQ5NUQyODExRTI4QUI5QThFM0RBN0Q3MUVGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjUyMjA3RURBNUQyODExRTI4QUI5QThFM0RBN0Q3MUVGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/h+oNQAAADBQTFRFvtGpc6BA1eLJia5f+vz54urZ8fXtpsGI6vDkf6hRydm3mrp49Pjxtsyea5wz////E74PUgAAABB0Uk5T////////////////////AOAjXRkAAADOSURBVHjatJPbFoQgCEVRvGFJ//+3I5a3yeXLrDkPlWyVAxpcW8Fv2KadIPJGCjRhE5VYDxCCcVVnQMak+OghN1rLeeA6WOml80CM5gpKngvs73WJOS6wzlnlfRJTeOOc1N7zmNMLxxY0B7P9wi77cs+3leJmPBnqgweHvqCV2LGk0+NBVSNQzfrpIJHJNXziUGptgm84SbNnPS2UsKWxzZNXKDMnX81dLFh8mRe+/UApKixuoRZDILusr2vOaSEMzZ6VHXv461+yxx8BBgCnvi4Vj3tzDAAAAABJRU5ErkJggg==';
+ 
       
   ctx.save();
 // Clear out the chartcanvas for multiple executions
@@ -365,6 +391,140 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 		  ctx.restore();
 		};
   };
+
+   // Calculate and display transits
+  if ($natalPlanets) {
+    var natalTransits = new Array();
+    var displayTransits = Array();
+    var transitCount = 0;
+    var transitIntensity = {
+	  moon: 1,
+	  sun: 2,
+	  mercury: 4,
+	  venus: 4,
+	  mars: 5,
+	  jupiter: 6,
+	  saturn: 7,
+	  chiron: 8,
+	  uranus: 10,
+	  neptune: 10,
+	  pluto: 10
+    };
+
+	for (var natalKey in $natalPlanets) {
+	  natalTransits[natalKey] = new Array();
+	  for (var transitKey in $transitPlanets) {
+	    natalTransits[natalKey][transitKey] = Math.abs($natalPlanets[natalKey] - $transitPlanets[transitKey]);
+	    if (natalTransits[natalKey][transitKey] > 180) {
+		  natalTransits[natalKey][transitKey] = 360 - natalTransits[natalKey][transitKey];
+	    };
+	    // plot opposition
+	    if (natalTransits[natalKey][transitKey] >= 179 && natalTransits[natalKey][transitKey] <= 180) {
+	    	displayTransits[transitCount] = {
+	    		'strength': 10 * transitIntensity[transitKey] * transitIntensity[natalKey],
+	    		'transitPlanet': transitKey,
+	    		'natalPlanet': natalKey,
+	    		'aspect': 'oppose',
+	    		'difference': Math.abs(180-natalTransits[natalKey][transitKey])
+	    	};
+		    transitCount++;
+	    }	    
+	    // plot conjunction
+	    if (natalTransits[natalKey][transitKey] >= 0 && natalTransits[natalKey][transitKey] <= 1) {
+	    	displayTransits[transitCount] = {
+	    		'strength': 10 * transitIntensity[transitKey] * transitIntensity[natalKey],
+	    		'transitPlanet': transitKey,
+	    		'natalPlanet': natalKey,
+	    		'aspect': 'conjunct',
+	    		'difference': natalTransits[natalKey][transitKey]
+	    	};
+		    transitCount++;
+	    }
+        // plot square
+	    if (natalTransits[natalKey][transitKey] >= 89 && natalTransits[natalKey][transitKey] <= 91) {
+	    	displayTransits[transitCount] = {
+	    		'strength': 8 * transitIntensity[transitKey] * transitIntensity[natalKey],
+	    		'transitPlanet': transitKey,
+	    		'natalPlanet': natalKey,
+	    		'aspect': 'square',
+	    		'difference': Math.abs(90-natalTransits[natalKey][transitKey])
+	    	};
+		    transitCount++;
+	    }
+	    // plot trine
+	    if (natalTransits[natalKey][transitKey] >= 119 && natalTransits[natalKey][transitKey] <= 121) {
+	    	displayTransits[transitCount] = {
+	    		'strength': 5 * transitIntensity[transitKey] * transitIntensity[natalKey],
+	    		'transitPlanet': transitKey,
+	    		'natalPlanet': natalKey,
+	    		'aspect': 'trine',
+	    		'difference': Math.abs(120-natalTransits[natalKey][transitKey])
+	    	};
+		    transitCount++;
+	    }
+        // plot sextile
+	    if (natalTransits[natalKey][transitKey] >= 59 && natalTransits[natalKey][transitKey] <= 61) {
+	    	displayTransits[transitCount] = {
+	    		'strength': 3 * transitIntensity[transitKey] * transitIntensity[natalKey],
+	    		'transitPlanet': transitKey,
+	    		'natalPlanet': natalKey,
+	    		'aspect': 'sextile',
+	    		'difference': Math.abs(60-natalTransits[natalKey][transitKey])
+	    	};
+		    transitCount++;
+	    }
+	    // plot quincunx
+	    if (natalTransits[natalKey][transitKey] >= 149 && natalTransits[natalKey][transitKey] <= 151) {
+	    	displayTransits[transitCount] = {
+	    		'strength': 2 * transitIntensity[transitKey] * transitIntensity[natalKey],
+	    		'transitPlanet': transitKey,
+	    		'natalPlanet': natalKey,
+	    		'aspect': 'quincunx',
+	    		'difference': Math.abs(150-natalTransits[natalKey][transitKey])
+	    	};
+		    transitCount++;
+	    }
+
+	    
+	  }
+	}
+
+    displayTransits.sort(function compareStrength(a,b) {return b.strength - a.strength});
+    var ctx = document.getElementById('aspectcanvas').getContext('2d');
+    var orb;
+    ctx.clearRect(0, 0, aspectcanvas.width, aspectcanvas.height);
+
+    // Display the ordered aspects with an orb indication
+    for (var i = 0; i < transitCount; i++) {
+	  ctx.save();
+	  ctx.beginPath();
+      x = i % 4;
+      y = Math.floor(i/4);
+      ctx.drawImage(planetImageArray[displayTransits[i].transitPlanet], x*115+0, y*50);
+      ctx.drawImage(aspectImageArray[displayTransits[i].aspect], x*115+35, y*50+5, 20, 20);
+      ctx.drawImage(planetImageArray[displayTransits[i].natalPlanet], x*115+60, y*50);
+
+      orb = (1.0 - displayTransits[i].difference)*90;
+      if (orb < 22.5) {
+	    ctx.strokeStyle = "blue";
+	    ctx.lineWidth = 1;
+      } else if (orb > 22.5 && orb < 45){
+	    ctx.strokeStyle = "orange";  
+	    ctx.lineWidth = 3;
+      } else if (orb > 45 && orb < 67.5){
+      	ctx.strokeStyle = "red";
+      	ctx.lineWidth = 5;
+      } else {
+      	ctx.strokeStyle = "#FF0EF0";
+      	ctx.lineWidth = 7;
+      }
+      
+      ctx.moveTo(x*115, y*50+35);
+      ctx.lineTo(x*115+orb, y*50+35);
+	  ctx.stroke();      
+	  ctx.restore();
+    }
+  }
   
   ctx.restore();
   ctx.setTransform(1, 0, 0, 1, 0, 0);   

@@ -76,6 +76,10 @@
 	      left: 0px; 
 	      z-index: 2;
 	    }
+	    #transitingaspects {
+		  height: 300px;
+		  margin-top: 10px;
+	    }
 
 
     </style>
@@ -140,7 +144,9 @@
       <canvas id="transitcanvas" width = "460" height = "460" ></canvas>
       <canvas id="natalcanvas" width = "460" height = "460" ></canvas>
     </div>
-    <div id="daysfromnatal"></div>    
+    <div id="transitingaspects">
+	  <canvas id="aspectcanvas" width = "460" height = "300" ></canvas>
+    </div>    
     <div id="increment-buttons" style="clear: both;">    
 	    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
 	    <input type='button' value='-mth' onclick='$e.increment(-2678400)'>
