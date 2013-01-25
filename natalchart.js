@@ -404,7 +404,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 			neptune: 10,
 			pluto: 10
 		};
-		// TODO: Remove once abstracted into function
+
 		var ctx = document.getElementById('transitcanvas').getContext('2d');
 
 		for (var natalKey in $natalPlanets) {
@@ -418,7 +418,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				// plot opposition
 				if (natalTransits[natalKey][transitKey] >= 179 && natalTransits[natalKey][transitKey] <= 180) {
 					displayTransits[transitCount] = {
-						'strength': 10 * transitIntensity[transitKey] * transitIntensity[natalKey],
+						'strength': 10 * transitIntensity[transitKey],
 						'transitPlanet': transitKey,
 						'natalPlanet': natalKey,
 						'aspect': 'oppose',
@@ -432,7 +432,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				// plot conjunction
 				if (natalTransits[natalKey][transitKey] >= 0 && natalTransits[natalKey][transitKey] <= 1) {
 					displayTransits[transitCount] = {
-						'strength': 10 * transitIntensity[transitKey] * transitIntensity[natalKey],
+						'strength': 10 * transitIntensity[transitKey],
 						'transitPlanet': transitKey,
 						'natalPlanet': natalKey,
 						'aspect': 'conjunct',
@@ -455,7 +455,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				// plot square
 				if (natalTransits[natalKey][transitKey] >= 89 && natalTransits[natalKey][transitKey] <= 91) {
 					displayTransits[transitCount] = {
-						'strength': 8 * transitIntensity[transitKey] * transitIntensity[natalKey],
+						'strength': 8 * transitIntensity[transitKey],
 						'transitPlanet': transitKey,
 						'natalPlanet': natalKey,
 						'aspect': 'square',
@@ -469,7 +469,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				// plot trine
 				if (natalTransits[natalKey][transitKey] >= 119 && natalTransits[natalKey][transitKey] <= 121) {
 					displayTransits[transitCount] = {
-						'strength': 5 * transitIntensity[transitKey] * transitIntensity[natalKey],
+						'strength': 5 * transitIntensity[transitKey],
 						'transitPlanet': transitKey,
 						'natalPlanet': natalKey,
 						'aspect': 'trine',
@@ -483,7 +483,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				// plot sextile
 				if (natalTransits[natalKey][transitKey] >= 59 && natalTransits[natalKey][transitKey] <= 61) {
 					displayTransits[transitCount] = {
-						'strength': 3 * transitIntensity[transitKey] * transitIntensity[natalKey],
+						'strength': 3 * transitIntensity[transitKey],
 						'transitPlanet': transitKey,
 						'natalPlanet': natalKey,
 						'aspect': 'sextile',
@@ -497,7 +497,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				// plot quincunx
 				if (natalTransits[natalKey][transitKey] >= 149 && natalTransits[natalKey][transitKey] <= 151) {
 					displayTransits[transitCount] = {
-						'strength': 2 * transitIntensity[transitKey] * transitIntensity[natalKey],
+						'strength': 2 * transitIntensity[transitKey],
 						'transitPlanet': transitKey,
 						'natalPlanet': natalKey,
 						'aspect': 'quincunx',
