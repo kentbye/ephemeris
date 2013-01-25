@@ -440,18 +440,16 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 						'difference': natalTransits[natalKey][transitKey]
 					};
 					transitCount++;
-/*
 					// Draw a Black dot on the the transiting planet tick to the natal planet
 					ctx.save();
 					ctx.beginPath();
 					ctx.fillStyle = "black";
-					transitingPlanetX = Math.cos((180-($transitPlanets[transitKey]))*Math.PI/180);
-					transitingPlanetY = Math.sin((180-($transitPlanets[transitKey]))*Math.PI/180);
+					transitingPlanetX = (innerCircleRadius - 7) * Math.cos((180-($transitPlanets[transitKey]))*Math.PI/180) + (transitcanvas.width/2);
+	        transitingPlanetY = (innerCircleRadius - 7) * Math.sin((180-($transitPlanets[transitKey]))*Math.PI/180) + (transitcanvas.height/2);
 					ctx.moveTo(transitingPlanetX, transitingPlanetY);
-							ctx.arc(transitingPlanetX, transitingPlanetY, 3, 0, Math.PI * 2, true);
-							ctx.fill();
+					ctx.arc(transitingPlanetX, transitingPlanetY, 3, 0, Math.PI * 2, true);
+					ctx.fill();
 					ctx.restore();
-*/
 				}
 
 				// plot square
@@ -511,6 +509,7 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 				} 
 			}
 		}
+
 	
 		displayTransits.sort(function compareStrength(a,b) {return b.strength - a.strength});
 		var ctx = document.getElementById('aspectcanvas').getContext('2d');
@@ -520,12 +519,25 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 
 		// Display the ordered aspects with an orb indication
 		for (var i = 0; i < transitCount; i++) {
-		ctx.save();
-		ctx.beginPath();
+
+		
 			x = i % 4;
 			y = Math.floor(i/4);
+			// draw a grey rectangle around the outer planet transits
+			if(displayTransits[i].transitPlanet == 'pluto' || displayTransits[i].transitPlanet == 'neptune' || displayTransits[i].transitPlanet == 'uranus') {
+			  console.log(displayTransits[i]);
+        ctx.save();
+			  ctx.strokeStyle = "#CDCDCD";
+			  ctx.beginPath();
+			  ctx.moveTo(x*115, y*50);
+				ctx.strokeRect(x*115, y*50, 90, 40);
+				ctx.restore();
+
+			}
+			ctx.save();
+			ctx.beginPath();
 			ctx.drawImage(planetImageArray[displayTransits[i].transitPlanet], x*115+0, y*50);
-			ctx.drawImage(aspectImageArray[displayTransits[i].aspect], x*115+35, y*50+5, 20, 20);
+			ctx.drawImage(aspectImageArray[displayTransits[i].aspect], x*115+30+7, y*50+5, 16, 16);
 			ctx.drawImage(planetImageArray[displayTransits[i].natalPlanet], x*115+60, y*50);
 
 			orb = (1.0 - displayTransits[i].difference)*90;
@@ -542,6 +554,11 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 			ctx.moveTo(x*115, y*50+35);
 			ctx.lineTo(x*115+orb, y*50+35);
 			ctx.stroke();	
+
+			// Display the orb of the aspect in minutes 
+			ctx.fillStyle = displayTransits[i].color;
+		  ctx.fillText(Math.round(displayTransits[i].difference*60)+'"', x*115+30+8, y*50+29);
+			
 			ctx.restore();
 		}
 	}
@@ -563,9 +580,9 @@ $ns.drawAspectLine = function ($transitDegree, $natalDegree, displayTransits, in
 	} else if (orb > 22.5 && orb < 45){
 		ctx.lineWidth = 1;
 	} else if (orb > 45 && orb < 67.5){
-		ctx.lineWidth = 1.5;
-	} else {
 		ctx.lineWidth = 2;
+	} else {
+		ctx.lineWidth = 3;
 	}
 
 	transitingPlanetX = Math.cos((180-($transitDegree))*Math.PI/180);
@@ -580,6 +597,34 @@ $ns.drawAspectLine = function ($transitDegree, $natalDegree, displayTransits, in
 	ctx.lineTo(aspectLineStopX, aspectLineStopY);
 	ctx.stroke();
 	
-	// TODO: Draw Arrow
+	// Draw Arrow
+	// Place the arrow closer to the natal planet for quick visual reference of the transit direction
+  midpointX = Math.abs(aspectLineStartX-aspectLineStopX)/4;
+  midpointY = Math.abs(aspectLineStartY-aspectLineStopY)/4;
+	var arrowHeadLength = 10;	// length of head in pixels
+
+
+  if (aspectLineStartX-aspectLineStopX > 0) {
+	  // Transit-to-Natal is Right-to-Left
+	  arrowX = aspectLineStopX + midpointX;
+  } else {
+	  // Transit-to-Natal is Left-to-Right
+	  arrowX = aspectLineStopX - midpointX;
+  }
+  if (aspectLineStartY-aspectLineStopY > 0) {
+	  // Transit-to-Natal is Down-to-Up
+	  arrowY = aspectLineStopY + midpointY;
+  } else {
+	  // Transit-to-Natal is Up-to-Down
+	  arrowY = aspectLineStopY - midpointY;
+  }
+	var dx = aspectLineStopX-aspectLineStartX;
+	var dy = aspectLineStopY-aspectLineStartY;
+	var angle = Math.atan2(dy,dx);
+	ctx.moveTo(arrowX, arrowY);
+	ctx.lineTo(arrowX-arrowHeadLength*Math.cos(angle-Math.PI/6),arrowY-arrowHeadLength*Math.sin(angle-Math.PI/6));
+	ctx.moveTo(arrowX, arrowY);
+	ctx.lineTo(arrowX-arrowHeadLength*Math.cos(angle+Math.PI/6),arrowY-arrowHeadLength*Math.sin(angle+Math.PI/6));  
+	ctx.stroke();	
 	ctx.restore();
 };
