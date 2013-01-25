@@ -1,4 +1,8 @@
-$ns.calculatedTime = function (setCookieFlag) {
+var $natalPlanets;
+var $transitPlanets;
+
+// Calculate the transiting and natal planets, and set cookie when new input is submitted
+$ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	var $transitPlanetLongitude = Array();
 	var $natalPlanetLongitude = Array();
 	
@@ -22,14 +26,21 @@ $ns.calculatedTime = function (setCookieFlag) {
 
 	$const.date = $natalInputDate;
 	$processor.init ();
-  $natalPlanetLongitude = $e.calculateLongitude($natalInputDate);
+  $natalPlanets = $e.calculateLongitude($natalInputDate);
 
   $const.date = $transitInputDate;
-	$transitPlanetLongitude = $e.calculateLongitude($transitInputDate);
-    
-	$e.natalchart($transitPlanetLongitude, $natalPlanetLongitude);
+	$transitPlanets = $e.calculateLongitude($transitInputDate);
+
+  // Only need to draw the natal chart and natal planets once. Animation can skip these steps
+  if (initialRenderingFlag) {
+	  $e.drawNatalChart();
+	  $e.drawNatalPlanets();
+  }
+
+  // Draw the Transit Planets and Transit Lines
+	$e.drawTransitPlanets(innerCircleRadius);
+	$e.drawTransitLines(innerCircleRadius);
 	
-  return $natalPlanetLongitude;
 };
 
 // Get the current Plantary Longitude values and display the values to the screen.
@@ -115,7 +126,9 @@ $ns.increment = function (timeDelta) {
 	minutefield.value = incrementedDate.getMinutes();
 	secondfield.value = incrementedDate.getSeconds();
 
-  $e.calculatedTime(false); 	
+  var setCookieFlag = false; // Don't need to set the cookie on initial page load
+  var initialRenderingFlag = false; // Don't need to re-plot the natal chart and natal planets
+  $e.calculatedTime(setCookieFlag, initialRenderingFlag); 	
 }
 
 var timerId = null;

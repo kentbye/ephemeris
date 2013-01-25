@@ -127,9 +127,10 @@ $ns.currenttime = function () {
     }
 
     // Calculate the current positions of the planets
-    var setCookieFlag = false;
+    var setCookieFlag = false; // Don't need to set the cookie on initial page load
+    var initialRenderingFlag = true; // Go ahead and plot the natal chart and natal planets
     var $natalPlanets;
-    $natalPlanets = $e.calculatedTime (setCookieFlag);
+    $natalPlanets = $e.calculatedTime (setCookieFlag, initialRenderingFlag);
     
     // Draw the current time on the ephemeris
     $e.drawEphemeris ($natalPlanets);
