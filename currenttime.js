@@ -113,39 +113,41 @@ $ns.currenttime = function () {
     if (defaultNatalYear) {
       natalmonthfield.value = getCookieValue("natalmonth");
       nataldayfield.value = getCookieValue("natalday");
-	  natalyearfield.value = defaultNatalYear;
+      natalyearfield.value = defaultNatalYear;
       natalhourfield.value = getCookieValue("natalhours");
       natalminutefield.value = getCookieValue("natalminutes");
       natalsecondfield.value = getCookieValue("natalseconds");
     } else {
       natalmonthfield.value = 1;
       nataldayfield.value = 1;
-	  natalyearfield.value = 1970;
-	  natalhourfield.value = 0;
+      natalyearfield.value = 1970;
+      natalhourfield.value = 0;
       natalminutefield.value = 0;
       natalsecondfield.value = 0;
     }
 
     // Calculate the current positions of the planets
-    $e.calculatedTime ();
+    var setCookieFlag = false;
+    var $natalPlanets;
+    $natalPlanets = $e.calculatedTime (setCookieFlag);
+    
+    // Draw the current time on the ephemeris
+    $e.drawEphemeris ($natalPlanets);
 
 };
 
 function getCookieValue(key) {
-    currentcookie = document.cookie;
-    if (currentcookie.length > 0)
-    {
-        firstidx = currentcookie.indexOf(key + "=");
-        if (firstidx != -1)
-        {
-            firstidx = firstidx + key.length + 1;
-            lastidx = currentcookie.indexOf(";",firstidx);
-            if (lastidx == -1)
-            {
-                lastidx = currentcookie.length;
-            }
-            return unescape(currentcookie.substring(firstidx, lastidx));
-        }
+  currentcookie = document.cookie;
+  if (currentcookie.length > 0) {
+    firstidx = currentcookie.indexOf(key + "=");
+    if (firstidx != -1) {
+      firstidx = firstidx + key.length + 1;
+      lastidx = currentcookie.indexOf(";",firstidx);
+      if (lastidx == -1) {
+          lastidx = currentcookie.length;
+      }
+      return unescape(currentcookie.substring(firstidx, lastidx));
     }
-    return "";
+  }
+  return "";
 }

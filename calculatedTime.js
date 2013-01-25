@@ -1,4 +1,4 @@
-$ns.calculatedTime = function (set_cookie_flag) {
+$ns.calculatedTime = function (setCookieFlag) {
 	var $transitPlanetLongitude = Array();
 	var $natalPlanetLongitude = Array();
 	
@@ -6,7 +6,7 @@ $ns.calculatedTime = function (set_cookie_flag) {
 	var $natalInputDate = $e.inputTime("natal");
 	
 	// Store the calculated Natal position as a cookie if the calculated button is clicked
-	if (set_cookie_flag){
+	if (setCookieFlag){
 	  createCookie('natalday',$natalInputDate.day,30);
 	  createCookie('natalmonth',$natalInputDate.month,30);
 	  createCookie('natalyear',$natalInputDate.year,30);
@@ -17,18 +17,19 @@ $ns.calculatedTime = function (set_cookie_flag) {
 	
 	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
 	var correctedEpoch = $transitInputDate.epoch - ($transitInputDate.timezoneoffset)*60;
-    var chartDate = new Date(1000*(correctedEpoch));
-    document.getElementById("charttime").innerHTML = chartDate;
+  var chartDate = new Date(1000*(correctedEpoch));
+  document.getElementById("charttime").innerHTML = chartDate;
 
 	$const.date = $natalInputDate;
 	$processor.init ();
-    $natalPlanetLongitude = $e.calculateLongitude($natalInputDate);
+  $natalPlanetLongitude = $e.calculateLongitude($natalInputDate);
 
-    $const.date = $transitInputDate;
-    $transitPlanetLongitude = $e.calculateLongitude($transitInputDate);
+  $const.date = $transitInputDate;
+	$transitPlanetLongitude = $e.calculateLongitude($transitInputDate);
     
-    $e.natalchart($transitPlanetLongitude, $natalPlanetLongitude);
-    
+	$e.natalchart($transitPlanetLongitude, $natalPlanetLongitude);
+	
+  return $natalPlanetLongitude;
 };
 
 // Get the current Plantary Longitude values and display the values to the screen.
@@ -75,9 +76,9 @@ $ns.inputTime = function (planet) {
     var hours = parseInt(hourfield.value)
     var minutes = parseInt(minutefield.value)
     var seconds = parseInt(secondfield.value)
-	var myDate = new Date(month+"/"+day+"/"+year+" "+hours+":"+minutes+":"+seconds);
+    var myDate = new Date(month+"/"+day+"/"+year+" "+hours+":"+minutes+":"+seconds);
     var myEpoch = myDate.getTime()/1000.0;
-	var timezoneoffset = myDate.getTimezoneOffset();
+    var timezoneoffset = myDate.getTimezoneOffset();
 	
 	var $inputdate = {
 		day: day,
@@ -90,7 +91,7 @@ $ns.inputTime = function (planet) {
 		timezoneoffset: timezoneoffset
 	};
   
-    return $inputdate;
+  return $inputdate;
 };
 
 $ns.increment = function (timeDelta) {
@@ -114,7 +115,7 @@ $ns.increment = function (timeDelta) {
 	minutefield.value = incrementedDate.getMinutes();
 	secondfield.value = incrementedDate.getSeconds();
 
-   $e.calculatedTime(false); 	
+  $e.calculatedTime(false); 	
 }
 
 var timerId = null;
@@ -139,3 +140,6 @@ function createCookie(name,value,days) {
 	else var expires = "";
 	document.cookie = name+"="+value+expires+"; path=/;";
 }
+
+
+

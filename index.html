@@ -93,6 +93,7 @@
     <script type='text/javascript' src='load.js' charset='utf-8'></script>
     <script type='text/javascript' src='currenttime.js' charset='utf-8'></script>
     <script type='text/javascript' src='calculatedTime.js' charset='utf-8'></script>
+    <script type='text/javascript' src='loadglyphs.js' charset='utf-8'></script>    
     <script type='text/javascript' src='natalchart.js' charset='utf-8'></script>    
 
     <script type='text/javascript' src='astronomy/index.js' charset='utf-8'></script>
@@ -173,7 +174,7 @@
       <canvas id="natalcanvas" width = "460" height = "460" ></canvas>
     </div>
     <div id="transitingaspects">
-	  <canvas id="aspectcanvas" width = "460" height = "240" ></canvas>
+	    <canvas id="aspectcanvas" width = "460" height = "240" ></canvas>
     </div>    
     <div id="increment-buttons">    
 	    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
@@ -234,6 +235,11 @@
     <p>
        <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
     </p>
+    <div id="graphicalephemeris">
+	    <canvas id="ephemeriscanvas" width = "500" height = "780" ></canvas>
+    </div>    
+
+
 
     <div class="planets">
 	    <div id="sun">sun</div>
