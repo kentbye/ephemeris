@@ -525,7 +525,6 @@ $ns.natalchart = function ($transitPlanets, $natalPlanets) {
 			y = Math.floor(i/4);
 			// draw a grey rectangle around the outer planet transits
 			if(displayTransits[i].transitPlanet == 'pluto' || displayTransits[i].transitPlanet == 'neptune' || displayTransits[i].transitPlanet == 'uranus') {
-			  console.log(displayTransits[i]);
         ctx.save();
 			  ctx.strokeStyle = "#CDCDCD";
 			  ctx.beginPath();
