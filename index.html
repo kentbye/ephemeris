@@ -1,277 +1,267 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Current Astrological Positions | Calculate Natal Planets with Swiss Ephemeris</title>
-    <style type='text/css'>
-        * {
-            font: 16pt Tahoma;
-        }
+	<head>
+		<title>Current Astrological Positions | Calculate Natal Planets with Swiss Ephemeris</title>
+		<style type='text/css'>
+			 	* {
+						font: 16pt Tahoma;
+				}
 
-        input[type=button] {
-            border-style: outset;
-            border-width: 1px;
-            border-color: white;
-            height: 75px;
-            margin-right: 5px;
-        }
+				input[type=button] {
+						border-style: outset;
+						border-width: 1px;
+						border-color: white;
+						height: 75px;
+						margin-right: 5px;
+				}
 
-        input[type=button]:active {
-            border-style: inset;
-            border-width: 1px;
-            border-color: white;
-        }
+				input[type=button]:active {
+						border-style: inset;
+						border-width: 1px;
+						border-color: white;
+				}
+				body {
+						width: 960px;
+						margin: auto;
+						padding-left: 15px;
+				}
+				label, select {
+						display: inline-block;
+						width: 100px;
+				}
+				label {
+						position: relative;
+						top: -1.2em;
+						left: 5px;
+				}
+				select {
+						margin: 1.5em 0 0 -100px;
+				}
+				#datewrapper {
+						width: 430px;
+				}
+				.attribution {
+						width: 430px;
+				}
+				.planets {
+						margin: 0 0 20px 20px;
+				}
+				#container {
+						position: relative; 
+						height: 460px; 
+						width: 460px;
+				}
+				#chartcanvas { 
+						z-index: 0;
+				}
+				#transitcanvas { 
+						position: absolute; 
+						top: 0px; 
+						left: 0px; 
+						z-index: 1;
+				}
+				#natalcanvas { 
+						position: absolute; 
+						top: 0px; 
+						left: 0px; 
+						z-index: 2;
+				}
+				#transitingaspects {
+						height: 240px;
+						margin-top: 10px;
+				}
+				#charttime {
+						margin-left: 20px;
+				}
+				#graphicalephemeris {
+						position: relative; 
+						height: 770px; 
+						width: 460px;
+						float: right;
+				}
+				#ephemeriscanvas { 
+						z-index: 0;
+				}
+				#currentdaycanvas { 
+						position: absolute; 
+						top: 0px; 
+						left: 0px; 
+						z-index: 1;
+				}
+			
+		</style>
 
-        body {
-            width: 450px;
-            margin: auto;
-            padding-left: 15px;
-        }
-        
+		<script type='text/javascript' src='index.js' charset='utf-8'></script>
+		<script type='text/javascript' src='common.js' charset='utf-8'></script>
+		<script type='text/javascript' src='load.js' charset='utf-8'></script>
+		<script type='text/javascript' src='currenttime.js' charset='utf-8'></script>
+		<script type='text/javascript' src='natalchart.js' charset='utf-8'></script>		
+		<script type='text/javascript' src='calculatedTime.js' charset='utf-8'></script>
+		<script type='text/javascript' src='loadglyphs.js' charset='utf-8'></script>	
+		<script type='text/javascript' src='graphicalephemeris.js' charset='utf-8'></script>		
 
-		label, select {
-		    display: inline-block;
-		    width: 100px;
-		}
-		
-		label {
-		    position: relative;
-		    top: -1.2em;
-		    left: 5px;
-		}
-		
-		select {
-		    margin: 1.5em 0 0 -100px;
-		}
-		
-		#datewrapper {
-		    
-		    width: 430px;
-		}
-		
-		.attribution {
-		    width: 430px;
-		}
+		<script type='text/javascript' src='astronomy/index.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/index.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/constant.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/julian.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/delta.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/epsilon.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/lonlat.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/gplan.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/precess.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/util.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/kepler.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/body.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/sun.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/aberration.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/altaz.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/constellation.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/deflection.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/diurnal.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/fk4fk5.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/light.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/moon.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/nutation.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/planet.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/refraction.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/siderial.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/star.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/transit.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/vearth.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/processor.js' charset='utf-8'></script>
 
-		.planets {
-			margin: 0 0 20px 20px;
-		}
-
-        #container {
-          position: relative; 
-          height: 460px; 
-          width: 460px;
-        }
-	    #chartcanvas { 
-	      z-index: 0;
-	    }
-	    #transitcanvas { 
-	      position: absolute; 
-	      top: 0px; 
-	      left: 0px; 
-	      z-index: 1;
-	    }
-	    #natalcanvas { 
-	      position: absolute; 
-	      top: 0px; 
-	      left: 0px; 
-	      z-index: 2;
-	    }
-	    #transitingaspects {
-		  	height: 240px;
-		  	margin-top: 10px;
-	    }
-	    #charttime {
-		    margin-left: 20px;
-	    }
-	    #graphicalephemeris {
-          position: relative; 
-          height: 770px; 
-          width: 460px;
-      }
-	    #ephemeriscanvas { 
-	      z-index: 0;
-	    }
-	    #currentdaycanvas { 
-	      position: absolute; 
-	      top: 0px; 
-	      left: 0px; 
-	      z-index: 1;
-	    }
-	    
-    </style>
-
-    <script type='text/javascript' src='index.js' charset='utf-8'></script>
-    <script type='text/javascript' src='common.js' charset='utf-8'></script>
-    <script type='text/javascript' src='load.js' charset='utf-8'></script>
-    <script type='text/javascript' src='currenttime.js' charset='utf-8'></script>
-    <script type='text/javascript' src='natalchart.js' charset='utf-8'></script>    
-    <script type='text/javascript' src='calculatedTime.js' charset='utf-8'></script>
-    <script type='text/javascript' src='loadglyphs.js' charset='utf-8'></script>  
-    <script type='text/javascript' src='graphicalephemeris.js' charset='utf-8'></script>    
-
-    <script type='text/javascript' src='astronomy/index.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/index.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/constant.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/julian.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/delta.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/epsilon.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/lonlat.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/gplan.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/precess.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/util.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/kepler.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/body.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/sun.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/aberration.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/altaz.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/constellation.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/deflection.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/diurnal.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/fk4fk5.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/light.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/moon.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/nutation.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/planet.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/refraction.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/siderial.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/star.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/transit.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/vearth.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/processor.js' charset='utf-8'></script>
-
-    <script type='text/javascript' src='astronomy/moshier/plan404/index.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/mercury.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/venus.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/earth.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/moonlr.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/moonlat.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/mars.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/jupiter.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/saturn.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/uranus.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/neptune.js' charset='utf-8'></script>
-    <script type='text/javascript' src='astronomy/moshier/plan404/pluto.js' charset='utf-8'></script>
-    <script type='text/javascript' src='shortcut.js' charset='utf-8'></script>
-    <script type="text/javascript">
-	    var animateFlag = false;
-	    document.onkeydown = function(evt) {
-		    evt = evt || window.event;
-		    switch (evt.keyCode) {
-        case 37:
-            $e.increment(-86400);
-            break;
-        case 39:
-            $e.increment(86400);
-            break;
-        case 32:
-            evt.preventDefault();
-					  if (animateFlag) {
-						  $e.animateStop();
-						  animateFlag = false;
-					  } else {
-						  $e.animateStart();
-						  animateFlag = true;
-					  }
-            break;
-        }
-      };
+		<script type='text/javascript' src='astronomy/moshier/plan404/index.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/mercury.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/venus.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/earth.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/moonlr.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/moonlat.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/mars.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/jupiter.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/saturn.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/uranus.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/neptune.js' charset='utf-8'></script>
+		<script type='text/javascript' src='astronomy/moshier/plan404/pluto.js' charset='utf-8'></script>
+		<script type='text/javascript' src='shortcut.js' charset='utf-8'></script>
+		<script type="text/javascript">
+			var animateFlag = false;
+			document.onkeydown = function(evt) {
+				evt = evt || window.event;
+				switch (evt.keyCode) {
+				case 37:
+						$e.increment(-86400);
+						break;
+				case 39:
+						$e.increment(86400);
+						break;
+				case 32:
+						evt.preventDefault();
+						if (animateFlag) {
+							$e.animateStop();
+							animateFlag = false;
+						} else {
+							$e.animateStart();
+							animateFlag = true;
+						}
+						break;
+				}
+			};
 		</script>
 
 </head>
 <body onload='$e.currenttime ()'>
-    <div id="charttime"></div>
-    
-    <div id="container">
-      <canvas id="chartcanvas" width = "460" height = "460" ></canvas>
-      <canvas id="transitcanvas" width = "460" height = "460" ></canvas>
-      <canvas id="natalcanvas" width = "460" height = "460" ></canvas>
-    </div>
-    <div id="transitingaspects">
-	    <canvas id="aspectcanvas" width = "460" height = "240" ></canvas>
-    </div>    
-    <div id="increment-buttons">    
-	    <input type='button' value='-yr' onclick='$e.increment(-31557600)'>
-	    <input type='button' value='-mth' onclick='$e.increment(-2678400)'>
-	    <input type='button' value='-dy' onclick='$e.increment(-86400)'>
-	    <input type='button' value='+dy' onclick='$e.increment(86400)'>
-	    <input type='button' value='+mth' onclick='$e.increment(2678400)'>
-	    <input type='button' value='+yr' onclick='$e.increment(31557600)'>
+		
+		<div id="graphicalephemeris">
+			<canvas id="ephemeriscanvas" width = "460" height = "770" ></canvas>
+			<canvas id="currentdaycanvas" width = "460" height = "770" ></canvas>
+		</div>		
+		<div id="charttime"></div>
+
+		<div id="container">
+			<canvas id="chartcanvas" width = "460" height = "460" ></canvas>
+			<canvas id="transitcanvas" width = "460" height = "460" ></canvas>
+			<canvas id="natalcanvas" width = "460" height = "460" ></canvas>
+		</div>
+		<div id="transitingaspects">
+			<canvas id="aspectcanvas" width = "460" height = "240" ></canvas>
+		</div>
+
+		<div id="increment-buttons">		
+			<input type='button' value='-yr' onclick='$e.increment(-31557600)'>
+			<input type='button' value='-mth' onclick='$e.increment(-2678400)'>
+			<input type='button' value='-dy' onclick='$e.increment(-86400)'>
+			<input type='button' value='+dy' onclick='$e.increment(86400)'>
+			<input type='button' value='+mth' onclick='$e.increment(2678400)'>
+			<input type='button' value='+yr' onclick='$e.increment(31557600)'>
 	
-	    <input type='button' value='Animate' onclick='$e.animateStart()'>
-	    <input type='button' value='Stop' onclick='$e.animateStop()'>
-    </div>
+			<input type='button' value='Animate' onclick='$e.animateStart()'>
+			<input type='button' value='Stop' onclick='$e.animateStop()'>
+		</div>
 
+		<div id="datewrapper">
+		Enter Transit Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
+			<form id="transitdateinput">
+				<label for = "transitmonthfield">Month</label>
+				<select id = "transitmonthfield">
+				</select>
+				<label for = "transitdayfield">Day</label>
+				<select id = "transitdayfield">
+				</select>
+				<label for = "transityearfield">Year</label>
+				<select id = "transityearfield">
+				</select>
+				<label for = "transithourfield">Hour</label>
+				<select id = "transithourfield">
+				</select>
+				<label for = "transitminutefield">Minute</label>
+				<select id = "transitminutefield">
+				</select>
+				<label for = "transitsecondfield">Second</label>
+				<select id = "transitsecondfield">
+				</select>
+				<br>Enter Natal Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)<br>
+				<label for = "natalmonthfield">Month</label>
+				<select id = "natalmonthfield">
+				</select>
+				<label for = "nataldayfield">Day</label>
+				<select id = "nataldayfield">
+				</select>
+				<label for = "natalyearfield">Year</label>
+				<select id = "natalyearfield">
+				</select>
+				<label for = "natalhourfield">Hour</label>
+				<select id = "natalhourfield">
+				</select>
+				<label for = "natalminutefield">Minute</label>
+				<select id = "natalminutefield">
+				</select>
+				<label for = "natalsecondfield">Second</label>
+				<select id = "natalsecondfield">
+				</select>
 
-    <div id="datewrapper">
-    Enter Transit Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
-	    <form id="transitdateinput">
-	      <label for = "transitmonthfield">Month</label>
-	      <select id = "transitmonthfield">
-	      </select>
-	      <label for = "transitdayfield">Day</label>
-	      <select id = "transitdayfield">
-	      </select>
-	      <label for = "transityearfield">Year</label>
-	      <select id = "transityearfield">
-	      </select>
-	      <label for = "transithourfield">Hour</label>
-	      <select id = "transithourfield">
-	      </select>
-	      <label for = "transitminutefield">Minute</label>
-	      <select id = "transitminutefield">
-	      </select>
-	      <label for = "transitsecondfield">Second</label>
-	      <select id = "transitsecondfield">
-	      </select>
-	      <br>Enter Natal Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)<br>
-	      <label for = "natalmonthfield">Month</label>
-	      <select id = "natalmonthfield">
-	      </select>
-	      <label for = "nataldayfield">Day</label>
-	      <select id = "nataldayfield">
-	      </select>
-	      <label for = "natalyearfield">Year</label>
-	      <select id = "natalyearfield">
-	      </select>
-	      <label for = "natalhourfield">Hour</label>
-	      <select id = "natalhourfield">
-	      </select>
-	      <label for = "natalminutefield">Minute</label>
-	      <select id = "natalminutefield">
-	      </select>
-	      <label for = "natalsecondfield">Second</label>
-	      <select id = "natalsecondfield">
-	      </select>
+			</form>
+		</div>
+		<p>
+			 <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
+		</p>
 
-	    </form>
-    </div>
-    <p>
-       <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
-    </p>
-    <div id="graphicalephemeris">
-	    <canvas id="ephemeriscanvas" width = "460" height = "770" ></canvas>
-	    <canvas id="currentdaycanvas" width = "460" height = "770" ></canvas>
-    </div>    
-
-
-
-    <div class="planets">
-	    <div id="sun">sun</div>
-	    <div id="moon">moon</div>
-	    <div id="mercury">mercury</div>
-	    <div id="venus">venus</div>
-	    <div id="mars">mars</div>
-	    <div id="jupiter">jupiter</div>
-	    <div id="saturn">saturn</div>
-	    <div id="uranus">uranus</div>
-	    <div id="neptune">neptune</div>
-	    <div id="pluto">pluto</div>
-	    <div id="chiron">chiron</div>
-    </div>
-    
-    <div class="attribution">
-    <p>Made by Kent Bye</p>
-    </div>
+		<div class="planets">
+			<div id="sun">sun</div>
+			<div id="moon">moon</div>
+			<div id="mercury">mercury</div>
+			<div id="venus">venus</div>
+			<div id="mars">mars</div>
+			<div id="jupiter">jupiter</div>
+			<div id="saturn">saturn</div>
+			<div id="uranus">uranus</div>
+			<div id="neptune">neptune</div>
+			<div id="pluto">pluto</div>
+			<div id="chiron">chiron</div>
+		</div>
+		
+		<div class="attribution">
+		<p>Made by Kent Bye</p>
+		</div>
 
 </body>
 </html>

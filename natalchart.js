@@ -201,6 +201,8 @@ $ns.drawTransitLines = function (circleRadius) {
 	var natalTransits = new Array();
 	var displayTransits = Array();
 	var transitCount = 0;
+	var conjunctRadius;
+	var orb;
 	var transitIntensity = {
 		moon: 1,
 		sun: 2,
@@ -249,17 +251,32 @@ $ns.drawTransitLines = function (circleRadius) {
 					'color': 'black',
 					'difference': natalTransits[natalKey][transitKey]
 				};
-				transitCount++;
 				// Draw a Black dot on the the transiting planet tick to the natal planet
 				ctx.save();
 				ctx.beginPath();
 				ctx.fillStyle = "black";
-				transitingPlanetX = (circleRadius - 7) * Math.cos((180-($transitPlanets[transitKey]))*Math.PI/180) + (transitcanvas.width/2);
-        transitingPlanetY = (circleRadius - 7) * Math.sin((180-($transitPlanets[transitKey]))*Math.PI/180) + (transitcanvas.height/2);
+				// Calculate the radius of the conjunction circle based upon the closeness of the orb of the conjunction
+				orb = (1.0 - displayTransits[transitCount].difference)*90;
+				if (orb < 22.5) {
+					conjunctRadius= 3;
+				} else if (orb > 22.5 && orb < 45){
+					conjunctRadius = 4;
+				} else if (orb > 45 && orb < 67.5){
+					conjunctRadius = 5;
+				} else {
+					conjunctRadius = 6;
+				}
+
+				
+				transitingPlanetX = (circleRadius - 4 - conjunctRadius) * Math.cos((180-($transitPlanets[transitKey]))*Math.PI/180) + (transitcanvas.width/2);
+        transitingPlanetY = (circleRadius - 4 - conjunctRadius) * Math.sin((180-($transitPlanets[transitKey]))*Math.PI/180) + (transitcanvas.height/2);
 				ctx.moveTo(transitingPlanetX, transitingPlanetY);
-				ctx.arc(transitingPlanetX, transitingPlanetY, 3, 0, Math.PI * 2, true);
+				
+				
+				ctx.arc(transitingPlanetX, transitingPlanetY, conjunctRadius, 0, Math.PI * 2, true);
 				ctx.fill();
 				ctx.restore();
+				transitCount++;
 			}
 
 			// plot square

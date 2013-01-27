@@ -28,7 +28,8 @@ $ns.drawEphemeris = function () {
   // Calculate 7 months from the start date and save each new month. 
   stopDate.setMonth(stopDate.getMonth() - 2 );
   for (var i = 0; i < 8; i++) {
-  	monthMarker[i] = Math.round((stopDate.getTime() - startDateEpoch)/oneDay); 
+    stopDateEpoch = stopDate.getTime();
+  	monthMarker[i] = Math.round((stopDateEpoch - startDateEpoch)/oneDay); 
   	monthLabel[i] = stopDate.getMonth(); 
     stopDate.setMonth(stopDate.getMonth() + 1);
   }
@@ -447,23 +448,27 @@ $ns.drawEphemeris = function () {
 };
 
 $ns.drawCurrentDay = function () {
-  //if ($transitInputDate.date.getTime() > startDate.getTime() && $transitInputDate.date.getTime() < stopDate.getTime()) {
-  var ctx = document.getElementById('currentdaycanvas').getContext('2d');
-  // Clear out the chartcanvas for multiple executions
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	ctx.clearRect(0, 0, ephemeriscanvas.width, ephemeriscanvas.height);
-
-	// Move the 0,0 point to the center of the chartcanvas
-	ctx.translate(40, 30);
-	
-	// Draw the current day line
-	currentDayMarker = Math.round(($transitInputDate.epoch*1000 - startDateEpoch)/oneDay); 
-	ctx.globalAlpha = 0.2;
-	ctx.save();
-  ctx.beginPath();
-  ctx.fillStyle = "red";
-  ctx.fillRect(currentDayMarker*1.75-1.75,-30,3.5,770);
-  ctx.restore();
-  //}
+  if ($transitInputDate.epoch*1000 > startDateEpoch && $transitInputDate.epoch*1000 < stopDateEpoch) {
+  	// If the transitInputDate is in between the start and stop date, then draw the current day
+		var ctx = document.getElementById('currentdaycanvas').getContext('2d');
+		// Clear out the chartcanvas for multiple executions
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.clearRect(0, 0, ephemeriscanvas.width, ephemeriscanvas.height);
+		
+		// Move the 0,0 point to the center of the chartcanvas
+		ctx.translate(40, 30);
+		
+		// Draw the current day line
+		currentDayMarker = Math.round(($transitInputDate.epoch*1000 - startDateEpoch)/oneDay); 
+		ctx.globalAlpha = 0.2;
+		ctx.save();
+		ctx.beginPath();
+		ctx.fillStyle = "red";
+		ctx.fillRect(currentDayMarker*1.75-1.75,-30,3.5,770);
+		ctx.restore();
+  } else {
+  	// Redraw the ephemeris with new start and stop dates before drawing the current day.
+	  $e.drawEphemeris();
+  }
 
 }
