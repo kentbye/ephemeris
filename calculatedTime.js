@@ -1,13 +1,16 @@
 var $natalPlanets;
 var $transitPlanets;
+var $transitInputDate;
+var $natalInputDate;
+
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	var $transitPlanetLongitude = Array();
 	var $natalPlanetLongitude = Array();
 	
-	var $transitInputDate = $e.inputTime("transit");
-	var $natalInputDate = $e.inputTime("natal");
+	$transitInputDate = $e.inputTime("transit");
+	$natalInputDate = $e.inputTime("natal");
 	
 	// Store the calculated Natal position as a cookie if the calculated button is clicked
 	if (setCookieFlag){
@@ -40,6 +43,11 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
   // Draw the Transit Planets and Transit Lines
 	$e.drawTransitPlanets(innerCircleRadius);
 	$e.drawTransitLines(innerCircleRadius);
+
+  // Draw the current time on the ephemeris only when calculating a new time
+  if (initialRenderingFlag) {
+  	$e.drawEphemeris ();
+  }
 	
 };
 
@@ -99,7 +107,8 @@ $ns.inputTime = function (planet) {
 		minutes: minutes,
 		seconds: seconds,
 		epoch: myEpoch,
-		timezoneoffset: timezoneoffset
+		timezoneoffset: timezoneoffset,
+		date: myDate
 	};
   
   return $inputdate;
@@ -113,9 +122,9 @@ $ns.increment = function (timeDelta) {
 	var minutefield = document.getElementById("transitminutefield");
 	var secondfield = document.getElementById("transitsecondfield");
 	var epoch;
-	var $inputtime = $e.inputTime("transit");
+	$transitInputDate = $e.inputTime("transit");
 
-	epoch = $inputtime.epoch + timeDelta;
+	epoch = $transitInputDate.epoch + timeDelta;
 		
 	var incrementedDate = new Date(1000*epoch);
 	
@@ -128,7 +137,8 @@ $ns.increment = function (timeDelta) {
 
   var setCookieFlag = false; // Don't need to set the cookie on initial page load
   var initialRenderingFlag = false; // Don't need to re-plot the natal chart and natal planets
-  $e.calculatedTime(setCookieFlag, initialRenderingFlag); 	
+  $e.calculatedTime(setCookieFlag, initialRenderingFlag);
+  $e.drawCurrentDay();
 }
 
 var timerId = null;

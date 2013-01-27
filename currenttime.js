@@ -1,3 +1,5 @@
+var monthtext=['Zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
 $ns.currenttime = function () {
     var currentTime = new Date();
     var year = currentTime.getUTCFullYear();
@@ -7,7 +9,6 @@ $ns.currenttime = function () {
     var minutes = currentTime.getUTCMinutes();
     var seconds = currentTime.getUTCSeconds();
     var defaultNatalYear;
-    var monthtext=['Zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var transitmonthfield = document.getElementById("transitmonthfield")
     var transitdayfield = document.getElementById("transitdayfield")
     var transityearfield = document.getElementById("transityearfield");
@@ -132,9 +133,6 @@ $ns.currenttime = function () {
     var $natalPlanets;
     $natalPlanets = $e.calculatedTime (setCookieFlag, initialRenderingFlag);
     
-    // Draw the current time on the ephemeris
-    $e.drawEphemeris ($natalPlanets);
-
 };
 
 function getCookieValue(key) {

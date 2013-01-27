@@ -484,7 +484,6 @@ $ns.drawNatalPlanets = function () {
 		ctx.fillStyle = $planetColor[key];
 		planetX = Math.cos((180-($natalPlanets[key]))*Math.PI/180);
 		planetY = Math.sin((180-($natalPlanets[key]))*Math.PI/180);
-	
 		innerX = (outerWheelRadius - chartSignWidth) * planetX + (natalcanvas.width/2);
 		innerY = (outerWheelRadius - chartSignWidth) * planetY + (natalcanvas.height/2);
 		outerX = outerWheelRadius * planetX + (natalcanvas.width/2);

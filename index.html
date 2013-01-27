@@ -83,6 +83,20 @@
 	    #charttime {
 		    margin-left: 20px;
 	    }
+	    #graphicalephemeris {
+          position: relative; 
+          height: 770px; 
+          width: 460px;
+      }
+	    #ephemeriscanvas { 
+	      z-index: 0;
+	    }
+	    #currentdaycanvas { 
+	      position: absolute; 
+	      top: 0px; 
+	      left: 0px; 
+	      z-index: 1;
+	    }
 	    
     </style>
 
@@ -235,7 +249,8 @@
        <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
     </p>
     <div id="graphicalephemeris">
-	    <canvas id="ephemeriscanvas" width = "500" height = "780" ></canvas>
+	    <canvas id="ephemeriscanvas" width = "460" height = "770" ></canvas>
+	    <canvas id="currentdaycanvas" width = "460" height = "770" ></canvas>
     </div>    
 
 
