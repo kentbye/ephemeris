@@ -12,6 +12,7 @@ $ns.drawEphemeris = function () {
   var yearfield = document.getElementById("transityearfield");
   var monthMarker = new Array();
   var monthLabel = new Array();
+  var yearLabel = new Array();
 
   // This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
   startDate = new Date(parseInt(monthfield.value)+"/"+1+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
@@ -30,7 +31,8 @@ $ns.drawEphemeris = function () {
   for (var i = 0; i < 8; i++) {
     stopDateEpoch = stopDate.getTime();
   	monthMarker[i] = Math.round((stopDateEpoch - startDateEpoch)/oneDay); 
-  	monthLabel[i] = stopDate.getMonth(); 
+  	monthLabel[i] = stopDate.getMonth();
+  	yearLabel[i] = stopDate.getFullYear();
     stopDate.setMonth(stopDate.getMonth() + 1);
   }
   
@@ -197,7 +199,8 @@ $ns.drawEphemeris = function () {
     ctx.moveTo(monthMarker[i]*1.75, 0);
     ctx.lineTo(monthMarker[i]*1.75, 720);
     ctx.stroke();
-    ctx.fillText(monthtext[monthLabel[i]+1], monthMarker[i]*1.75 + 15, -20);
+    ctx.fillText(monthtext[monthLabel[i]+1], monthMarker[i]*1.75 + 10, -20);
+    ctx.fillText("'"+yearLabel[i].toString().slice(2), monthMarker[i]*1.75 + 30, -20);
 	}
 
 	// Draw Day lines every 7 days
@@ -445,6 +448,13 @@ $ns.drawEphemeris = function () {
 
   // Plot Current Day Line
   $e.drawCurrentDay();
+  
+  // Calculate the Exact Aspects
+  // jupiterEphemerisData is multiplied by 8, multiply the natalPlanet longitude by 8 and compare
+  var max_of_array = Math.max.apply(Math, jupiterEphemerisData);  
+  var min_of_array = Math.min.apply(Math, jupiterEphemerisData);
+  //console.log(max_of_array, min_of_array);
+
 };
 
 $ns.drawCurrentDay = function () {
@@ -472,3 +482,4 @@ $ns.drawCurrentDay = function () {
   }
 
 }
+

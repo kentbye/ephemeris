@@ -25,7 +25,7 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
 	var correctedEpoch = $transitInputDate.epoch - ($transitInputDate.timezoneoffset)*60;
   var chartDate = new Date(1000*(correctedEpoch));
-  document.getElementById("charttime").innerHTML = chartDate;
+  // document.getElementById("charttime").innerHTML = chartDate;
 
 	$const.date = $natalInputDate;
 	$processor.init ();

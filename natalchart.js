@@ -2,6 +2,7 @@ var outerWheelRadius = 228;
 var chartSignWidth = 30;
 var innerCircleRadius = 80;
 var middleCircleRadius = innerCircleRadius + 60;
+var leadingZero = new Array();
 
 var $planetColor = {
 	sun: "#feb400",
@@ -194,6 +195,15 @@ $ns.drawTransitPlanets = function (circleRadius) {
 	
 		ctx.restore();
 	}
+	
+	// Label the Outer Wheel Transits
+	ctx.font = "12px Arial";	
+	ctx.fillText("Outer Wheel / Transits", 335, 14);
+	ctx.fillText(monthtext[$transitInputDate.month]+" "+$transitInputDate.day+", "+$transitInputDate.year, 385, 28);
+	$e.calculateLeadingZeros($transitInputDate);
+	ctx.fillText(leadingZero[0]+$transitInputDate.hours+":"+leadingZero[1]+$transitInputDate.minutes+":"+leadingZero[2]+$transitInputDate.seconds+" GMT", 380, 42);
+	ctx.fill();
+
 }
 
 // Calculate and display transits
@@ -544,7 +554,16 @@ $ns.drawNatalPlanets = function () {
 		ctx.stroke();
 		
 		ctx.restore();
+
 	};
+
+	// Label the Inner Wheel Natal Chart
+	ctx.font = "12px Arial";	
+	ctx.fillText("Inner Wheel / Natal Chart", 0, 14);
+	ctx.fillText(monthtext[$natalInputDate.month]+" "+$natalInputDate.day+", "+$natalInputDate.year, 0, 28);
+  $e.calculateLeadingZeros($natalInputDate);
+	ctx.fillText(leadingZero[0]+$natalInputDate.hours+":"+leadingZero[1]+$natalInputDate.minutes+":"+leadingZero[0]+$natalInputDate.seconds+" GMT", 0, 42);
+	ctx.fill();
 
 	// Draw the Sign Glyphs
 	ctx.save();
@@ -557,3 +576,19 @@ $ns.drawNatalPlanets = function () {
 		ctx.restore();
 	};
 };
+
+// Determine if the hours, seconds and minutes need to have a leading zero
+$ns.calculateLeadingZeros = function($inputDate) {
+  leadingZero[0] = '';
+	leadingZero[1] = '';
+	leadingZero[2] = '';
+	if($inputDate.hours < 10) {
+		leadingZero[0] = '0';
+	} 
+	if($inputDate.minutes < 10) {
+		leadingZero[1] = '0';
+	} 
+	if($inputDate.seconds < 10) {
+		leadingZero[2] = '0';
+	} 
+}
