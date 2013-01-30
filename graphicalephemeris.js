@@ -18,7 +18,6 @@ $ns.drawEphemeris = function () {
   startDate = new Date(parseInt(monthfield.value)+"/"+1+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
   stopDate = new Date(parseInt(monthfield.value)+"/"+1+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
 
-
   // Calculate the starting month (previous 2 months leading up to current month
   startDate.setMonth(startDate.getMonth() - 2);
   oneDay=1000*60*60*24;
@@ -39,29 +38,37 @@ $ns.drawEphemeris = function () {
   // Tthe total number of days across a 7-month period ranges from 212-215. Used to calculate graph width
   daysDelta = monthMarker[7];
   
-  var marsEphemerisData = new Array();
-  var jupiterEphemerisData = new Array();
-  var saturnEphemerisData = new Array();
-  var chironEphemerisData = new Array();
-  var saturnEphemerisData = new Array();
-  var uranusEphemerisData = new Array();
-  var neptuneEphemerisData = new Array();
-  var plutoEphemerisData = new Array();
+  // This data will be converted to Mod 90degrees, and then pixels units of 8px/degree for easy plotting
+  var ephemerisData = {
+  	mars: new Array(),
+	  jupiter: new Array(),
+	  saturn: new Array(),
+	  chiron: new Array(),
+	  saturn: new Array(),
+	  uranus: new Array(),
+	  neptune: new Array(),
+	  pluto: new Array()
+  };
 
-  var marsEphemerisRawData = new Array();
-  var jupiterEphemerisRawData = new Array();
-  var saturnEphemerisRawData = new Array();
-  var chironEphemerisRawData = new Array();
-  var saturnEphemerisRawData = new Array();
-  var uranusEphemerisRawData = new Array();
-  var neptuneEphemerisRawData = new Array();
-  var plutoEphemerisRawData = new Array();
-  
+  // This data will be used to determine the type of hard aspect
+  var ephemerisRawData = {
+  	mars: new Array(),
+	  jupiter: new Array(),
+	  saturn: new Array(),
+	  chiron: new Array(),
+	  saturn: new Array(),
+	  uranus: new Array(),
+	  neptune: new Array(),
+	  pluto: new Array()
+  };
+    
   // Gather the ephemeris data for the two previous months, current month and subsequent 4 months
 	$processor.init ();
   var ephemerisPlanets;
   var natalY;
+  // Go through each day, and calculate the longitude of each of the outer planets
   for (var i = 0; i < daysDelta; i++) {
+    // Increment the day on every day except the first one.
 		if (i>0) {
 		  startDate.setDate(startDate.getDate() + 1);
 		}
@@ -77,80 +84,22 @@ $ns.drawEphemeris = function () {
 		$const.date = $inputDate;
 		
 		// For each day, calculate each outer planet longitude
-		$const.body = $moshier.body['mars'];
-	  $processor.calc ($inputDate, $const.body);
-	  
-	  // Store the data as mod 90, convert to pixels (8 pixels per degree), round to 2 decimal places
-	  marsEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  marsEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);
-	  
-	  $const.body = $moshier.body['jupiter'];
-	  $processor.calc ($inputDate, $const.body);
-	  jupiterEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  jupiterEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);
 
-	  $const.body = $moshier.body['saturn'];
-	  $processor.calc ($inputDate, $const.body);
-	  saturnEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  saturnEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);
-
-	  $const.body = $moshier.body['chiron'];
-	  $processor.calc ($inputDate, $const.body);
-	  chironEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  chironEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);;
-
-	  $const.body = $moshier.body['uranus'];
-	  $processor.calc ($inputDate, $const.body);
-	  uranusEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  uranusEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);
-
-	  $const.body = $moshier.body['neptune'];
-	  $processor.calc ($inputDate, $const.body);
-	  neptuneEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  neptuneEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);
-
-	  $const.body = $moshier.body['pluto'];
-	  $processor.calc ($inputDate, $const.body);
-	  plutoEphemerisData[i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
-	  plutoEphemerisRawData[i] = parseFloat($const.body.position.apparentLongitude);
-	  
+		for (var transitKey in ephemerisData) {
+			$const.body = $moshier.body[transitKey];
+		  $processor.calc ($inputDate, $const.body);
+		  // Store the data as mod 90, convert to pixels (8 pixels/degree), round to 2 decimal places
+		  ephemerisData[transitKey][i] = Math.round((parseFloat($const.body.position.apparentLongitude) % 90) * 800)/100;
+		  ephemerisRawData[transitKey][i] = parseFloat($const.body.position.apparentLongitude);
+		}
 	}
-	
+
+	// Plot the results onto the graphical ephemeris canvas	
 	var ctx = document.getElementById('ephemeriscanvas').getContext('2d');
+
   // Clear out the chartcanvas for multiple executions
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, ephemeriscanvas.width, ephemeriscanvas.height);
-	
-/*
-		// Draw Debugging Grid marks every 10 units
-  ctx.save();
-  ctx.lineWidth = 0.25;
-  for (var i = 0; i < ephemeriscanvas.height/10+1; i++) {
-    ctx.beginPath();
-    ctx.moveTo(10*i, 0);
-    ctx.lineTo(10*i, ephemeriscanvas.height);
-    ctx.stroke();
-    ctx.moveTo(0, 10*i);
-    ctx.lineTo(ephemeriscanvas.width, 10*i);
-    ctx.stroke();
-
-  }
-  ctx.restore();
-
-  // Draw Debugging Grid marks every 50 units
-  ctx.save();
-  ctx.lineWidth = 0.5;
-  for (var i = 0; i < ephemeriscanvas.height/50+1; i++) {
-    ctx.beginPath();
-    ctx.moveTo(50*i, 0);
-    ctx.lineTo(50*i, ephemeriscanvas.height);
-    ctx.stroke();
-    ctx.moveTo(0, 50*i);
-    ctx.lineTo(ephemeriscanvas.width, 50*i);
-    ctx.stroke();
-  }
-  ctx.restore();
-*/
 	
 	// Move the 0,0 point to the center of the chartcanvas
 	ctx.translate(40, 30);
@@ -217,213 +166,42 @@ $ns.drawEphemeris = function () {
 	}
 
   ctx.globalAlpha = 1;
-		
-	// Draw Mars Ephemeris Data
-  ctx.save();
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = $planetColor['mars'];
-  var dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, marsEphemerisData[0]);  
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(marsEphemerisData[i]-marsEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, marsEphemerisData[i]);
-		} else {
-		  // The planet is moving into a cardinal sign. Move the Line
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, marsEphemerisData[i]);
 
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['mars'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(marsEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['mars'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(marsEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);						
-		}
-	}
-	ctx.stroke();
-  ctx.drawImage(planetImageArray['mars'], -20, marsEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(marsEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, marsEphemerisData[0]-7, 14, 14);
-
-	// Draw Jupiter Ephemeris Data
-  ctx.strokeStyle = $planetColor['jupiter'];
-  dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, jupiterEphemerisData[0]);
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(jupiterEphemerisData[i]-jupiterEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, jupiterEphemerisData[i]);
-		} else {
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, jupiterEphemerisData[i]);
-
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['jupiter'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(jupiterEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['jupiter'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(jupiterEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);						
-		}
-	}
-	ctx.stroke();
-  ctx.drawImage(planetImageArray['jupiter'], -20, jupiterEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(jupiterEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, jupiterEphemerisData[0]-7, 14, 14);
+	// Draw Ephemeris Data for each planet
+	for (var transitKey in ephemerisData) {
+	  ctx.save();
+	  ctx.lineWidth = 2;
+	  ctx.strokeStyle = $planetColor[transitKey];
+	  var dayXPosition = 0;
+	  ctx.beginPath();
+	  ctx.moveTo(dayXPosition-7, ephemerisData[transitKey][0]);  
+	  for (var i = 1; i < daysDelta; i++) {
+	    dayXPosition = i * 1.75;
+	    if(ephemerisData[transitKey][i]-ephemerisData[transitKey][i-1] > -50) {
+			  ctx.lineTo(dayXPosition, ephemerisData[transitKey][i]);
+			} else {
+			  // The planet is moving into a cardinal sign. Move the Line instead of connecting it
+			  // TODO: Determine logic for detecting the retrograde from 0 to 360.
+				ctx.moveTo(dayXPosition-1.75, 0);
+				ctx.lineTo(dayXPosition, ephemerisData[transitKey][i]);
 	
-	// Draw Saturn Ephemeris Data
-  ctx.strokeStyle = $planetColor['saturn'];
-  dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, saturnEphemerisData[0]);
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(saturnEphemerisData[i]-saturnEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, saturnEphemerisData[i]);
-		} else {
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, saturnEphemerisData[i]);
-			
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['saturn'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(saturnEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['saturn'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(saturnEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);						
-
+				// Place the glyph and sign on top
+				ctx.drawImage(planetImageArray[transitKey], dayXPosition-7, -17, 14, 14);
+				planetSign = Math.floor(ephemerisRawData[transitKey][i] / 30);
+				ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
+	
+				// Place the glyph and sign on bottom
+				ctx.drawImage(planetImageArray[transitKey], dayXPosition-8.75, 723, 14, 14);
+				planetSign = Math.floor(ephemerisRawData[transitKey][i-1] / 30);
+				ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);						
+			}
 		}
-	}
-	ctx.stroke();
-	ctx.drawImage(planetImageArray['saturn'], -20, saturnEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(saturnEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, saturnEphemerisData[0]-7, 14, 14);
+		ctx.stroke();
+	  ctx.drawImage(planetImageArray[transitKey], -20, ephemerisData[transitKey][0]-7, 14, 14);
+		planetSign = Math.floor(ephemerisRawData[transitKey][0] / 30);
+	  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, ephemerisData[transitKey][0]-7, 14, 14);
+  };
 
-	// Draw Chiron Ephemeris Data
-  ctx.strokeStyle = $planetColor['chiron'];
-  dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, chironEphemerisData[0]);
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(chironEphemerisData[i]-chironEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, chironEphemerisData[i]);
-		} else {
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, chironEphemerisData[i]);
-			
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['chiron'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(chironEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['chiron'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(chironEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);	
-		}
-	}
-	ctx.stroke();
-	ctx.drawImage(planetImageArray['chiron'], -20, chironEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(chironEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, chironEphemerisData[0]-7, 14, 14);
-
-	// Draw Uranus Ephemeris Data
-  ctx.strokeStyle = $planetColor['uranus'];
-  dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, uranusEphemerisData[0]);
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(uranusEphemerisData[i]-uranusEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, uranusEphemerisData[i]);
-		} else {
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, uranusEphemerisData[i]);
-			
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['uranus'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(uranusEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['uranus'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(uranusEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);	
-		}
-	}
-	ctx.stroke();
-	ctx.drawImage(planetImageArray['uranus'], -20, uranusEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(uranusEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, uranusEphemerisData[0]-7, 14, 14);
-
-	// Draw Neptune Ephemeris Data
-	ctx.strokeStyle = $planetColor['neptune'];
-  dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, neptuneEphemerisData[0]);
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(neptuneEphemerisData[i]-neptuneEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, neptuneEphemerisData[i]);
-		} else {
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, neptuneEphemerisData[i]);
-			
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['neptune'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(neptuneEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['neptune'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(neptuneEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);	
-		}
-	}
-	ctx.stroke();
-	ctx.drawImage(planetImageArray['neptune'], -20, neptuneEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(neptuneEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, neptuneEphemerisData[0]-7, 14, 14);
-
-	// Draw Pluto Ephemeris Data
-	ctx.strokeStyle = $planetColor['pluto'];
-  dayXPosition = 0;
-  ctx.beginPath();
-  ctx.moveTo(dayXPosition-7, plutoEphemerisData[0]);
-  for (var i = 1; i < daysDelta; i++) {
-    dayXPosition = i * 1.75;
-    if(plutoEphemerisData[i]-plutoEphemerisData[i-1] > -50) {
-		  ctx.lineTo(dayXPosition, plutoEphemerisData[i]);
-		} else {
-			ctx.moveTo(dayXPosition-1.75, 0);
-			ctx.lineTo(dayXPosition, plutoEphemerisData[i]);
-			
-			// Place the glyph and sign on top
-			ctx.drawImage(planetImageArray['pluto'], dayXPosition-7, -17, 14, 14);
-			planetSign = Math.floor(plutoEphemerisRawData[i] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
-
-			// Place the glyph and sign on bottom
-			ctx.drawImage(planetImageArray['pluto'], dayXPosition-8.75, 723, 14, 14);
-			planetSign = Math.floor(plutoEphemerisRawData[i-1] / 30);
-			ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);	
-		}
-	}
-	ctx.stroke();
-	ctx.drawImage(planetImageArray['pluto'], -20, plutoEphemerisData[0]-7, 14, 14);
-	planetSign = Math.floor(plutoEphemerisRawData[0] / 30);
-  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, plutoEphemerisData[0]-7, 14, 14);
   ctx.restore();
 
 	// Plot natal position lines & glyphs
@@ -431,16 +209,25 @@ $ns.drawEphemeris = function () {
   for (var natalKey in $natalPlanets) {
 	  ctx.strokeStyle = $planetColor[natalKey];
 	  ctx.fillStyle = $planetColor[natalKey];
+	  
+	  // Take the 90-degree modulus of the natal planet and convert it to pixels
 	  natalY = ($natalPlanets[natalKey]  % 90) * 8;
 	  ctx.globalAlpha = 0.2;
 	  ctx.beginPath();
+
+	  // Plot a 1-degree orb for a degree before and after the natal planet position. 
 	  ctx.fillRect(0,natalY-8,daysDelta*1.75,16);
 	  ctx.fill();
+
+	  // Plot the natal planet longitude line
 	  ctx.globalAlpha = 1.0;
 	  ctx.beginPath();
 	  ctx.moveTo(0,natalY);
 	  ctx.lineTo(daysDelta*1.75 + 10,natalY);
 	  ctx.stroke();
+	  
+	  // Draw the planet and sign glyphs
+	  // TODO: Save to an array to be able sort and add margins if needed to avoid overlapping glyphs
 	  ctx.drawImage(planetImageArray[natalKey], daysDelta*1.75 + 10, natalY-7, 14, 14);
 	  planetSign = Math.floor($natalPlanets[natalKey] / 30);
 		ctx.drawImage(signImageArray[planetSign],daysDelta*1.75 +10 +14 +2, natalY-7, 14, 14);
@@ -449,12 +236,86 @@ $ns.drawEphemeris = function () {
   // Plot Current Day Line
   $e.drawCurrentDay();
   
-  // Calculate the Exact Aspects
-  // jupiterEphemerisData is multiplied by 8, multiply the natalPlanet longitude by 8 and compare
-  var max_of_array = Math.max.apply(Math, jupiterEphemerisData);  
-  var min_of_array = Math.min.apply(Math, jupiterEphemerisData);
-  //console.log(max_of_array, min_of_array);
+  // Determine the Exact Aspects
+  // Determine the largest longitude for a transiting planet
+  var maximumLongitude = {
+    mars:		  Math.max.apply(Math, ephemerisData['mars'])/8,
+  	jupiter:  Math.max.apply(Math, ephemerisData['jupiter'])/8,
+  	saturn:		Math.max.apply(Math, ephemerisData['saturn'])/8,
+  	chiron: 	Math.max.apply(Math, ephemerisData['chiron'])/8,
+  	uranus: 	Math.max.apply(Math, ephemerisData['uranus'])/8,
+  	neptune:	Math.max.apply(Math, ephemerisData['neptune'])/8,
+  	pluto:		Math.max.apply(Math, ephemerisData['pluto'])/8
+  }  
 
+  // Determine the minimum longitude for a transiting planet
+  var minimumLongitude = {
+    mars:		  Math.min.apply(Math, ephemerisData['mars'])/8,
+  	jupiter:  Math.min.apply(Math, ephemerisData['jupiter'])/8,
+  	saturn:		Math.min.apply(Math, ephemerisData['saturn'])/8,
+  	chiron: 	Math.min.apply(Math, ephemerisData['chiron'])/8,
+  	uranus: 	Math.min.apply(Math, ephemerisData['uranus'])/8,
+  	neptune:	Math.min.apply(Math, ephemerisData['neptune'])/8,
+  	pluto:		Math.min.apply(Math, ephemerisData['pluto'])/8
+  }  
+
+  // Determine whether there is a transit to a natal planet
+  var natalMod;
+  var transitCount = 0;
+  var displayTransitDates = Array();
+  var aspect;
+  var aspectDegree;
+
+  // Add different orbs for each planet. This is in pixel units, there are 8px/degree.
+  var exactOrb = {
+		mars: 2.5,
+		jupiter: 1.5,
+		saturn: 1,
+		chiron: .2,
+		uranus: .2,
+		neptune: .1,
+		pluto: .1
+  };
+  
+  // Loop through each natal planet to see if they're within orb of an exact aspect, and then plot it
+  for (var natalKey in $natalPlanets) {
+  	natalModLongitude = ($natalPlanets[natalKey] % 90);
+  	for (var transitKey in maximumLongitude) {
+  		// Check to see if the natal longitude is within the max/min range of values for a transiting planet
+  		if (natalModLongitude <= maximumLongitude[transitKey] && natalModLongitude >= minimumLongitude[transitKey]) {
+  			for (var i = 0; i < daysDelta; i++) {
+  				// Check against the 90-degree mod values (in px units) to see if there is a cjt/opp/sq
+  			  if (Math.abs(natalModLongitude*8-ephemerisData[transitKey][i]) < exactOrb[transitKey]) {
+  			  	aspectDegree = Math.abs(ephemerisRawData[transitKey][i]-$natalPlanets[natalKey]);
+  			  	if (aspectDegree > 175 && aspectDegree < 185) {
+	  			  	aspect = 'oppose';
+	  			  	//console.log(transitKey + " OPPOSE " + natalKey +" = "+aspectDegree);
+  			  	} else if (aspectDegree < 5) {
+	  			  	aspect = 'conjunct';
+	  			  	//console.log(transitKey + " CONJUNCT " + natalKey +" = "+aspectDegree);
+  			  	} else {
+	  			  	aspect = 'square';
+	  			  	//console.log(transitKey + " SQUARE " + natalKey +" = "+aspectDegree);
+  			  	}
+  			  	// TODO: Prune these exact dates. Retrograde motion creates a lot of duplicate entries,
+  			  	// but too small of an orb will miss exact dates
+						ctx.drawImage(aspectImageArray[aspect], i*1.75-7, natalModLongitude*8-7, 14, 14);	  			  	
+	  				displayTransitDates[transitCount] = {
+							'strength': 10 * transitIntensity[transitKey],
+							'transitPlanet': transitKey,
+							'natalPlanet': natalKey,
+							'aspect': aspect,
+							'color': 'red',
+							'date': i
+						};
+						transitCount++;
+  			  }
+				}
+			}
+  	}
+	}
+	// TODO: List out the past and upcoming transits ordered by transiting planet.
+	// console.log(displayTransitDates);
 };
 
 $ns.drawCurrentDay = function () {

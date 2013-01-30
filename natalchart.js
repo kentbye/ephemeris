@@ -206,14 +206,8 @@ $ns.drawTransitPlanets = function (circleRadius) {
 
 }
 
-// Calculate and display transits
-$ns.drawTransitLines = function (circleRadius) {
-	var natalTransits = new Array();
-	var displayTransits = Array();
-	var transitCount = 0;
-	var conjunctRadius;
-	var orb;
-	var transitIntensity = {
+// Make the transitIntensity ratings other to other functions
+var	transitIntensity = {
 		moon: 1,
 		sun: 2,
 		mercury: 4,
@@ -225,7 +219,15 @@ $ns.drawTransitLines = function (circleRadius) {
 		uranus: 10,
 		neptune: 10,
 		pluto: 10
-	};
+};
+
+// Calculate and display transits
+$ns.drawTransitLines = function (circleRadius) {
+	var natalTransits = new Array();
+	var displayTransits = Array();
+	var transitCount = 0;
+	var conjunctRadius;
+	var orb;
 
 	var ctx = document.getElementById('transitcanvas').getContext('2d');
 
