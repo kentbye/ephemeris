@@ -37,14 +37,16 @@ $ns.currenttime = function () {
     }
     transitmonthfield.value = month;
 
+    leadingZero = "0";
     // Populate the Day Dropdown
     for(var i=1; i<32; i++) {
         var dayOption = document.createElement("option");
-        dayOption.textContent = i;
+        if(i>9) leadingZero = "";
+        dayOption.textContent = leadingZero + i;
         dayOption.value = i;
         transitdayfield.appendChild(dayOption);
         var natalDayOption = document.createElement("option");
-        natalDayOption.textContent = i;
+        natalDayOption.textContent = leadingZero + i;
         natalDayOption.value = i;
         nataldayfield.appendChild(natalDayOption);
     }

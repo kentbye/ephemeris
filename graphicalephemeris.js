@@ -268,7 +268,7 @@ $ns.drawEphemeris = function () {
 
   // Add different orbs for each planet. This is in pixel units, there are 8px/degree.
   var exactOrb = {
-		mars: 2.5,
+		mars: 3,
 		jupiter: 1.5,
 		saturn: 1,
 		chiron: .2,
@@ -305,8 +305,9 @@ $ns.drawEphemeris = function () {
 							'transitPlanet': transitKey,
 							'natalPlanet': natalKey,
 							'aspect': aspect,
-							'color': 'red',
-							'date': i
+							'date': i,
+							'natalLongitude': natalModLongitude*8,
+							'aspectOrb': natalModLongitude*8-ephemerisData[transitKey][i]
 						};
 						transitCount++;
   			  }
