@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Current Astrological Positions | Calculate Natal Planets with Swiss Ephemeris</title>
+		<title>Natal Transit Tracker & Astrology Positions</title>
 		<style type='text/css'>
 			 	* {
 						font: 16pt Tahoma;
@@ -67,13 +67,16 @@
 						z-index: 2;
 				}
 				#transitingaspects {
-						height: 240px;
+						height: 310px;
 						margin-top: 10px;
 				}
-				#charttime {
-						margin-left: 20px;
-				}
 				#graphicalephemeris {
+						position: relative; 
+						height: 770px; 
+						width: 460px;
+						float: right;
+				}
+				#natalcontainer {
 						position: relative; 
 						height: 770px; 
 						width: 460px;
@@ -182,8 +185,13 @@
 			<canvas id="natalcanvas" width = "460" height = "460" ></canvas>
 		</div>
 		<div id="transitingaspects">
-			<canvas id="aspectcanvas" width = "460" height = "240" ></canvas>
+			<canvas id="aspectcanvas" width = "460" height = "310" ></canvas>
 		</div>
+
+		<div id="natalcontainer">
+			<canvas id="natalchartcanvas" width = "460" height = "770" ></canvas>
+		</div>
+
 
 		<div id="increment-buttons">		
 			<input type='button' value='-yr' onclick='$e.increment(-31557600)'>
@@ -196,6 +204,8 @@
 			<input type='button' value='Animate' onclick='$e.animateStart()'>
 			<input type='button' value='Stop' onclick='$e.animateStop()'>
 		</div>
+
+
 
 		<div id="datewrapper">
 		Enter Transit Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
@@ -244,6 +254,7 @@
 			 <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
 		</p>
 
+
 		<div class="planets">
 			<div id="sun">sun</div>
 			<div id="moon">moon</div>
@@ -259,7 +270,7 @@
 		</div>
 		
 		<div class="attribution">
-		<p>Made by Kent Bye</p>
+		<p>Made by <a href="mailto:kent@kentbye.com">Kent Bye</a></p>
 		</div>
 
 </body>

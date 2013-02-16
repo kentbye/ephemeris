@@ -277,7 +277,7 @@ $ns.drawEphemeris = function () {
 		pluto: .1
   };
   
-  // Loop through each natal planet to see if they're within orb of an exact aspect, and then plot it
+  // Loop through each natal planet to see if they're within orb of an exact aspect, and then plot the aspect
   for (var natalKey in $natalPlanets) {
   	natalModLongitude = ($natalPlanets[natalKey] % 90);
   	for (var transitKey in maximumLongitude) {

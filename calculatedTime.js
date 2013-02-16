@@ -25,7 +25,6 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
 	var correctedEpoch = $transitInputDate.epoch - ($transitInputDate.timezoneoffset)*60;
   var chartDate = new Date(1000*(correctedEpoch));
-  // document.getElementById("charttime").innerHTML = chartDate;
 
 	$const.date = $natalInputDate;
 	$processor.init ();
@@ -36,8 +35,25 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 
   // Only need to draw the natal chart and natal planets once. Animation can skip these steps
   if (initialRenderingFlag) {
-	  $e.drawNatalChart();
-	  $e.drawNatalPlanets();
+    // Draw the transits to natal planet Bi-Wheel chart along with natal planets
+    var ctx = document.getElementById('chartcanvas').getContext('2d');
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  	ctx.clearRect(0,0, chartcanvas.width, chartcanvas.height);
+    
+	  $e.drawNatalChart(ctx);
+	  ctx = document.getElementById('natalcanvas').getContext('2d');
+	  ctx.clearRect(0,0, natalcanvas.width, natalcanvas.height);
+
+	  var biwheel = true;
+	  $e.drawNatalPlanets(ctx, biwheel);
+	  
+	  // Draw the natal planet chart
+	  ctx = document.getElementById('natalchartcanvas').getContext('2d');
+	  ctx.clearRect(0,0, natalchartcanvas.width, natalchartcanvas.height);
+	  $e.drawNatalChart(ctx);
+	  biwheel = false;
+	  $e.drawNatalPlanets(ctx, biwheel);
+	  $e.drawNatalAspects(middleCircleRadius);
   }
 
   // Draw the Transit Planets and Transit Lines
