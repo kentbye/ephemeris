@@ -945,7 +945,6 @@ $ns.drawNatalAspects = function (circleRadius) {
 		elementCount[planetElement[planetKey]] = elementCount[planetElement[planetKey]] + elementalWeight[planetKey];
 		modeCount[planetMode[planetKey]] = modeCount[planetMode[planetKey]] + elementalWeight[planetKey];
   }
-  console.log(modeCount);
 
   // Draw Element score bars
 	for (var i = 0; i < 4; i++) {
@@ -956,7 +955,7 @@ $ns.drawNatalAspects = function (circleRadius) {
   // Draw Mode score bars
 	for (var i = 0; i < 3; i++) {
 		ctx.fillStyle = modeColor[i];
-	  ctx.fillRect(0, 115+(i*25), -8*modeCount[i], -22);
+	  ctx.fillRect(0, 115+(i*25), -4*modeCount[i], -22);
 	}
 	
 	// Plot the planet glyphs next to the appropriate element and mode
