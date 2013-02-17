@@ -13,6 +13,7 @@ $ns.drawEphemeris = function () {
   var monthMarker = new Array();
   var monthLabel = new Array();
   var yearLabel = new Array();
+  var planetSignGlyph;
 
   // This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
   startDate = new Date(parseInt(monthfield.value)+"/"+1+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
@@ -185,21 +186,21 @@ $ns.drawEphemeris = function () {
 				ctx.moveTo(dayXPosition-1.75, 0);
 				ctx.lineTo(dayXPosition, ephemerisData[transitKey][i]);
 	
-				// Place the glyph and sign on top
+				// Place the glyph and sign on top 
 				ctx.drawImage(planetImageArray[transitKey], dayXPosition-7, -17, 14, 14);
-				planetSign = Math.floor(ephemerisRawData[transitKey][i] / 30);
-				ctx.drawImage(signImageArray[planetSign],dayXPosition+7, -17, 14, 14);
+				planetSignGlyph = Math.floor(ephemerisRawData[transitKey][i] / 30);
+				ctx.drawImage(signImageArray[planetSignGlyph],dayXPosition+7, -17, 14, 14);
 	
 				// Place the glyph and sign on bottom
 				ctx.drawImage(planetImageArray[transitKey], dayXPosition-8.75, 723, 14, 14);
-				planetSign = Math.floor(ephemerisRawData[transitKey][i-1] / 30);
-				ctx.drawImage(signImageArray[planetSign],dayXPosition+8.75, 723, 14, 14);						
+				planetSignGlyph = Math.floor(ephemerisRawData[transitKey][i-1] / 30);
+				ctx.drawImage(signImageArray[planetSignGlyph],dayXPosition+8.75, 723, 14, 14);						
 			}
 		}
 		ctx.stroke();
 	  ctx.drawImage(planetImageArray[transitKey], -20, ephemerisData[transitKey][0]-7, 14, 14);
-		planetSign = Math.floor(ephemerisRawData[transitKey][0] / 30);
-	  ctx.drawImage(signImageArray[planetSign],-20 -14 -2, ephemerisData[transitKey][0]-7, 14, 14);
+		planetSignGlyph = Math.floor(ephemerisRawData[transitKey][0] / 30);
+	  ctx.drawImage(signImageArray[planetSignGlyph],-20 -14 -2, ephemerisData[transitKey][0]-7, 14, 14);
   };
 
   ctx.restore();
@@ -228,9 +229,10 @@ $ns.drawEphemeris = function () {
 	  
 	  // Draw the planet and sign glyphs
 	  // TODO: Save to an array to be able sort and add margins if needed to avoid overlapping glyphs
+	  // TODO: Order the Glyphs so that they are centered within a house line
 	  ctx.drawImage(planetImageArray[natalKey], daysDelta*1.75 + 10, natalY-7, 14, 14);
-	  planetSign = Math.floor($natalPlanets[natalKey] / 30);
-		ctx.drawImage(signImageArray[planetSign],daysDelta*1.75 +10 +14 +2, natalY-7, 14, 14);
+	  planetSignGlyph = Math.floor($natalPlanets[natalKey] / 30);
+		ctx.drawImage(signImageArray[planetSignGlyph],daysDelta*1.75 +10 +14 +2, natalY-7, 14, 14);
   }
 
   // Plot Current Day Line

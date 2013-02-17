@@ -116,7 +116,7 @@ $ns.drawTransitPlanets = function (circleRadius) {
 	var innerX, innerY;
 	var outerX, outerY;
 	var signDegree;
-	var planetSign;
+	var transitingPlanetSign;
 	var tickStartX, tickStartY;
 	var tickStopX, tickStopY;
 	var innerTickStartX, innerTickStartY;
@@ -166,8 +166,8 @@ $ns.drawTransitPlanets = function (circleRadius) {
 		// Place glyph of transiting planet's sign
 		signGlyphX = 153 * planetX + (transitcanvas.width/2);
 		signGlyphY = 153 * planetY + (transitcanvas.height/2); 
-		planetSign = Math.floor($transitPlanets[key] / 30);
-		ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
+		transitingPlanetSign = Math.floor($transitPlanets[key] / 30);
+		ctx.drawImage(signImageArray[transitingPlanetSign],signGlyphX-7,signGlyphY-7, 14, 14);
 
 		// Draw the transiting planet degree line on middle circle
 		ctx.lineWidth = 1;
@@ -458,6 +458,8 @@ $ns.drawAspectLine = function ($transitDegree, $natalDegree, displayTransits, ci
 	ctx.restore();
 };
 
+var planetSign = Array();
+
 // Draw the transiting planet locations, tick marks and transit lines
 $ns.drawNatalPlanets = function (ctx, biwheel) {
 	var planetGlyphX, planetGlyphY;
@@ -466,7 +468,6 @@ $ns.drawNatalPlanets = function (ctx, biwheel) {
 	var innerX, innerY;
 	var outerX, outerY;
 	var signDegree;
-	var planetSign;
 	var tickStartX, tickStartY;
 	var tickStopX, tickStopY;
 	var planetGlyphRadius;
@@ -550,8 +551,8 @@ $ns.drawNatalPlanets = function (ctx, biwheel) {
 		// Place glyph of natal planet's sign
 		signGlyphX = signGlyphRadius * planetX + (natalcanvas.width/2);
 		signGlyphY = signGlyphRadius * planetY + (natalcanvas.height/2); 
-		planetSign = Math.floor($natalPlanets[key] / 30);
-		ctx.drawImage(signImageArray[planetSign],signGlyphX-7,signGlyphY-7, 14, 14);
+		planetSign[key] = Math.floor($natalPlanets[key] / 30);
+		ctx.drawImage(signImageArray[planetSign[key]],signGlyphX-7,signGlyphY-7, 14, 14);
 	
 		// Draw the natal planet degree line on inner circle
 		ctx.lineWidth = 1;
@@ -576,7 +577,7 @@ $ns.drawNatalPlanets = function (ctx, biwheel) {
 	}
 	ctx.fillText(monthtext[$natalInputDate.month]+" "+$natalInputDate.day+", "+$natalInputDate.year, 0, 28);
   $e.calculateLeadingZeros($natalInputDate);
-	ctx.fillText(leadingZero[0]+$natalInputDate.hours+":"+leadingZero[1]+$natalInputDate.minutes+":"+leadingZero[0]+$natalInputDate.seconds+" GMT", 0, 42);
+	ctx.fillText(leadingZero[0]+$natalInputDate.hours+":"+leadingZero[1]+$natalInputDate.minutes+":"+leadingZero[2]+$natalInputDate.seconds+" GMT", 0, 42);
 	ctx.fill();
 
 	// Draw the Sign Glyphs
@@ -849,7 +850,7 @@ $ns.drawNatalAspects = function (circleRadius) {
 	// Draw the planet glpyhs onto the aspect grid
 	i = 0;
 	for (var natalKey in aspectOrder) {
-		planetSign = Math.floor($natalPlanets[natalKey] / 30);
+		// planetSign = Math.floor($natalPlanets[natalKey] / 30); -- NOT SURE WHERE THIS IS USED
 
 	  if (natalKey == "moon") {
 		  ctx.drawImage(planetImageArray[natalKey], 4, -24, 20, 20);
@@ -919,7 +920,6 @@ $ns.drawNatalAspects = function (circleRadius) {
 	ctx.beginPath();
 
 	// Initialize variables for the counting of the elements and modes
-	var planetSign;
 	var planetElement = Array();
 	var elementCount = Array();
 	var planetMode = Array();
@@ -939,9 +939,8 @@ $ns.drawNatalAspects = function (circleRadius) {
 
 	// Calculate the element and mode count
 	for (var planetKey in elementalWeight) {
-		planetSign = Math.floor($natalPlanets[planetKey]/30);
-		planetElement[planetKey] = planetSign % 4;
-		planetMode[planetKey] = planetSign % 3;
+		planetElement[planetKey] = planetSign[planetKey] % 4;
+		planetMode[planetKey] = planetSign[planetKey] % 3;
 		elementCount[planetElement[planetKey]] = elementCount[planetElement[planetKey]] + elementalWeight[planetKey];
 		modeCount[planetMode[planetKey]] = modeCount[planetMode[planetKey]] + elementalWeight[planetKey];
   }
@@ -965,31 +964,20 @@ $ns.drawNatalAspects = function (circleRadius) {
 	ctx.lineWidth = 3;
 	for (var planetKey in elementalWeight) {
 		// Draw the planet next to it's element
-		ctx.drawImage(planetImageArray[planetKey], -182+(elementIncrement[planetElement[planetKey]]*15), -18+(planetElement[planetKey]*26), 15, 15);
-
-		// Draw a line color-coded to the planet's mode
-		ctx.beginPath();
-		ctx.strokeStyle = modeColor[planetMode[planetKey]];
-		ctx.moveTo(-182+(elementIncrement[planetElement[planetKey]]*15)+1, -18+(planetElement[planetKey]*26+18
-	));
-		ctx.lineTo(-182+(elementIncrement[planetElement[planetKey]]*15)+14, -18+(planetElement[planetKey]*26+18));
-		ctx.stroke();
+		ctx.drawImage(planetImageArray[planetKey], -182+(elementIncrement[planetElement[planetKey]]*17), -18+(planetElement[planetKey]*26), 15, 15);
+		// Draw the planet's sign as a subscript
+		ctx.drawImage(signImageArray[planetSign[planetKey]], -182+9+(elementIncrement[planetElement[planetKey]]*17), -18+10+(planetElement[planetKey]*26), 9, 9);
 	
 		elementIncrement[planetElement[planetKey]]++;
 
 		// Draw the planet next to it's mode
-		ctx.drawImage(planetImageArray[planetKey], -95+(modeIncrement[planetMode[planetKey]]*12), 97+(planetMode[planetKey]*25), 12, 12);
-
-		// Draw a line color-coded to the planet's element
-		ctx.beginPath();
-		ctx.strokeStyle = elementColor[planetElement[planetKey]];
-		ctx.moveTo(-95+(modeIncrement[planetMode[planetKey]]*12)+1, 97+(planetMode[planetKey]*25)+14);
-		ctx.lineTo(-95+(modeIncrement[planetMode[planetKey]]*12)+10, 97+(planetMode[planetKey]*25)+14);
-		ctx.stroke();
+		ctx.drawImage(planetImageArray[planetKey], -95+(modeIncrement[planetMode[planetKey]]*13), 97+(planetMode[planetKey]*25), 12, 12);
+		ctx.drawImage(signImageArray[planetSign[planetKey]], -95+7+(modeIncrement[planetMode[planetKey]]*13), 97+8+(planetMode[planetKey]*25), 8, 8);
 		
 		modeIncrement[planetMode[planetKey]]++;
 		i++;
 	}
 
+  console.log($natalPlanets);
 	ctx.setTransform(1, 0, 0, 1, 0, 0);	 
 };
