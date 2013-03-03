@@ -649,7 +649,7 @@ var aspectOrb = {
 		quincunx: 2.5
 }
 
-// TODO: Add in the northnode, ascendent, and midheaven = 3 once I can calculate those values
+// TODO: Add in the north node, ascendent, and midheaven = 3 once I can calculate those values
 var aspectOrderGridCount = {
 		moon: 0,
 		sun: 1,
@@ -664,7 +664,7 @@ var aspectOrderGridCount = {
 		chiron: 10
 };
 
-// TODO: Add in the northnode, ascendent, and midheaven = 3 once I can calculate those values
+// TODO: Add in the north node, ascendent, and midheaven = 3 once I can calculate those values
 var aspectOrder = {
 		moon: 0,
 		sun: 1,
@@ -978,6 +978,5 @@ $ns.drawNatalAspects = function (circleRadius) {
 		i++;
 	}
 
-  console.log($natalPlanets);
 	ctx.setTransform(1, 0, 0, 1, 0, 0);	 
 };

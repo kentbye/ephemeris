@@ -40,7 +40,22 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   	ctx.clearRect(0,0, chartcanvas.width, chartcanvas.height);
     
+    var natalJulianDate =	$moshier.julian.calc($natalInputDate);
+    
+    // Calculate the House Cusps
+ 		/*   
+     * hsys = letter code for house system;
+     *		K  Koch
+     *		O  Porphyry
+     *		P  Placidus
+     *		W  equal, whole sign
+     */
+
+    hsys = 'P';
+    $e.swe_houses(natalJulianDate, 39.768333333, -86.158055556, hsys);
+    console.log(hsp);
 	  $e.drawNatalChart(ctx);
+	  
 	  ctx = document.getElementById('natalcanvas').getContext('2d');
 	  ctx.clearRect(0,0, natalcanvas.width, natalcanvas.height);
 
