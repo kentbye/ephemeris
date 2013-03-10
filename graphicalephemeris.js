@@ -232,7 +232,11 @@ $ns.drawEphemeris = function () {
 	  // TODO: Order the Glyphs so that they are centered within a house line
 	  ctx.drawImage(planetImageArray[natalKey], daysDelta*1.75 + 10, natalY-7, 14, 14);
 	  planetSignGlyph = Math.floor($natalPlanets[natalKey] / 30);
-		ctx.drawImage(signImageArray[planetSignGlyph],daysDelta*1.75 +10 +14 +2, natalY-7, 14, 14);
+		ctx.drawImage(signImageArray[planetSignGlyph],daysDelta*1.75 +10 +14, natalY-7, 14, 14);
+		if (calculateHouses) {
+				ctx.fillText(natalPlanetHouse[natalKey], daysDelta*1.75 +10 +14 +2 +12, natalY-7+10);
+		}
+
   }
 
   // Plot Current Day Line

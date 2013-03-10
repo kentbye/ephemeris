@@ -4,7 +4,7 @@
 		<title>Natal Transit Tracker & Astrology Positions</title>
 		<style type='text/css'>
 			 	* {
-						font: 16pt Tahoma;
+						font: 14pt Tahoma;
 				}
 
 				input[type=button] {
@@ -25,10 +25,13 @@
 						margin: auto;
 						padding-left: 15px;
 				}
+
 				label, select {
-						display: inline-block;
-						width: 100px;
+					display: inline-block;
+					width: 100px;
 				}
+/*
+
 				label {
 						position: relative;
 						top: -1.2em;
@@ -36,6 +39,11 @@
 				}
 				select {
 						margin: 1.5em 0 0 -100px;
+				}
+
+*/
+				#housesystem  {
+					width: 160px;
 				}
 				#datewrapper {
 						width: 430px;
@@ -91,9 +99,20 @@
 						left: 0px; 
 						z-index: 1;
 				}
+				#city {
+					font: 12pt Tahoma;
+					width: 300px;
+				}
+
+				#longitude, #latitude {
+					width: 140px;
+				}
+
 			
 		</style>
 
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		
 		<script type='text/javascript' src='index.js' charset='utf-8'></script>
 		<script type='text/javascript' src='common.js' charset='utf-8'></script>
 		<script type='text/javascript' src='load.js' charset='utf-8'></script>
@@ -103,6 +122,7 @@
 		<script type='text/javascript' src='calculatedTime.js' charset='utf-8'></script>
 		<script type='text/javascript' src='loadglyphs.js' charset='utf-8'></script>	
 		<script type='text/javascript' src='graphicalephemeris.js' charset='utf-8'></script>		
+
 
 		<script type='text/javascript' src='astronomy/index.js' charset='utf-8'></script>
 		<script type='text/javascript' src='astronomy/moshier/index.js' charset='utf-8'></script>
@@ -147,26 +167,46 @@
 		<script type='text/javascript' src='astronomy/moshier/plan404/pluto.js' charset='utf-8'></script>
 		<script type='text/javascript' src='shortcut.js' charset='utf-8'></script>
 		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#search').click(function() {
+					$.getJSON('http://ws.geonames.org/searchJSON?q='+$('#city').val()+'&maxRows=1&user=kentbye&style=medium&callback=?',
+					function(data){
+						$('#city').val(data.geonames[0].name + ", " + data.geonames[0].adminName1 + ", " +  data.geonames[0].countryCode);
+						$('#latitude').val(data.geonames[0].lat);
+						$('#longitude').val(data.geonames[0].lng);
+					});
+				});
+			});
+		</script>
+		
+		
+		<script type="text/javascript">
 			var animateFlag = false;
 			document.onkeydown = function(evt) {
 				evt = evt || window.event;
 				switch (evt.keyCode) {
 				case 37:
-						$e.increment(-86400);
-						break;
-				case 39:
-						$e.increment(86400);
-						break;
-				case 32:
-						evt.preventDefault();
-						if (animateFlag) {
-							$e.animateStop();
-							animateFlag = false;
-						} else {
-							$e.animateStart();
-							animateFlag = true;
+						if (spacebarAnimate) {
+							$e.increment(-86400);
+							break;
 						}
-						break;
+				case 39:
+						if (spacebarAnimate) {
+							$e.increment(86400);
+							break;
+						}
+				case 32:
+						if (spacebarAnimate) {
+							evt.preventDefault();
+							if (animateFlag) {
+								$e.animateStop();
+								animateFlag = false;
+							} else {
+								$e.animateStart();
+								animateFlag = true;
+							}
+							break;
+						}
 				}
 			};
 		</script>
@@ -218,7 +258,7 @@
 				</select>
 				<label for = "transityearfield">Year</label>
 				<select id = "transityearfield">
-				</select>
+				</select><br>
 				<label for = "transithourfield">Hour</label>
 				<select id = "transithourfield">
 				</select>
@@ -227,7 +267,7 @@
 				</select>
 				<label for = "transitsecondfield">Second</label>
 				<select id = "transitsecondfield">
-				</select>
+				</select><br>
 				<br>Enter Natal Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)<br>
 				<label for = "natalmonthfield">Month</label>
 				<select id = "natalmonthfield">
@@ -237,7 +277,7 @@
 				</select>
 				<label for = "natalyearfield">Year</label>
 				<select id = "natalyearfield">
-				</select>
+				</select><br>
 				<label for = "natalhourfield">Hour</label>
 				<select id = "natalhourfield">
 				</select>
@@ -246,8 +286,21 @@
 				</select>
 				<label for = "natalsecondfield">Second</label>
 				<select id = "natalsecondfield">
+				</select><br>
+				<label for = "housesystem">House System</label>
+				<select id = "housesystem">
+				<input type="checkbox" id="unknowntime">Unknown Time
 				</select>
-
+				<div id="cityinput"><label for="city">City, State</label>
+				<input id="city" name="city" type="text" onfocus="$e.disableSpacebarAnimate(false)" onfocus="$e.disableSpacebarAnimate(true)">
+				</div>
+				<div id="latlong">
+					<input id="search" type="button" value="Look up" />
+					<p><label for="Latitude">Latitude</label>
+					<input id="latitude" name="latitude" type="text"></p>
+					<p><label for="longitude">Longitude</label>
+					<input id="longitude" name="longitude" type="text"></p>
+				</div>
 			</form>
 		</div>
 		<p>

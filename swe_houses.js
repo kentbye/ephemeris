@@ -2118,6 +2118,7 @@ var hsp = {
 	coasc2: 0,
 	polasc: 0	
 }
+hsp.cusp[0] = 0;
 
 // Ported CalcH() function from swehouse.c
 /* *********************************************************

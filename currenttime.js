@@ -8,7 +8,7 @@ $ns.currenttime = function () {
     var hours = currentTime.getUTCHours();
     var minutes = currentTime.getUTCMinutes();
     var seconds = currentTime.getUTCSeconds();
-    var defaultNatalYear;
+    var areCookiesSet;
     var transitmonthfield = document.getElementById("transitmonthfield")
     var transitdayfield = document.getElementById("transitdayfield")
     var transityearfield = document.getElementById("transityearfield");
@@ -21,6 +21,11 @@ $ns.currenttime = function () {
     var natalhourfield = document.getElementById("natalhourfield");
     var natalminutefield = document.getElementById("natalminutefield");
     var natalsecondfield = document.getElementById("natalsecondfield");
+    var housesystem = document.getElementById("housesystem");
+    var unknowntimeCheckBox = document.getElementById("unknowntime");
+    var city = document.getElementById("city");
+    var latitude = document.getElementById("latitude");
+    var longitude = document.getElementById("longitude");
 
     var leadingZero = "";
 
@@ -64,7 +69,6 @@ $ns.currenttime = function () {
         natalyearfield.appendChild(natalYearOption);
     }
     transityearfield.value = year;
-
 
     // Populate the Hour Dropdown
     leadingZero = "0";
@@ -110,16 +114,48 @@ $ns.currenttime = function () {
         natalsecondfield.appendChild(natalSecondOption);
     }
     transitsecondfield.value = seconds;
+    
+    // Populate the House System
+    var houseOption1 = document.createElement("option");
+    houseOption1.text = "Placidus";
+    houseOption1.value = 'P';
+    housesystem.options.add(houseOption1);
+    var houseOption2 = document.createElement("option");
+    houseOption2.text = "Porphyry";
+    houseOption2.value = 'O';
+    housesystem.options.add(houseOption2);
+    var houseOption3 = document.createElement("option");
+    houseOption3.text = "Koch";
+    houseOption3.value = 'K';
+    housesystem.options.add(houseOption3);
+    var houseOption4 = document.createElement("option");
+    houseOption4.text = "Whole Sign";
+    houseOption4.value = 'W';
+    housesystem.options.add(houseOption4);
+    
+    housesystem.value = 'P';
 
-    // Set the default natal year to a reasonable year, otherwise there is a lot of scrolling
-    defaultNatalYear = getCookieValue("natalyear");
-    if (defaultNatalYear) {
+    // Change this flag to the latest cookies added, otherwise Chrome will give a TypeError
+    areCookiesSet = getCookieValue("housesystem");
+    // If cookies are set, then populate the text fields with the saved values
+    if (areCookiesSet) {
       natalmonthfield.value = getCookieValue("natalmonth");
       nataldayfield.value = getCookieValue("natalday");
-      natalyearfield.value = defaultNatalYear;
+      natalyearfield.value = getCookieValue("natalyear");
       natalhourfield.value = getCookieValue("natalhours");
       natalminutefield.value = getCookieValue("natalminutes");
       natalsecondfield.value = getCookieValue("natalseconds");
+      housesystem.value = getCookieValue("housesystem");
+      var timeFlag = getCookieValue("unknowntime");
+      if (timeFlag == 'true') {
+      	unknowntimeCheckBox.checked = true;
+      } else {
+	      unknowntimeCheckBox.checked = false;
+      }
+      city.value = getCookieValue("citystate");
+      latitude.value = getCookieValue("latitude");
+      longitude.value = getCookieValue("longitude");
+
     } else {
       natalmonthfield.value = 1;
       nataldayfield.value = 1;
@@ -127,12 +163,17 @@ $ns.currenttime = function () {
       natalhourfield.value = 0;
       natalminutefield.value = 0;
       natalsecondfield.value = 0;
+      // Set the default house system to Placidus
+      housesystem.value = 'P';
+      unknowntimeCheckBox.checked = false;
+      city.value = "";
+      latitude.value = 40.7142691;
+      longitude.value = -74.0059729;
     }
 
     // Calculate the current positions of the planets
     var setCookieFlag = false; // Don't need to set the cookie on initial page load
     var initialRenderingFlag = true; // Go ahead and plot the natal chart and natal planets
-    var $natalPlanets;
     $natalPlanets = $e.calculatedTime (setCookieFlag, initialRenderingFlag);
     
 };
