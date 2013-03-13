@@ -169,11 +169,13 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#search').click(function() {
+					$("#search").prop('value', 'Searching...');
 					$.getJSON('http://ws.geonames.org/searchJSON?q='+$('#city').val()+'&maxRows=1&user=kentbye&style=medium&callback=?',
 					function(data){
 						$('#city').val(data.geonames[0].name + ", " + data.geonames[0].adminName1 + ", " +  data.geonames[0].countryCode);
 						$('#latitude').val(data.geonames[0].lat);
 						$('#longitude').val(data.geonames[0].lng);
+						$("#search").prop('value', 'Look up');
 					});
 				});
 			});
