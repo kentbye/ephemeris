@@ -5,8 +5,6 @@ var middleCircleRadius = innerCircleRadius + 70;
 var leadingZero = new Array();
 var elementColor = ["red", "green", "yellow", "blue"];
 	
-//var calculateHouses;
-
 var $planetColor = {
 	sun: "#feb400",
 	moon: "#b2b2b2",
@@ -1025,9 +1023,8 @@ $ns.drawNatalAspects = function (circleRadius) {
 	  if (natalKey == "moon") {
 		  ctx.drawImage(planetImageArray[natalKey], 0, -24, 20, 20);
 		  ctx.drawImage(signImageArray[planetSign[natalKey]], 16, -14, 10, 10);
-		  $('#debug').append(natalPlanetHouse[natalKey]);
 		  if (calculateHouses) {
-				//ctx.fillText(natalPlanetHouse[natalKey], 16+3, -15, 10, 10);
+				ctx.fillText(natalPlanetHouse[natalKey], 19, -15, 10, 10);
 			}
 
 	  } else {
