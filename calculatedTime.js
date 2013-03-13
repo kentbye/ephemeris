@@ -30,6 +30,11 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 		longitude = parseFloat(document.getElementById("longitude").value);
 	}
 	
+	// If there wasn't a valid Lat/Long entered, then don't try to calculate the houses
+	if (!latitude || !longitude) {
+		calculateHouses = false;
+	}
+	
 	// Store the calculated Natal position as a cookie if the calculated button is clicked
 	if (setCookieFlag){
 	  createCookie('natalday',$natalInputDate.day,30);

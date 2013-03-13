@@ -167,8 +167,9 @@ $ns.currenttime = function () {
       housesystem.value = 'P';
       unknowntimeCheckBox.checked = false;
       city.value = "";
-      latitude.value = 40.7142691;
-      longitude.value = -74.0059729;
+      // Set a default Lat/Long of New York City
+      latitude.value = "";
+      longitude.value = "";
     }
 
     // Calculate the current positions of the planets
