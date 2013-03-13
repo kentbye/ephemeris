@@ -1023,13 +1023,13 @@ $ns.drawNatalAspects = function (circleRadius) {
 	  if (natalKey == "moon") {
 		  ctx.drawImage(planetImageArray[natalKey], 0, -24, 20, 20);
 		  ctx.drawImage(signImageArray[planetSign[natalKey]], 16, -14, 10, 10);
-		  if (calculateHouses) {
-				ctx.fillText(natalPlanetHouse[natalKey], 19, -15, 10, 10);
-			}
+//		  if (calculateHouses) {
+		  	// For some reason this line is causing Android mobile browswer to crash out.
+				//ctx.fillText(natalPlanetHouse[natalKey], 19, -15, 10, 10);
+//			}
 
 	  } else {
 	  	// Draw planet glyphs on the left-hand side of the aspect grid
-	  	$('#debug').append(natalKey+"<br>");
 			ctx.drawImage(planetImageArray[natalKey], -23, i*gridWidth+4, 20, 20);
 			ctx.drawImage(signImageArray[planetSign[natalKey]], -22+12, i*gridWidth+4+13, 10, 10);
 
