@@ -7,6 +7,8 @@ var houseSystem;
 var calculateHouses;
 var latitude;
 var longitude;
+var $illuminatedFraction;
+var nextPhase;
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
@@ -63,7 +65,7 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
   
   $const.date = $transitInputDate;
 	$transitPlanets = $e.calculateLongitude($transitInputDate);
-
+  
   // Only need to draw the natal chart and natal planets once. Animation can skip these steps
   if (initialRenderingFlag) {
   	// Calculate the House Cusps if we have the location and time
@@ -148,13 +150,17 @@ $ns.calculateLongitude = function ($inputdate) {
           $processor.calc ($inputdate, $const.body);
           $planetLongitude[key] = Math.round(parseFloat($const.body.position.apparentLongitude)*10000)/10000;
           $astrologicalSign = signs[Math.ceil($const.body.position.apparentLongitude/30)];
-/*
           if (key=='moon') {
-	          console.log($const.body.position.illuminatedFraction, $planetLongitude['sun'], $planetLongitude['moon'], $planetLongitude['sun']-$planetLongitude['moon']);
+	          $illuminatedFraction = $const.body.position.illuminatedFraction;
+	          if ($const.body.position.phaseDaysBefore) {
+		          nextPhase = Math.round($const.body.position.phaseDaysBefore*24*100)/100 + " hrs until ";
+	          } else {
+			        nextPhase = Math.round($const.body.position.phaseDaysPast*24*100)/100 + " hrs after ";  
+	          }
           }
-*/
 
-          document.getElementById(key).innerHTML = key + " = " + $astrologicalSign + " " + $const.body.position.apparentLongitude30String;
+          //Output the position to the screen.
+          //document.getElementById(key).innerHTML = key + " = " + $astrologicalSign + " " + $const.body.position.apparentLongitude30String;
         }
       }
     }
@@ -236,7 +242,9 @@ var timerId = null;
 $ns.animateStart = function ()  {
 	if (timerId) return;
 	// Default to advancing 1 day at a time
-	timerId = setInterval("$e.increment("+86400+")", 50);
+	//timerId = setInterval("$e.increment("+86400+")", 50);
+	// TEMP: Have the increment 1 hour at a time
+	timerId = setInterval("$e.increment("+3600+")", 50);
 	// TODO: Make this increment dynamic
 	// increment an hour at a time
 	//timerId = setInterval("$e.increment("+3600+")", 50); 

@@ -175,7 +175,7 @@
 						$('#city').val(data.geonames[0].name + ", " + data.geonames[0].adminName1 + ", " +  data.geonames[0].countryCode);
 						$('#latitude').val(data.geonames[0].lat);
 						$('#longitude').val(data.geonames[0].lng);
-						$("#search").prop('value', 'Look up');
+						$("#search").prop('value', 'Look up GPS of City');
 					});
 				});
 			});
@@ -214,7 +214,7 @@
 		</script>
 
 </head>
-<body onload='$e.currenttime ()'>
+<body onload='$e.currenttime ("index")'>
 		
 		<div id="graphicalephemeris">
 			<canvas id="ephemeriscanvas" width = "460" height = "770" ></canvas>
@@ -239,7 +239,7 @@
 			<input type='button' value='-yr' onclick='$e.increment(-31557600)'>
 			<input type='button' value='-mth' onclick='$e.increment(-2678400)'>
 			<input type='button' value='-dy' onclick='$e.increment(-86400)'>
-			<input type='button' value='+dy' onclick='$e.increment(86400)'>
+			<input type='button' value='+dy' onclick='$e.increment(3600)'>
 			<input type='button' value='+mth' onclick='$e.increment(2678400)'>
 			<input type='button' value='+yr' onclick='$e.increment(31557600)'>
 	
@@ -270,7 +270,7 @@
 				<label for = "transitsecondfield">Second</label>
 				<select id = "transitsecondfield">
 				</select><br>
-				<br>Enter Natal Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)<br>
+				<br>Enter Birth Time in <a href="http://www.timeanddate.com/worldclock/converter.html">UTC/GMT</a><br>
 				<label for = "natalmonthfield">Month</label>
 				<select id = "natalmonthfield">
 				</select>
@@ -298,7 +298,7 @@
 				</div>
 				<div id="debug"></div>
 				<div id="latlong">
-					<input id="search" type="button" value="Look up" />
+					<input id="search" type="button" value="Look up GPS of City" />
 					<p><label for="Latitude">Latitude</label>
 					<input id="latitude" name="latitude" type="text"></p>
 					<p><label for="longitude">Longitude</label>
@@ -311,6 +311,7 @@
 		</p>
 
 
+<!--
 		<div class="planets">
 			<div id="sun">sun</div>
 			<div id="moon">moon</div>
@@ -324,6 +325,7 @@
 			<div id="pluto">pluto</div>
 			<div id="chiron">chiron</div>
 		</div>
+-->
 		
 		<div class="attribution">
 		<p>Made by <a href="mailto:kent@kentbye.com">Kent Bye</a></p>

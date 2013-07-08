@@ -1,6 +1,6 @@
 var monthtext=['Zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-$ns.currenttime = function () {
+$ns.currenttime = function (sourcePageFlag) {
     var currentTime = new Date();
     var year = currentTime.getUTCFullYear();
     var month = currentTime.getUTCMonth() + 1;
@@ -175,8 +175,12 @@ $ns.currenttime = function () {
     // Calculate the current positions of the planets
     var setCookieFlag = false; // Don't need to set the cookie on initial page load
     var initialRenderingFlag = true; // Go ahead and plot the natal chart and natal planets
-    $natalPlanets = $e.calculatedTime (setCookieFlag, initialRenderingFlag);
-    
+    // Look at the moonFlag variable input into the currenttime function. It's set to TRUE on the moon.html page and false on the index.html page
+    if (sourcePageFlag == "moon"){
+	    $natalPlanets = $e.calculateMoon (setCookieFlag, initialRenderingFlag);
+    } else if (sourcePageFlag == "index"){
+    	$natalPlanets = $e.calculatedTime (setCookieFlag, initialRenderingFlag);
+    }
 };
 
 function getCookieValue(key) {

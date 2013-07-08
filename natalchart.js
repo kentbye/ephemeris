@@ -287,8 +287,8 @@ $ns.drawTransitLines = function (circleRadius) {
 	var orb;
 
 	if (calculateHouses){
-		$natalPlanets['ascendant'] = hsp.cusp[1];
-		$natalPlanets['midheaven'] = hsp.cusp[10];
+		$natalPlanets['ascendant'] = hsp.ac;
+		$natalPlanets['midheaven'] = hsp.mc;
 	}
 
 	var ctx = document.getElementById('transitcanvas').getContext('2d');
@@ -565,9 +565,13 @@ $ns.drawNatalPlanets = function (ctx, biwheel) {
 	var maxHouse;
 	
 	if (calculateHouses){
-		delete $natalPlanets['ascendant'];
-		delete $natalPlanets['midheaven'];
-
+		if (houseSystem !="W"){
+			delete $natalPlanets['ascendant'];
+			delete $natalPlanets['midheaven'];
+		} else {
+			$natalPlanets['ascendant'] = hsp.ac;
+			$natalPlanets['midheaven'] = hsp.mc;
+		}
 	}
 	// Move the 0,0 point to the center of the chartcanvas
 	ctx.translate(natalcanvas.width/2, natalcanvas.height/2);
@@ -706,11 +710,11 @@ $ns.drawNatalPlanets = function (ctx, biwheel) {
 
 	// Determine which house the natal planet is in
 	if (calculateHouses){
+		$natalPlanets['ascendant'] = hsp.ac;
+		$natalPlanets['midheaven'] = hsp.mc;
 		natalPlanetHouse = calculateHouseCusps($natalPlanets);
-		$natalPlanets['ascendant'] = hsp.cusp[1];
-		$natalPlanets['midheaven'] = hsp.cusp[10];
-		natalPlanetHouse['ascendant'] = 1;
-		natalPlanetHouse['midheaven'] = 10;
+		planetSign['ascendant'] = Math.floor($natalPlanets['ascendant'] / 30);
+		planetSign['midheaven'] = Math.floor($natalPlanets['midheaven'] / 30);
 	}
 
 };
@@ -825,8 +829,8 @@ $ns.drawNatalAspects = function (circleRadius) {
 		aspectOrderGridCount['midheaven'] = 12;
 		aspectOrder['ascendant'] = 11;
 		aspectOrder['midheaven'] = 12;
-		$natalPlanets['ascendant'] = hsp.cusp[1];
-		$natalPlanets['midheaven'] = hsp.cusp[10];
+		$natalPlanets['ascendant'] = hsp.ac;
+		$natalPlanets['midheaven'] = hsp.mc;
 		planetSign['ascendant'] = Math.floor($natalPlanets['ascendant'] / 30);
 		planetSign['midheaven'] = Math.floor($natalPlanets['midheaven'] / 30);		
 	} else {
