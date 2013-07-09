@@ -12,7 +12,7 @@ This respository is Kent Bye's modified version of mivion's implementation
 
 The index.html file will by default calculate the planetary positions at the time of the page load. You can also calculate the positions for a specific time by entering in a time in a drop-down select list. You will need to convert the time to UTC.
 
-A demo page can be seen here: http://astrology.kentbye.com/index.html
+A demo page can be seen here: http://nataltransits.com and http://nataltransits.com/moon.html
 
 Mivion's original index.html file can be found at ephemerides.html. Click the equal sign to populate the Body drop down. Select the planetary body, and click one of the buttons again to calculate the Longitude.
 
