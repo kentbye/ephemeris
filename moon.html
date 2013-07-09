@@ -70,6 +70,12 @@
 						left: 0px; 
 						z-index: 1;
 				}
+				#progressioncanvas { 
+						position: absolute; 
+						top: 0px; 
+						left: 0px; 
+						z-index: 2;
+				}
 				#natalcanvas { 
 						position: absolute; 
 						top: 0px; 
@@ -130,6 +136,8 @@
 		</style>
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<!--<script type='text/javascript' src='jquery.min.js' charset='utf-8'></script> -->
+		
 		<script type='text/javascript' src='index.js' charset='utf-8'></script>
 		<script type='text/javascript' src='common.js' charset='utf-8'></script>
 		<script type='text/javascript' src='load.js' charset='utf-8'></script>
@@ -246,6 +254,7 @@
 		<div id="container">
 			<canvas id="chartcanvas" width = "460" height = "460" ></canvas>
 			<canvas id="transitcanvas" width = "460" height = "460" ></canvas>
+			<canvas id="progressioncanvas" width = "460" height = "460" ></canvas>
 			<canvas id="natalcanvas" width = "460" height = "460" ></canvas>
 		</div>
 		<div id="transitingaspects">

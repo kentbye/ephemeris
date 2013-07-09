@@ -185,15 +185,15 @@ $ns.inputTime = function (planet) {
 	    var secondfield = document.getElementById("natalsecondfield");
     }
 
-    var day = parseInt(dayfield.value) 
-    var month = parseInt(monthfield.value) 
-    var year = parseInt(yearfield.value)
-    var hours = parseInt(hourfield.value)
-    var minutes = parseInt(minutefield.value)
-    var seconds = parseInt(secondfield.value)
-    var myDate = new Date(month+"/"+day+"/"+year+" "+hours+":"+minutes+":"+seconds);
-    var myEpoch = myDate.getTime()/1000.0;
-    var timezoneoffset = myDate.getTimezoneOffset();
+  var day = parseInt(dayfield.value); 
+  var month = parseInt(monthfield.value);
+  var year = parseInt(yearfield.value);
+  var hours = parseInt(hourfield.value);
+  var minutes = parseInt(minutefield.value);
+  var seconds = parseInt(secondfield.value);
+  var myDate = new Date(month+"/"+day+"/"+year+" "+hours+":"+minutes+":"+seconds);
+  var myEpoch = myDate.getTime()/1000.0;
+  var timezoneoffset = myDate.getTimezoneOffset();
 	
 	var $inputdate = {
 		day: day,

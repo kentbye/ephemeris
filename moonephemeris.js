@@ -6,7 +6,7 @@ var stopDateEpoch;
 var currentDayMarker;
 var dayLabel = Array();
   
-// Draw a 90-degree graphical ephemeris after calculating 7 months of outer planet positions
+// Draw a 30-degree graphical ephemeris after calculating 72 hours of moon positions
 $ns.moonEphemeris = function () {
   var monthfield = document.getElementById("transitmonthfield")
   var dayfield = document.getElementById("transitdayfield");
@@ -18,7 +18,6 @@ $ns.moonEphemeris = function () {
 
   
   // Calculate the day boundaries according to the offset & local timezone, but need to convert to UTC time for actual moon calculations
-
   startDate = new Date(chartTransitDate.getTime()-86400000);
   stopDate = new Date(chartTransitDate.getTime()+86400000);
 
@@ -95,6 +94,7 @@ $ns.moonEphemeris = function () {
   ctx.globalAlpha = 0.5;
   ctx.save();
   ctx.lineWidth = 0.75;
+  ctx.font = "14px Arial";
   for (var i = 0; i < 7; i++) {
     ctx.beginPath();
     ctx.moveTo(0, 120*i);
@@ -125,15 +125,16 @@ $ns.moonEphemeris = function () {
 	
 	// Draw lines every 8 hours
 	ctx.globalAlpha = 0.15;
+	ctx.font = "14px Arial";
 	for (var i = 0; i < 9; i++) {
 	  ctx.beginPath();
 	  // Mark the night hours in grey box, and show the date label. Have the beginning of day have darker line
     if ((i % 3)==0) {
-    	ctx.globalAlpha = 0.05;
+    	ctx.globalAlpha = 0.03;
 			ctx.fillRect(i*(5.278*72)/9,0,(5.278*72)/9,720);
 			ctx.globalAlpha = 0.5;
 			yOffset = -30;
-			ctx.fillText(dayLabel[i/3], (i/3)*(5.278*72)/3 + (5.278*72)/9 + 10, -20);
+			ctx.fillText(dayLabel[i/3], (i/3)*(5.278*72)/3 + (5.278*72)/9 + 10, -18);
     } else {
 	    ctx.globalAlpha = 0.15;
 	    yOffset = 0;
@@ -197,6 +198,7 @@ $ns.moonEphemeris = function () {
 
 	// Plot natal position lines & glyphs
 	ctx.lineWidth = 1;
+	ctx.font = "8px Arial";
   for (var natalKey in $natalPlanets) {
 	  ctx.strokeStyle = $planetColor[natalKey];
 	  ctx.fillStyle = $planetColor[natalKey];
@@ -207,24 +209,24 @@ $ns.moonEphemeris = function () {
 	  ctx.beginPath();
 
 	  // Plot a 1-degree orb for a degree before and after the natal planet position. 
-	  ctx.fillRect(0,natalY-8,hoursDelta*5.278,16);
+  	// ctx.fillRect(0,natalY-8,hoursDelta*5.278,16);
 	  ctx.fill();
 
 	  // Plot the natal planet longitude line
 	  ctx.globalAlpha = 1.0;
 	  ctx.beginPath();
 	  ctx.moveTo(0,natalY);
-	  ctx.lineTo(hoursDelta*5.278 + 10,natalY);
+	  ctx.lineTo(hoursDelta*5.278 + 5,natalY);
 	  ctx.stroke();
 	  
 	  // Draw the planet and sign glyphs
 	  // TODO: Save to an array to be able sort and add margins if needed to avoid overlapping glyphs
 	  // TODO: Order the Glyphs so that they are centered within a house line
-	  ctx.drawImage(planetImageArray[natalKey], hoursDelta*5.278 + 10, natalY-7, 14, 14);
+	  ctx.drawImage(planetImageArray[natalKey], hoursDelta*5.278 + 3, natalY-7, 14, 14);
 	  planetSignGlyph = Math.floor($natalPlanets[natalKey] / 30);
-		ctx.drawImage(signImageArray[planetSignGlyph],hoursDelta*5.278 +10 +14, natalY-7, 14, 14);
+		ctx.drawImage(signImageArray[planetSignGlyph],hoursDelta*5.278 +3 +14, natalY-7, 14, 14);
 		if (calculateHouses) {
-				ctx.fillText(natalPlanetHouse[natalKey], hoursDelta*5.278 +10 +14 +2 +12, natalY-7+10);
+				ctx.fillText(natalPlanetHouse[natalKey], hoursDelta*5.278 +3 +14 +2 +12, natalY-7+10);
 		}
 
   }
@@ -255,28 +257,28 @@ $ns.moonEphemeris = function () {
 		  	AspectFlag = true;
 		  	if (aspectDegree > 175 && aspectDegree < 185) {
 			  	aspect = 'oppose';
-			  	console.log('moon' + " OPPOSE " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " OPPOSE " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree < 5) {
 			  	aspect = 'conjunct';
-			  	console.log('moon' + " CONJUNCT " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " CONJUNCT " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree > 85 && aspectDegree < 95){
 			  	aspect = 'square';
-			  	console.log('moon' + " SQUARE " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " SQUARE " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree > 145 && aspectDegree < 155){
 			  	aspect = 'quincunx';
-			  	console.log('moon' + " QUNICUNX " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " QUNICUNX " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree > 55 && aspectDegree < 65){
 			  	aspect = 'sextile';
-			  	console.log('moon' + " SEXTILE " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " SEXTILE " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree > 265 && aspectDegree < 275){
 			  	aspect = 'square';
-			  	console.log('moon' + " SQUARE " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " SQUARE " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree > 115 && aspectDegree < 125){
 			  	aspect = 'trine';
-			  	console.log('moon' + " TRINE " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " TRINE " + natalKey +" = "+aspectDegree);
 		  	} else if (aspectDegree > 235 && aspectDegree < 245){
 			  	aspect = 'trine';
-			  	console.log('moon' + " TRINE " + natalKey +" = "+aspectDegree);
+			  	//console.log('moon' + " TRINE " + natalKey +" = "+aspectDegree);
 			  } else {
 				  AspectFlag = false;
 			  }

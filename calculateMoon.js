@@ -81,13 +81,15 @@ $ns.calculateMoon = function (setCookieFlag, initialRenderingFlag) {
 
   // Display the moon photo
   document.getElementById("moonphoto").innerHTML = '<img src="moon/'+moonPhoto+'">';
+  
+  // Create the canvas box to display metadata about the moon & sun's position
 	ctx = document.getElementById('moonMetadata').getContext('2d');
 	ctx.clearRect(0,0, moonMetadata.width, moonMetadata.height);
 	ctx.font = "16px Arial";
 	ctx.fillStyle = "#000000";
 
+  // Calculate how far away the moon is from the sun, and then what the phase it's in.
 	moonPhase = Math.round($e.mod360($transitPlanets['moon']-$transitPlanets['sun'])*1000)/1000;
-
 	if (moonPhase >= 0 && moonPhase < 45) {
 		nextPhaseName = "New Moon";
 		moonPhaseName = "New Moon";
@@ -114,10 +116,10 @@ $ns.calculateMoon = function (setCookieFlag, initialRenderingFlag) {
 		moonPhaseName = "Balsamic";
 	};
 
+	// Display phase information and what percentage of illumination
 	ctx.fillText(moonPhase+String.fromCharCode(0x00B0) + " " + moonPhaseName + " phase", 220, 90);
 	ctx.fillText(nextPhase+nextPhaseName, 220, 110);
 	ctx.fillText(Math.round($illuminatedFraction*100000)/1000+"% Illuminated", 220, 130);
-
 
   // Only need to draw the natal chart and natal planets once. Animation can skip these steps
   if (initialRenderingFlag) {
@@ -160,16 +162,60 @@ $ns.calculateMoon = function (setCookieFlag, initialRenderingFlag) {
 	  $e.drawNatalChart(ctx);
 	  biwheel = false;
 	  $e.drawNatalPlanets(ctx, biwheel);
+	  
+	  // Draw the progression circle
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		// Move the 0,0 point to the center of the chartcanvas
+		ctx.translate(chartcanvas.width/2, chartcanvas.height/2);
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = "black";
+		ctx.lineWidth = 1;
+
+		// Start on the Ascendant
+		ctx.rotate(Math.PI);
+	
+		// Draw the House Cusps within the greyed out progressed planets circle
+		var houseCuspBeginX, houseCuspBeginY, houseCuspEndX, houseCuspEndY;
+		var signDegree, signMinute;
+		for (var i = 1; i < 13; i++) {
+			ctx.beginPath();
+			houseCuspBeginX = (middleCircleRadius-23)*Math.cos((180-(cusp[i]))*DEGTORAD);
+			houseCuspBeginY = (middleCircleRadius-23)*Math.sin((180-(cusp[i]))*DEGTORAD);
+			houseCuspEndX = middleCircleRadius*Math.cos((180-(cusp[i]))*DEGTORAD);
+			houseCuspEndY = middleCircleRadius*Math.sin((180-(cusp[i]))*DEGTORAD);
+			ctx.moveTo(houseCuspBeginX, houseCuspBeginY);
+			ctx.lineTo(houseCuspEndX, houseCuspEndY);
+			ctx.stroke();
+		}
+	
+		// Shade the progressed planets circle grey
+		ctx.beginPath();
+		ctx.globalAlpha = 0.05;
+		ctx.lineWidth = 23;
+		ctx.strokeStyle = "black";
+		ctx.arc(0, 0, middleCircleRadius-12, 0, 2*Math.PI, true);
+		ctx.stroke();
+		
+		// Draw an arc for the progressed planets		
+		ctx.beginPath();
+		ctx.globalAlpha = 1;
+		ctx.lineWidth = 0.5;
+		ctx.arc(0, 0, middleCircleRadius-23, 0, 2*Math.PI, true);
+		ctx.stroke();	
+		ctx.restore();
+
   }
 
   // Draw the Transit Planets and Transit Lines
 	$e.drawMoonTransits(outerWheelRadius);
-	$e.drawMoonTransitLines(middleCircleRadius);
+	$e.drawMoonTransitLines(middleCircleRadius-23);
 
   // Draw the current time on the ephemeris only when calculating a new time
   if (initialRenderingFlag) {
   	$e.moonEphemeris ();
   }
+  $e.calculateProgression();
+  $e.drawMoonProgression();
 };
 
 $ns.addZero = function (timeNumber) {
@@ -271,6 +317,7 @@ $ns.drawMoonTransits = function (circleRadius) {
 	ctx.save();
 	ctx.translate(transitcanvas.width/2, transitcanvas.height/2);
 
+	// Create a dummy array that has keys of the luminaries
 	luminaries['moon'] = 0;
 	luminaries['sun'] = 0;
 	var i = 0;
@@ -295,48 +342,55 @@ $ns.drawMoonTransits = function (circleRadius) {
 		ctx.moveTo(outerX, outerY);
 		ctx.arc(outerX, outerY, 3, 0, Math.PI * 2, true);
 		ctx.fill();
-
 		
 		// Place glyph of transiting planet
-		planetGlyphX = 128 * planetX - 8;
-		planetGlyphY = 128 * planetY - 8;
+		planetGlyphX = (128-23) * planetX - 8;
+		planetGlyphY = (128-23) * planetY - 8;
 		ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 16, 16);
   	ctx.save();
 
+  	// Set the context canvas to be the metadata box next to the moon photo
 		context = document.getElementById('moonMetadata').getContext('2d');
 		context.drawImage(planetImageArray[key],220, 2+(i*32), 30, 30);
 
   	ctx.restore();		
 		// Place degree of transiting planet
-		degreeX = 113 * planetX;
-		degreeY = 113 * planetY; 
+		degreeX = (113-23) * planetX;
+		degreeY = (113-23) * planetY; 
 		signDegree = Math.floor($transitPlanets[key] % 30);
 		ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-5, degreeY+3);
   	ctx.save();
 
+  	// Display the luminary degree in big text in the metadata box
     context.font = "24px Arial";
   	context.fillStyle = "#000000";
   	context.fillText($e.addZero(signDegree)+String.fromCharCode(0x00B0), 250, 30+(i*32));
 
   	ctx.restore();		
 		// Place glyph of transiting planet's sign
-		signGlyphX = 100 * planetX;
-		signGlyphY = 100 * planetY; 
+		signGlyphX = (100-23) * planetX;
+		signGlyphY = (100-23) * planetY; 
 		transitingPlanetSign[key] = Math.floor($transitPlanets[key] / 30);
 		ctx.drawImage(signImageArray[transitingPlanetSign[key]],signGlyphX-6,signGlyphY-6, 12, 12);
   	ctx.save();
 
+  	// Draw the sign of the luminary 
 		context.drawImage(signImageArray[transitingPlanetSign[key]],288, 6+(i*32), 28, 28);
 
   	ctx.restore();		
-		// Place miniute of transiting planet's sign
-		minuteX = 84 * planetX;
-		minuteY = 84 * planetY; 
+		// Place minute of luminary's sign
+		minuteX = (84-23) * planetX;
+		minuteY = (84-23) * planetY; 
 		signMinute = Math.round((($transitPlanets[key] % 30)-signDegree)*60);
 		ctx.fillText(signMinute+'"', minuteX-5, minuteY+3);
   	ctx.save();
 
-  	context.fillText($e.addZero(signMinute) + '" (' + $e.addHouseNumber(transitingPlanetHouse[key]) + ')', 320, 30+(i*32));
+		// Place minute & house number of luminary's sign in the metadata box
+		if (calculateHouses) {
+  		context.fillText($e.addZero(signMinute) + '" (' + $e.addHouseNumber(transitingPlanetHouse[key]) + ')', 320, 30+(i*32));
+  	} else {
+	  	context.fillText($e.addZero(signMinute) + '"', 320, 30+(i*32));
+  	}
 
   	ctx.restore();		
 		// Draw the transiting planet degree line on middle circle
@@ -365,17 +419,15 @@ $ns.drawMoonTransits = function (circleRadius) {
 		i++;
 	}
 	ctx.restore();
-
-	
-		
+			
 	// Label the Outer Wheel Transits
 	ctx.font = "12px Arial";	
 	ctx.fillText("Inner Wheel / Transits", 335, 14);
 	ctx.fillText(monthtext[displayDate.month]+" "+displayDate.day+", "+displayDate.year, 385, 28);
+	// Display the local timezone date instead of the GMT/UTC date
 	ctx.fillText($e.addZero(displayDate.hours)+":"+$e.addZero(displayDate.minutes)+":"+$e.addZero(displayDate.seconds) +" -"+displayDate.offset/60+"00", 380, 42);
 	ctx.fill();
 }
-
 
 var moonAspectOrb = {
 		conjunct: 4.5,
@@ -397,7 +449,6 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 	var aspectDegrees;
 	var aspectMinutes;
 	
-
   luminaries['moon'] = 0;
   
 	if (calculateHouses){
@@ -599,4 +650,191 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 
 	ctx.setTransform(1, 0, 0, 1, 0, 0);	 
 };
+
+// Secondary Progression is a day for a year. Calculate number of milliseconds in a year
+var millisecondsInYear = 365.24219647 * 24 * 60 * 60 * 1000;
+var $progressionDate;
+var $progressedPlanets = Array();
+
+$ns.calculateProgression = function () {
+	var yearsOld = ($transitInputDate.date.getTime()-$natalInputDate.date.getTime())/millisecondsInYear;
+	// 
+	var progressionFromBirth = yearsOld * 24 * 3600 * 1000;
+	var progressionTime = new Date($natalInputDate.date.getTime() + progressionFromBirth);
+
+  var day = progressionTime.getDate();
+  var month = progressionTime.getMonth()+1;
+  var year = progressionTime.getFullYear();
+  var hours = progressionTime.getHours();
+  var minutes = progressionTime.getMinutes()
+  var seconds = progressionTime.getSeconds() + progressionTime.getMilliseconds()/1000;
+  var myDate = progressionTime;
+  var myEpoch = myDate.getTime()/1000.0;
+  var timezoneoffset = myDate.getTimezoneOffset();
+	
+	$progressionDate = {
+		day: day,
+		month: month,
+		year: year,
+		hours: hours,
+		minutes: minutes,
+		seconds: seconds,
+		epoch: myEpoch,
+		timezoneoffset: timezoneoffset,
+		date: myDate
+	};
+
+	$progressedPlanets = $e.calculateLongitude($progressionDate);
+};
+
+// Draw the transiting planet locations, tick marks and transit lines
+// A bit of a hack to copy this function out for the 3rd time, and could use some refactoring later.
+// I'd ideally want to pass in the circleRadius array, canvas context, and the array of planet longitudes to plot.
+$ns.drawMoonProgression = function (circleRadius) {
+	var ctx = document.getElementById('progressioncanvas').getContext('2d');
+
+	var planetGlyphX, planetGlyphY;
+	var signGlyphX, signGlyphY;
+	var planetX, planetY;
+	var outerX, outerY;
+	var signDegree, signMinute;
+	var minuteX, minuteY;	
+	var tickStartX, tickStartY;
+	var tickStopX, tickStopY;
+	var innerTickStartX, innerTickStartY;
+	var innerTickStopX, innerTickStopY;
+	var luminaries = Array();
+
+	// Reset transform to the upper right-hand corner
+	ctx.setTransform(1, 0, 0, 1, 0, 0);	 
+
+	// Draw Planet Glpyhs and Degree lines
+	// Go from the outside wheel to the inside circle
+	ctx.font = "10px Arial";
+	ctx.clearRect(0, 0, progressioncanvas.width, progressioncanvas.height);
+	ctx.save();
+	ctx.translate(progressioncanvas.width/2, progressioncanvas.height/2);
+
+	// Create a dummy array that has keys of the luminaries
+	luminaries['moon'] = 0;
+	luminaries['sun'] = 0;
+	var i = 0;
+
+	// Calculate which house the transiting planet is in
+	if (calculateHouses){
+		transitingPlanetHouse = calculateHouseCusps($progressedPlanets);
+	}
+
+	ctx.save();
+  // Display the luminary degree in big text in the metadata box
+  context.font = "18px Arial";
+	context.fillStyle = "#000000";
+	context.fillText("Secondary Progressions", 220, 150);
+	context.fillStyle = "#000000";
+	context.globalAlpha = 0.05;
+	context.fillRect(220, 134, 200, 94);
+	context.globalAlpha = 1;	
+
+	ctx.restore();
+
+
+	for (var key in luminaries) {
+		// Draw the transiting planet degree line on outer circle
+		ctx.beginPath();
+		ctx.lineWidth = 0.5;
+		ctx.strokeStyle = $planetColor[key];
+		ctx.fillStyle = $planetColor[key];
+		planetX = Math.cos((180-swe_degnorm($progressedPlanets[key]-hsp.cusp[1]))*DEGTORAD);
+		planetY = Math.sin((180-swe_degnorm($progressedPlanets[key]-hsp.cusp[1]))*DEGTORAD);
+		outerX = outerWheelRadius * planetX;
+		outerY = outerWheelRadius * planetY;
+
+		
+		// Place glyph of transiting planet
+		planetGlyphX = (middleCircleRadius-12) * planetX - 8;
+		planetGlyphY = (middleCircleRadius-12) * planetY - 8;
+		ctx.drawImage(planetImageArray[key],planetGlyphX,planetGlyphY, 16, 16);
+
+		// Draw planetary position dot the outside of the outer circle
+		ctx.moveTo(outerX, outerY);
+
+  	ctx.save();
+
+  	// Set the context canvas to be the metadata box next to the moon photo
+		context = document.getElementById('moonMetadata').getContext('2d');
+		// Draw the luminary glpyh
+		context.drawImage(planetImageArray[key], 220, 156+(i*26), 24, 24);
+
+  	ctx.restore();		
+		// Place degree of transiting planet
+		degreeX = 113 * planetX;
+		degreeY = 113 * planetY; 
+		signDegree = Math.floor($progressedPlanets[key] % 30);
+//		ctx.fillText(signDegree+String.fromCharCode(0x00B0), degreeX-5, degreeY+3);
+  	ctx.save();
+
+  	// Display the luminary degree in big text in the metadata box
+    context.font = "18px Arial";
+  	context.fillStyle = "#000000";
+  	context.fillText($e.addZero(signDegree)+String.fromCharCode(0x00B0), 245, 174+(i*28));
+
+  	ctx.restore();		
+		// Place glyph of transiting planet's sign
+		signGlyphX = 100 * planetX;
+		signGlyphY = 100 * planetY; 
+		transitingPlanetSign[key] = Math.floor($progressedPlanets[key] / 30);
+//		ctx.drawImage(signImageArray[transitingPlanetSign[key]],signGlyphX-6,signGlyphY-6, 12, 12);
+  	ctx.save();
+
+  	// Draw the sign of the luminary 
+		context.drawImage(signImageArray[transitingPlanetSign[key]],274, 156+(i*26), 24, 24);
+
+  	ctx.restore();		
+		// Place minute of luminary's sign
+		minuteX = 84 * planetX;
+		minuteY = 84 * planetY; 
+		signMinute = Math.round((($progressedPlanets[key] % 30)-signDegree)*60);
+//		ctx.fillText(signMinute+'"', minuteX-5, minuteY+3);
+  	ctx.save();
+
+		// Place minute of luminary's sign
+		if (calculateHouses) {
+  		context.fillText($e.addZero(signMinute) + '" (' + $e.addHouseNumber(transitingPlanetHouse[key]) + ')', 304, 174+(i*28));
+  	} else {
+	  	context.fillText($e.addZero(signMinute) + '"', 304, 174+(i*28));
+  	}
+
+  	ctx.restore();		
+		// Draw the transiting planet degree line on middle circle
+		ctx.lineWidth = 1;
+		tickStartX = middleCircleRadius * planetX;
+		tickStartY = middleCircleRadius * planetY;
+		tickStopX = (middleCircleRadius + 5) * planetX;
+		tickStopY = (middleCircleRadius + 5) * planetY;
+		ctx.moveTo(tickStartX, tickStartY);
+		ctx.lineTo(tickStopX, tickStopY);
+		ctx.stroke();
+	
+		// Draw the transiting planet degree line on inner circle
+		ctx.lineWidth = 1;
+		transitingPlanetX = Math.cos((180-swe_degnorm($progressedPlanets[key]-hsp.cusp[1]))*DEGTORAD);
+		transitingPlanetY = Math.sin((180-swe_degnorm($progressedPlanets[key]-hsp.cusp[1]))*DEGTORAD);
+		innerTickStartX = circleRadius * transitingPlanetX;
+		innerTickStartY = circleRadius * transitingPlanetY;
+		innerTickStopX = (circleRadius - 5) * transitingPlanetX;
+		innerTickStopY = (circleRadius - 5) * transitingPlanetY;
+		ctx.moveTo(innerTickStartX, innerTickStartY);
+		ctx.lineTo(innerTickStopX, innerTickStopY);
+		ctx.stroke();
+		
+		//Increment counter for y-offset for glyph plotting 
+		i++;
+	}
+	ctx.restore();
+			
+}
+
+
+
+
 
