@@ -377,6 +377,14 @@ $ns.drawMoonTransits = function (circleRadius) {
 }
 
 
+var moonAspectOrb = {
+		conjunct: 4.5,
+		oppose: 4.5,
+		trine: 1.5,
+		square: 2.25,
+		sextile: 1.5,
+		quincunx: 0.75
+}
 
 // Calculate and display transits
 $ns.drawMoonTransitLines = function (circleRadius) {
@@ -412,7 +420,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			};
 			
 			// plot opposition
-			if (natalTransits[natalKey][transitKey] >= 180-aspectOrb['oppose']) {
+			if (natalTransits[natalKey][transitKey] >= 180-moonAspectOrb['oppose']) {
 				displayTransits[transitCount] = {
 					'strength': 10 * transitIntensity[transitKey],
 					'transitPlanet': transitKey,
@@ -426,7 +434,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			}	
 
 			// plot conjunction
-			if (natalTransits[natalKey][transitKey] >= 0 && natalTransits[natalKey][transitKey] <= aspectOrb['conjunct']) {
+			if (natalTransits[natalKey][transitKey] >= 0 && natalTransits[natalKey][transitKey] <= moonAspectOrb['conjunct']) {
 				displayTransits[transitCount] = {
 					'strength': 10 * transitIntensity[transitKey],
 					'transitPlanet': transitKey,
@@ -462,7 +470,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			}
 
 			// plot square
-			if (natalTransits[natalKey][transitKey] >= 90-aspectOrb['square'] && natalTransits[natalKey][transitKey] <= 90+aspectOrb['square']) {
+			if (natalTransits[natalKey][transitKey] >= 90-moonAspectOrb['square'] && natalTransits[natalKey][transitKey] <= 90+moonAspectOrb['square']) {
 				displayTransits[transitCount] = {
 					'strength': 8 * transitIntensity[transitKey],
 					'transitPlanet': transitKey,
@@ -476,7 +484,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			}
 			
 			// plot trine
-			if (natalTransits[natalKey][transitKey] >= 120-aspectOrb['trine'] && natalTransits[natalKey][transitKey] <= 120+aspectOrb['trine']) {
+			if (natalTransits[natalKey][transitKey] >= 120-moonAspectOrb['trine'] && natalTransits[natalKey][transitKey] <= 120+moonAspectOrb['trine']) {
 				displayTransits[transitCount] = {
 					'strength': 5 * transitIntensity[transitKey],
 					'transitPlanet': transitKey,
@@ -490,7 +498,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			}
 			
 			// plot sextile
-			if (natalTransits[natalKey][transitKey] >= 60-aspectOrb['sextile'] && natalTransits[natalKey][transitKey] <= 60+aspectOrb['sextile']) {
+			if (natalTransits[natalKey][transitKey] >= 60-moonAspectOrb['sextile'] && natalTransits[natalKey][transitKey] <= 60+moonAspectOrb['sextile']) {
 				displayTransits[transitCount] = {
 					'strength': 3 * transitIntensity[transitKey],
 					'transitPlanet': transitKey,
@@ -504,7 +512,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			}
 			
 			// plot quincunx
-			if (natalTransits[natalKey][transitKey] >= 150-aspectOrb['quincunx'] && natalTransits[natalKey][transitKey] <= 150+aspectOrb['quincunx']) {
+			if (natalTransits[natalKey][transitKey] >= 150-moonAspectOrb['quincunx'] && natalTransits[natalKey][transitKey] <= 150+moonAspectOrb['quincunx']) {
 				displayTransits[transitCount] = {
 					'strength': 2 * transitIntensity[transitKey],
 					'transitPlanet': transitKey,
@@ -566,7 +574,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 		ctx.save();
 
 		// Calculate the orb strength and plot the bar graph
-		orb = ((aspectOrb[displayTransits[i].aspect] - displayTransits[i].difference)/aspectOrb[displayTransits[i].aspect])*90;
+		orb = ((moonAspectOrb[displayTransits[i].aspect] - displayTransits[i].difference)/moonAspectOrb[displayTransits[i].aspect])*90;
 		if (orb < 22.5) {
 			ctx.lineWidth = 1;
 		} else if (orb > 22.5 && orb < 45){
