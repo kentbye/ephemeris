@@ -461,7 +461,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 	ctx.save();
 	ctx.translate(transitcanvas.width/2, transitcanvas.height/2);
 
-
+	// Capture metadata on the moon aspects according for integration and published later
 	for (var natalKey in $natalPlanets) {
 		natalTransits[natalKey] = new Array();
 		for (var transitKey in luminaries) {
@@ -473,13 +473,21 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			// plot opposition
 			if (natalTransits[natalKey][transitKey] >= 180-moonAspectOrb['oppose']) {
 				displayTransits[transitCount] = {
-					'strength': 10 * transitIntensity[transitKey],
+					'applying': $e.mod360($natalPlanets[natalKey] + 180) - $transitPlanets[transitKey],
 					'transitPlanet': transitKey,
 					'natalPlanet': natalKey,
 					'aspect': 'oppose',
 					'color': 'red',
 					'difference': Math.abs(180-natalTransits[natalKey][transitKey])
 				};
+				if (displayTransits[transitCount].applying > 360) {
+					displayTransits[transitCount].applyingFlag = 1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+				} else {
+					displayTransits[transitCount].applyingFlag = -1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+				}
+
 				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
 				transitCount++;
 			}	
@@ -487,13 +495,22 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			// plot conjunction
 			if (natalTransits[natalKey][transitKey] >= 0 && natalTransits[natalKey][transitKey] <= moonAspectOrb['conjunct']) {
 				displayTransits[transitCount] = {
-					'strength': 10 * transitIntensity[transitKey],
+					'applying': $natalPlanets[natalKey] - $transitPlanets[transitKey],
 					'transitPlanet': transitKey,
 					'natalPlanet': natalKey,
 					'aspect': 'conjunct',
 					'color': 'black',
 					'difference': natalTransits[natalKey][transitKey]
 				};
+
+				if (displayTransits[transitCount].applying > 0) {
+					displayTransits[transitCount].applyingFlag = 1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+				} else {
+					displayTransits[transitCount].applyingFlag = -1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+				}
+
 				// Draw a Black dot on the the transiting planet tick to the natal planet
 				ctx.save();
 				ctx.beginPath();
@@ -523,13 +540,21 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			// plot square
 			if (natalTransits[natalKey][transitKey] >= 90-moonAspectOrb['square'] && natalTransits[natalKey][transitKey] <= 90+moonAspectOrb['square']) {
 				displayTransits[transitCount] = {
-					'strength': 8 * transitIntensity[transitKey],
+					'applying': $e.mod360($natalPlanets[natalKey] - $transitPlanets[transitKey]),
 					'transitPlanet': transitKey,
 					'natalPlanet': natalKey,
 					'aspect': 'square',
 					'color': 'red',
 					'difference': Math.abs(90-natalTransits[natalKey][transitKey])
 				};
+				if ((displayTransits[transitCount].applying > 90 && displayTransits[transitCount].applying < 110) || (displayTransits[transitCount].applying > 270)) {
+					displayTransits[transitCount].applyingFlag = 1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+				} else {
+					displayTransits[transitCount].applyingFlag = -1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+				}
+
 				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
 				transitCount++;
 			}
@@ -537,13 +562,21 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			// plot trine
 			if (natalTransits[natalKey][transitKey] >= 120-moonAspectOrb['trine'] && natalTransits[natalKey][transitKey] <= 120+moonAspectOrb['trine']) {
 				displayTransits[transitCount] = {
-					'strength': 5 * transitIntensity[transitKey],
+					'applying': $e.mod360($natalPlanets[natalKey] - $transitPlanets[transitKey]),
 					'transitPlanet': transitKey,
 					'natalPlanet': natalKey,
 					'aspect': 'trine',
 					'color': 'blue',
 					'difference': Math.abs(120-natalTransits[natalKey][transitKey])
 				};
+				if ((displayTransits[transitCount].applying > 120 && displayTransits[transitCount].applying < 140) || (displayTransits[transitCount].applying > 240)) {
+					displayTransits[transitCount].applyingFlag = 1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+				} else {
+					displayTransits[transitCount].applyingFlag = -1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+				}
+
 				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
 				transitCount++;
 			}
@@ -551,13 +584,21 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			// plot sextile
 			if (natalTransits[natalKey][transitKey] >= 60-moonAspectOrb['sextile'] && natalTransits[natalKey][transitKey] <= 60+moonAspectOrb['sextile']) {
 				displayTransits[transitCount] = {
-					'strength': 3 * transitIntensity[transitKey],
+					'applying': $e.mod360($natalPlanets[natalKey] - $transitPlanets[transitKey]),
 					'transitPlanet': transitKey,
 					'natalPlanet': natalKey,
 					'aspect': 'sextile',
 					'color': 'blue',
 					'difference': Math.abs(60-natalTransits[natalKey][transitKey])
 				};
+				if ((displayTransits[transitCount].applying > 60 && displayTransits[transitCount].applying < 80) || (displayTransits[transitCount].applying > 300)) {
+					displayTransits[transitCount].applyingFlag = 1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+				} else {
+					displayTransits[transitCount].applyingFlag = -1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+				}
+
 				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
 				transitCount++;
 			}
@@ -565,13 +606,21 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 			// plot quincunx
 			if (natalTransits[natalKey][transitKey] >= 150-moonAspectOrb['quincunx'] && natalTransits[natalKey][transitKey] <= 150+moonAspectOrb['quincunx']) {
 				displayTransits[transitCount] = {
-					'strength': 2 * transitIntensity[transitKey],
+					'applying': $e.mod360($natalPlanets[natalKey] - $transitPlanets[transitKey]),
 					'transitPlanet': transitKey,
 					'natalPlanet': natalKey,
 					'aspect': 'quincunx',
 					'color': 'green',
 					'difference': Math.abs(150-natalTransits[natalKey][transitKey])
 				};
+				if ((displayTransits[transitCount].applying > 150 && displayTransits[transitCount].applying < 180) || (displayTransits[transitCount].applying > 210)) {
+					displayTransits[transitCount].applyingFlag = 1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+				} else {
+					displayTransits[transitCount].applyingFlag = -1;
+					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+				}
+
 				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
 				transitCount++;
 			} 
@@ -580,7 +629,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 
 	ctx.restore();
   // Sort the displayTransits array in order of the closest aspects first
-	displayTransits.sort(function compareStrength(a,b) {return a.difference - b.difference});
+	displayTransits.sort(function compareStrength(a,b) {return a.strength - b.strength});
 	
 	var ctx = document.getElementById('aspectcanvas').getContext('2d');
 	var orb;
@@ -593,12 +642,16 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 		x = i % 4;
 		y = Math.floor(i/4);
 		// draw a grey rectangle around the outer planet transits
-		if(displayTransits[i].transitPlanet == 'pluto' || displayTransits[i].transitPlanet == 'neptune' || displayTransits[i].transitPlanet == 'uranus') {
+		if(displayTransits[i].applyingFlag > 0) {
       ctx.save();
 		  ctx.strokeStyle = "#CDCDCD";
+		  ctx.fillStyle = "#FFA07A";
 		  ctx.beginPath();
 		  ctx.moveTo(x*115, y*50);
-			ctx.strokeRect(x*115, y*50, 100, 40);
+			ctx.strokeRect(x*115-2, y*50, 104, 42);
+			ctx.globalAlpha = 0.075;
+			ctx.fillRect(x*115-2, y*50, 104, 42);
+			ctx.globalAlpha = 1;
 			ctx.restore();
 		}
 		ctx.save();
