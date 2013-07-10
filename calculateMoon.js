@@ -429,13 +429,13 @@ $ns.drawMoonTransits = function (circleRadius) {
 	ctx.fill();
 }
 
-var moonAspectOrb = {
-		conjunct: 4.5,
-		oppose: 4.5,
-		trine: 1.5,
-		square: 2.25,
-		sextile: 1.5,
-		quincunx: 0.75
+var aspectOrb = {
+		conjunct: 9,
+		oppose: 8,
+		trine: 7,
+		square: 6,
+		sextile: 3.5,
+		quincunx: 2.5
 }
 
 // Calculate and display transits
