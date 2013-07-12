@@ -448,6 +448,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 	var luminaries = Array();
 	var aspectDegrees;
 	var aspectMinutes;
+	var alpha;
 	
   luminaries['moon'] = 0;
   
@@ -483,12 +484,14 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				if (displayTransits[transitCount].applying > 360) {
 					displayTransits[transitCount].applyingFlag = 1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+					alpha = 1;					
 				} else {
 					displayTransits[transitCount].applyingFlag = -1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+					alpha = 0.15;					
 				}
 
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, alpha);
 				transitCount++;
 			}	
 
@@ -506,9 +509,11 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				if (displayTransits[transitCount].applying > 0) {
 					displayTransits[transitCount].applyingFlag = 1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+					alpha = 1;
 				} else {
 					displayTransits[transitCount].applyingFlag = -1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+					alpha = 0.15;
 				}
 
 				// Draw a Black dot on the the transiting planet tick to the natal planet
@@ -532,6 +537,7 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				ctx.moveTo(transitingPlanetX, transitingPlanetY);
 								
 				ctx.arc(transitingPlanetX, transitingPlanetY, conjunctRadius, 0, Math.PI * 2, true);
+				ctx.globalAlpha = alpha;
 				ctx.fill();
 				ctx.restore();
 				transitCount++;
@@ -550,12 +556,14 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				if ((displayTransits[transitCount].applying > 90 && displayTransits[transitCount].applying < 110) || (displayTransits[transitCount].applying > 270)) {
 					displayTransits[transitCount].applyingFlag = 1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+					alpha = 1;					
 				} else {
 					displayTransits[transitCount].applyingFlag = -1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+					alpha = 0.15;					
 				}
 
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, alpha);
 				transitCount++;
 			}
 			
@@ -572,12 +580,14 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				if ((displayTransits[transitCount].applying > 120 && displayTransits[transitCount].applying < 140) || (displayTransits[transitCount].applying > 240)) {
 					displayTransits[transitCount].applyingFlag = 1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+					alpha = 1;					
 				} else {
 					displayTransits[transitCount].applyingFlag = -1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+					alpha = 0.15;					
 				}
 
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, alpha);
 				transitCount++;
 			}
 			
@@ -594,12 +604,14 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				if ((displayTransits[transitCount].applying > 60 && displayTransits[transitCount].applying < 80) || (displayTransits[transitCount].applying > 300)) {
 					displayTransits[transitCount].applyingFlag = 1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+					alpha = 1;					
 				} else {
 					displayTransits[transitCount].applyingFlag = -1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+					alpha = 0.15;					
 				}
 
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, alpha);
 				transitCount++;
 			}
 			
@@ -616,12 +628,14 @@ $ns.drawMoonTransitLines = function (circleRadius) {
 				if ((displayTransits[transitCount].applying > 150 && displayTransits[transitCount].applying < 180) || (displayTransits[transitCount].applying > 210)) {
 					displayTransits[transitCount].applyingFlag = 1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference;
+					alpha = 1;					
 				} else {
 					displayTransits[transitCount].applyingFlag = -1;
 					displayTransits[transitCount].strength = displayTransits[transitCount].difference + 15;
+					alpha = 0.15;					
 				}
 
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, alpha);
 				transitCount++;
 			} 
 		}

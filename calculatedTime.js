@@ -242,9 +242,9 @@ var timerId = null;
 $ns.animateStart = function ()  {
 	if (timerId) return;
 	// Default to advancing 1 day at a time
-	//timerId = setInterval("$e.increment("+86400+")", 50);
+	timerId = setInterval("$e.increment("+86400+")", 50);
 	// TEMP: Have the increment 1 hour at a time
-	timerId = setInterval("$e.increment("+3600+")", 50);
+	//timerId = setInterval("$e.increment("+3600+")", 50);
 	// TODO: Make this increment dynamic
 	// increment an hour at a time
 	//timerId = setInterval("$e.increment("+3600+")", 50); 

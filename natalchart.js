@@ -314,7 +314,7 @@ $ns.drawTransitLines = function (circleRadius) {
 					'color': 'red',
 					'difference': Math.abs(180-natalTransits[natalKey][transitKey])
 				};
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, 1);
 				transitCount++;
 			}	
 
@@ -364,7 +364,7 @@ $ns.drawTransitLines = function (circleRadius) {
 					'color': 'red',
 					'difference': Math.abs(90-natalTransits[natalKey][transitKey])
 				};
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, 1);
 				transitCount++;
 			}
 			
@@ -378,7 +378,7 @@ $ns.drawTransitLines = function (circleRadius) {
 					'color': 'blue',
 					'difference': Math.abs(120-natalTransits[natalKey][transitKey])
 				};
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, 1);
 				transitCount++;
 			}
 			
@@ -392,7 +392,7 @@ $ns.drawTransitLines = function (circleRadius) {
 					'color': 'blue',
 					'difference': Math.abs(60-natalTransits[natalKey][transitKey])
 				};
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, 1);
 				transitCount++;
 			}
 			
@@ -406,7 +406,7 @@ $ns.drawTransitLines = function (circleRadius) {
 					'color': 'green',
 					'difference': Math.abs(150-natalTransits[natalKey][transitKey])
 				};
-				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx);
+				$e.drawAspectLine($transitPlanets[transitKey], $natalPlanets[natalKey], displayTransits[transitCount], circleRadius, transitCtx, 1);
 				transitCount++;
 			} 
 		}
@@ -483,7 +483,7 @@ $ns.drawTransitLines = function (circleRadius) {
 };
 
 // Draw the aspect line onto the natal chart
-$ns.drawAspectLine = function ($transitDegree, $natalDegree, displayTransits, circleRadius, ctx) {
+$ns.drawAspectLine = function ($transitDegree, $natalDegree, displayTransits, circleRadius, ctx, alpha) {
 	ctx.save();
 	ctx.beginPath();
 	ctx.strokeStyle = displayTransits.color;
@@ -510,8 +510,9 @@ $ns.drawAspectLine = function ($transitDegree, $natalDegree, displayTransits, ci
 	aspectLineStopY = circleRadius * natalPlanetY;
 	ctx.moveTo(aspectLineStartX, aspectLineStartY);
 	ctx.lineTo(aspectLineStopX, aspectLineStopY);
+	ctx.globalAlpha = alpha;
 	ctx.stroke();
-	
+		
 	// Place the arrow closer to the natal planet for quick visual reference of the transit direction
   midpointX = Math.abs(aspectLineStartX-aspectLineStopX)/4;
   midpointY = Math.abs(aspectLineStartY-aspectLineStopY)/4;
