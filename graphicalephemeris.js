@@ -338,7 +338,6 @@ $ns.drawCurrentDay = function () {
 		
 		// Draw the current day line
 		currentDayMarker = Math.round(($transitInputDate.epoch*1000 - startDateEpoch)/oneDay); 
-		console.log(currentDayMarker);
 		ctx.globalAlpha = 0.2;
 		ctx.save();
 		ctx.beginPath();

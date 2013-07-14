@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>three.js css3d - periodic table</title>
+		<style>
+			html, body {
+				height: 100%;
+			}
+
+			body {
+				background-color: #000000;
+				margin: 0;
+				font-family: Arial;
+				overflow: hidden;
+			}
+
+			a {
+				color: #ffffff;
+			}
+
+			#info {
+				position: absolute;
+				width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.element {
+				width: 192px;
+				height: 180px;
+				box-shadow: 0px 0px 20px rgba(0,255,255,0.5);
+				border: 1px solid rgba(127,255,255,0.25);
+				cursor: default;
+			}
+
+			.element:hover {
+				box-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+				border: 1px solid rgba(127,255,255,0.75);
+			}
+
+				.element .number {
+					position: absolute;
+					top: 20px;
+					right: 20px;
+					font-size: 20px;
+					color: rgba(127,255,255,0.75);
+				}
+
+				.element .symbol {
+					position: absolute;
+					top: 40px;
+					width: 100%;
+					font-size: 70px;
+					text-align: center;
+					color: rgba(255,255,255,0.75);
+					font-weight: bold;
+
+					-webkit-filter: drop-shadow(0px 0px 20px rgba(0,255,255,0.95));
+					-moz-filter: drop-shadow(0px 0px 20px rgba(0,255,255,0.95));
+					-o-filter: drop-shadow(0px 0px 20px rgba(0,255,255,0.95));
+					-ms-filter: drop-shadow(0px 0px 20px rgba(0,255,255,0.95));
+					filter: drop-shadow(0px 0px 20px rgba(0,255,255,0.95));
+				}
+
+				.element .details {
+					position: absolute;
+					top: 125px;
+					width: 100%;
+					font-size: 18px;
+					text-align: center;
+					color: rgba(127,255,255,0.75);
+				}
+
+			button {
+				color: rgba(127,255,255,0.75);
+				background: transparent;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			button:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+			button:active {
+				color: #000000;
+				background-color: rgba(0,255,255,0.75);
+			}
+		</style>
+	</head>
+	<body>
+		<script src="js/three.min.js"></script>
+		<script src="js/libs/tween.min.js"></script>
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/renderers/CSS3DRenderer.js"></script>
+
+		<div id="container"></div>
+
+		<script>
+
+			var table = [
+				[ "F", "Aries", "0", 1, 1 ],
+				[ "F", "Aries", "10", 18, 1 ],
+				[ "F", "Aries", "20", 1, 2 ],
+				[ "E", "Taurus", "30", 2, 2 ],
+				[ "E", "Taurus", "40", 13, 2 ],
+				[ "E", "Taurus", "50", 14, 2 ],
+				[ "A", "Gemini", "60", 15, 2 ],
+				[ "A", "Gemini", "70", 16, 2 ],
+				[ "A", "Gemini", "80", 17, 2 ],
+				[ "W", "Cancer", "90", 18, 2 ],
+				[ "W", "Cancer", "100", 1, 3 ],
+				[ "W", "Cancer", "110", 2, 3 ],
+				[ "F", "Leo", "120", 13, 3 ],
+				[ "F", "Leo", "130", 14, 3 ],
+				[ "F", "Leo", "140", 15, 3 ],
+				[ "E", "Virgo", "150", 16, 3 ],
+				[ "E", "Virgo", "160", 17, 3 ],
+				[ "E", "Virgo", "170", 18, 3 ],
+				[ "A", "Libra", "180", 1, 4 ],
+				[ "A", "Libra", "190", 2, 4 ],
+				[ "A", "Libra", "200", 3, 4 ],
+				[ "W", "Scorpio", "210", 4, 4 ],
+				[ "W", "Scorpio", "220", 5, 4 ],
+				[ "W", "Scorpio", "230", 6, 4 ],
+				[ "F", "Sagittarius", "240", 7, 4 ],
+				[ "F", "Sagittarius", "250", 8, 4 ],
+				[ "F", "Sagittarius", "260", 9, 4 ],
+				[ "E", "Capricorn", "270", 10, 4 ],
+				[ "E", "Capricorn", "280", 11, 4 ],
+				[ "E", "Capricorn", "290", 12, 4 ],
+				[ "A", "Aquarius", "300", 13, 4 ],
+				[ "A", "Aquarius", "310", 14, 4 ],
+				[ "A", "Aquarius", "320", 15, 4 ],
+				[ "W", "Pisces", "330", 16, 4 ],
+				[ "W", "Pisces", "340", 17, 4 ],
+				[ "W", "Pisces", "350", 18, 4 ],
+			];
+
+			var camera, scene, renderer;
+			var controls;
+
+			var objects = [];
+			var targets = { table: [], sphere: [], helix: [], grid: [] };
+
+			var astroElement;
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.z = 1500;
+				camera.position.y = 300;
+
+				scene = new THREE.Scene();
+
+				var vector = new THREE.Vector3();
+				
+				for ( var i = 0; i < table.length; i ++ ) {
+
+					var item = table[ i ];
+
+					var element = document.createElement( 'div' );
+					element.className = 'element';
+					astroElement = Math.ceil((i+1)/3) % 4;
+					if (astroElement == 1) {
+						element.style.backgroundColor = 'rgba(255,0,0,0.5)';
+					} else if (astroElement == 2) {
+						element.style.backgroundColor = 'rgba(0,255,0,0.5)';
+					} else if (astroElement == 3) {
+						element.style.backgroundColor = 'rgba(255,255,0,0.5)';
+					} else if (astroElement == 0) {
+						element.style.backgroundColor = 'rgba(0,0,255,0.5)';
+					}
+										
+					var number = document.createElement( 'div' );
+					number.className = 'number';
+					number.textContent = i + 1;
+					element.appendChild( number );
+
+					var symbol = document.createElement( 'div' );
+					symbol.className = 'symbol';
+					symbol.textContent = item[ 0 ];
+					element.appendChild( symbol );
+
+					var details = document.createElement( 'div' );
+					details.className = 'details';
+					details.innerHTML = item[ 1 ] + '<br>' + item[ 2 ];
+					element.appendChild( details );
+
+					var object = new THREE.CSS3DObject( element );
+
+					var phi = i * 0.175 + Math.PI;
+					object.position.x = 1100 * Math.sin( phi );
+					object.position.y = 0;
+					object.position.z = 1100 * Math.cos( phi );
+
+					vector.copy( object.position );
+					vector.x *= 2;
+					vector.z *= 2;
+
+					object.lookAt( vector );
+
+					targets.helix.push( object );
+
+					scene.add( object );
+
+				}
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute';
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+				//
+
+				controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 0.5;
+				controls.addEventListener( 'change', render );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function transform( targets, duration ) {
+
+				TWEEN.removeAll();
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+					var target = targets[ i ];
+
+					new TWEEN.Tween( object.position )
+						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+					new TWEEN.Tween( object.rotation )
+						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+				}
+
+				new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				TWEEN.update();
+				controls.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+	</body>
+</html>
