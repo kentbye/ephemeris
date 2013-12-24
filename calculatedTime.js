@@ -134,6 +134,7 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
   if (initialRenderingFlag) {
   	$e.drawEphemeris ();
   }
+   $e.zodicalReleasing($natalInputDate);
 	
 };
 
@@ -177,8 +178,8 @@ $ns.inputTime = function (planet) {
 	    var secondfield = document.getElementById("transitsecondfield");
       }
     else {
-	    var monthfield = document.getElementById("natalmonthfield")
-	    var dayfield = document.getElementById("nataldayfield")
+	    var monthfield = document.getElementById("natalmonthfield");
+	    var dayfield = document.getElementById("nataldayfield");
 	    var yearfield = document.getElementById("natalyearfield");
 	    var hourfield = document.getElementById("natalhourfield");
 	    var minutefield = document.getElementById("natalminutefield");
