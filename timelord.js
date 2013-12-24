@@ -4,6 +4,7 @@ var $L1Date = new Array();
 var $L2Date = new Array();
 var $L1Sign = new Array();
 var $L2Sign = new Array();
+var L2StartDate = new Date();
 
 // Set the Planetary Years from Aries/Mars being 15 years to Pisces/Jupiter being 12 years
 $planetaryPeriodYears = Array(0, 15, 8, 20, 25, 19, 20, 8, 15, 12, 27, 30, 12);
@@ -32,14 +33,9 @@ $ns.zodicalReleasing = function (inputDate) {
   // TODO: Take releasingSign as an input variable
   var releasingSign;
   releasingSign = 3;
-  
-  // TODO: Figure out how to more dynamically initialize these variables
-  for(var i=1; i<100; i++) {
-    $L1Date[i] = new Date(); // TODO: There will only be 10 L1 dates
-    $L2Date[i] = new Date();
-  }
-      
+        
   // Do first level calculations
+  $L1Date[1] = new Date();
   $L1Date[1] = birthTime;
   $L1Sign[1] = releasingSign;
   console.log("L1 BEGIN");
@@ -49,6 +45,7 @@ $ns.zodicalReleasing = function (inputDate) {
   // Calculate 10 L1 periods
   // TODO: Abstract this into a while loop, and set it to be 120 years after birth
   for (var x=2; x<10; x++) {
+    $L1Date[x] = new Date();
     // Add the Planetary Period to the previous threshold date on that level to calculate the threshold date for x
     $L1Date[x].setTime($L1Date[x-1].getTime() + $planetaryPeriod[releasingSign][1]);
     releasingSign++;
@@ -68,16 +65,16 @@ $ns.zodicalReleasing = function (inputDate) {
     $L1Sign[x] = releasingSign;
 
     // Create L2 given that the ending of the next period has now been calculated as $L1L2Date[x]
-    var L2StartDate = $L1Date[x-1];
-    var L2EndDate = $L1Date[x];
+    L2StartDate.setTime($L1Date[x-1]);
     var L2releasingSign = $L1Sign[x-1];
-    $L2Date[L2Counter] = L2StartDate;
+    $L2Date[L2Counter] = new Date();
+    $L2Date[L2Counter].setTime(L2StartDate);
     L2Counter++;
     L2StartDate.setTime(L2StartDate.getTime() + $planetaryPeriod[L2releasingSign][2]);
 
-    while (L2StartDate < L2EndDate) {
-      // TODO: add an if clause here and calculate the start date first
-      $L2Date[L2Counter] = L2StartDate;
+    while (L2StartDate < $L1Date[x]) {
+      $L2Date[L2Counter] = new Date();
+      $L2Date[L2Counter].setTime(L2StartDate);
 
       L2releasingSign++;
       if (L2releasingSign > 12) {
@@ -99,8 +96,6 @@ $ns.zodicalReleasing = function (inputDate) {
     
     console.log("L1 " + $L1Sign[x] + " " + $L1Date[x]);
   }
-  console.log($L1Date[1]);
-
   
 }
 
