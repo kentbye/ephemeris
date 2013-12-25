@@ -134,7 +134,6 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
   if (initialRenderingFlag) {
   	$e.drawEphemeris ();
   }
-   $e.zodicalReleasing($natalInputDate);
 	
 };
 

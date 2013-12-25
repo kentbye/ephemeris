@@ -180,6 +180,8 @@ $ns.currenttime = function (sourcePageFlag) {
 	    $natalPlanets = $e.calculateMoon (setCookieFlag, initialRenderingFlag);
     } else if (sourcePageFlag == "index"){
     	$natalPlanets = $e.calculatedTime (setCookieFlag, initialRenderingFlag);
+    } else if (sourcePageFlag == "timelord"){
+	    $natalPlanets = $e.calculateTimeLord (setCookieFlag, initialRenderingFlag);
     }
 };
 
