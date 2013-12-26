@@ -88,7 +88,7 @@
 				}
 				#zodicalreleasingdata {
 						position: relative; 
-						width: 460px;
+						width: 480px;
 						float: right;
 				}
 				#zodicalreleasingl1l2 {
@@ -116,17 +116,26 @@
 				#longitude, #latitude {
 					width: 140px;
 				}
-
-				.loosingbond {
-					color: #e45e5e;
+				#levelheader {
+					margin-left: -18px;
 				}
+        #expandl1l2 {
+	        float: left;
+	        margin-left: -20px;
+        }
+        #expandl3l4 {
+	        float: right;
+        }
 
 			
 		</style>
 
 <!--		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
 		<script type='text/javascript' src='jquery.min.js' charset='utf-8'></script>
-		
+
+
+    <link rel="stylesheet" href="css/themes/jquery-mobile-five-swatches.min.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
     <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
 
@@ -198,10 +207,37 @@
 						$("#search").prop('value', 'Look up GPS of City');
 					});
 				});
+				// TODO: There's a more efficient way of doing this, but I couldn't figure out how to initialize the collapsibleset
+				$('#expandl3l4').toggle(function() {
+					$('#zodicalreleasingl3l4 .ui-collapsible-themed-content').removeClass('ui-collapsible-themed-content');
+					$('#zodicalreleasingl3l4 .ui-collapsible-heading-collapsed').removeClass('ui-collapsible-heading-collapsed');
+					$('#zodicalreleasingl3l4 .ui-collapsible-heading-toggle').removeClass('ui-icon-plus').addClass('ui-icon-minus');
+					$('#zodicalreleasingl3l4 .ui-collapsible-content').removeClass('ui-collapsible-content-collapsed');
+					$('#expandl3l4').removeClass('ui-icon-carat-d').addClass('ui-icon-carat-u');
+				}, function() {
+					$('#zodicalreleasingl3l4 .ui-collapsible-themed-content').addClass('ui-collapsible-themed-content');
+					$('#zodicalreleasingl3l4 .ui-collapsible-heading-collapsed').addClass('ui-collapsible-heading-collapsed');
+					$('#zodicalreleasingl3l4 .ui-collapsible-heading-toggle').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+					$('#zodicalreleasingl3l4 .ui-collapsible-content').addClass('ui-collapsible-content-collapsed');
+					$('#expandl3l4').removeClass('ui-icon-carat-u').addClass('ui-icon-carat-d');
+				});
+				$('#expandl1l2').toggle(function() {
+					$('#zodicalreleasingl1l2 .ui-collapsible-themed-content').removeClass('ui-collapsible-themed-content');
+					$('#zodicalreleasingl1l2 .ui-collapsible-heading-collapsed').removeClass('ui-collapsible-heading-collapsed');
+					$('#zodicalreleasingl1l2 .ui-collapsible-heading-toggle').removeClass('ui-icon-plus').addClass('ui-icon-minus');
+					$('#zodicalreleasingl1l2 .ui-collapsible-content').removeClass('ui-collapsible-content-collapsed');
+					$('#expandl1l2').removeClass('ui-icon-carat-d').addClass('ui-icon-carat-u');
+				}, function() {
+					$('#zodicalreleasingl1l2 .ui-collapsible-themed-content').addClass('ui-collapsible-themed-content');
+					$('#zodicalreleasingl1l2 .ui-collapsible-heading-collapsed').addClass('ui-collapsible-heading-collapsed');
+					$('#zodicalreleasingl1l2 .ui-collapsible-heading-toggle').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+					$('#zodicalreleasingl1l2 .ui-collapsible-content').addClass('ui-collapsible-content-collapsed');
+					$('#expandl1l2').removeClass('ui-icon-carat-u').addClass('ui-icon-carat-d');
+				});
 			});
+			
 		</script>
-		
-		
+
 		<script type="text/javascript">
 			var animateFlag = false;
 			document.onkeydown = function(evt) {
@@ -235,29 +271,31 @@
 
 </head>
 <body onload='$e.currenttime ("timelord")'>
-
+  <div data-role="page" id="home">
 		<div class="ui-corner-all custom-corners" id="zodicalreleasingdata">
-		  <div class="ui-bar ui-bar-a">
-		    <h3>Zodical Releasing from Gemini: <img src="img/cancer.png" class="ui-li-icon"><img src="img/gemini.png" class="ui-li-icon"><img src="img/capricorn.png" class="ui-li-icon"><img src="img/pisces.png" class="ui-li-icon"></h3>
+		  <div class="ui-bar ui-bar-a" id="levelheader">
+		    <h3>Zodical Releasing from Sagitarrius: <img src="img/cancer.png" class="ui-li-icon"><img src="img/gemini.png" class="ui-li-icon"><img src="img/capricorn.png" class="ui-li-icon"><img src="img/pisces.png" class="ui-li-icon"></h3>
+		    <a href="#" id="expandl1l2" class="ui-btn ui-icon-carat-u ui-btn-icon-notext ui-corner-all">No text</a>
+		    <a href="#" id="expandl3l4" class="ui-btn ui-icon-carat-d ui-btn-icon-notext ui-corner-all">No text</a>
 		  </div>
       <div id="zodicalreleasingl1l2">
-				<div data-role="collapsible" data-inset="false" data-theme="b" data-collapsed="true">
-				    <h3><img src="img/gemini.png" alt="Gemini" class="ui-li-icon">9/1/1976</h3>
+				<div data-role="collapsible" data-inset="false" data-theme="b" data-collapsed="false" id="test">
+				    <h3><img src="img/gemini.png" alt="Gemini" class="ui-li-icon">9/1/1976 <span class="ui-li-count">0</span></h3>
 				    <ul data-role="listview">
-				        <li data-icon="false"><a href="#"><img src="img/gemini.png" alt="Gemini" class="ui-li-icon">9/1/1976 <span class="ui-li-count">0</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/cancer.png" alt="Cancer" class="ui-li-icon">4/24/1978<span class="ui-li-count">1.3</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/leo.png" class="ui-li-icon">5/13/1980<span class="ui-li-count">3.7</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/virgo.png" class="ui-li-icon">12/4/1981<span class="ui-li-count">5.2</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/libra.png" class="ui-li-icon">7/27/1983<span class="ui-li-count">7.8</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/scorpio.png" class="ui-li-icon">3/23/1984<span class="ui-li-count">8.2</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/sagittarius.png" class="ui-li-icon">6/16/1985<span class="ui-li-count">8.8</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/capricorn.png" class="ui-li-icon">6/11/1986<span class="ui-li-count">9.7</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/aquarius.png" class="ui-li-icon">8/29/1988<span class="ui-li-count">10.2</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/pisces.png" class="ui-li-icon">2/15/1991<span class="ui-li-count">12.4</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/aries.png" class="ui-li-icon">2/10/1992<span class="ui-li-count">14.5</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/taurus.png" class="ui-li-icon">5/5/1993<span class="ui-li-count">16.9</span></a></li>
-				        <li data-icon="false" class="loosingbond"><a href="#"><img src="img/sagittarius.png" class="ui-li-icon">88/88/8888 LB<span class="ui-li-count">88.8</span></a></li>
-				        <li data-icon="false"><a href="#"><img src="img/capricorn.png" class="ui-li-icon">12/26/1994</a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/gemini.png" alt="Gemini" class="ui-li-icon">9/1/1976 <span class="ui-li-count">0</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/cancer.png" alt="Cancer" class="ui-li-icon">4/24/1978<span class="ui-li-count">1.3</span></a></li>
+				        <li data-icon="false" data-theme="a" id ="leoleo"><a href="#"><img src="img/leo.png" class="ui-li-icon">5/13/1980<span class="ui-li-count">3.7</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/virgo.png" class="ui-li-icon">12/4/1981<span class="ui-li-count">5.2</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/libra.png" class="ui-li-icon">7/27/1983<span class="ui-li-count">7.8</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/scorpio.png" class="ui-li-icon">3/23/1984<span class="ui-li-count">8.2</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/sagittarius.png" class="ui-li-icon">6/16/1985<span class="ui-li-count">8.8</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/capricorn.png" class="ui-li-icon">6/11/1986<span class="ui-li-count">9.7</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/aquarius.png" class="ui-li-icon">8/29/1988<span class="ui-li-count">10.2</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/pisces.png" class="ui-li-icon">2/15/1991<span class="ui-li-count">12.4</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/aries.png" class="ui-li-icon">2/10/1992<span class="ui-li-count">14.5</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/taurus.png" class="ui-li-icon">5/5/1993<span class="ui-li-count">16.9</span></a></li>
+				        <li data-icon="false" class="loosingbond" data-theme="e"><a href="#"><img src="img/sagittarius.png" class="ui-li-icon">88/88/8888 LB<span class="ui-li-count">88.8</span></a></li>
+				        <li data-icon="false" data-theme="a"><a href="#"><img src="img/capricorn.png" class="ui-li-icon">12/26/1994</a></li>
 				    </ul>
 				</div><!-- /collapsible -->
 				<div data-role="collapsible" data-inset="false" data-theme="b" data-collapsed="true">
@@ -282,7 +320,7 @@
 				        <li><a href="#">2 8/11/2020</a></li>
 				    </ul>
 				</div><!-- /collapsible -->
-				<div data-role="collapsible" data-inset="false" data-theme="b" data-collapsed="false">
+				<div data-role="collapsible" data-inset="false" data-theme="b" data-collapsed="true">
 				    <h3>5 1/8/2021</h3>
 				    <ul data-role="listview">
 				        <li><a href="#">5 1/8/2021</a></li>
@@ -557,6 +595,6 @@
 		<div class="attribution">
 		<p>Made by <a href="mailto:kent@kentbye.com">Kent Bye</a></p>
 		</div>
-
+  </div>
 </body>
 </html>
