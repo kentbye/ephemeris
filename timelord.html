@@ -88,7 +88,7 @@
 				}
 				#zodicalreleasingdata {
 						position: relative; 
-						width: 460px;
+						width: 450px;
 						float: right;
 				}
 				#zodicalreleasingl1l2 {
@@ -100,7 +100,7 @@
 						position: relative; 
 						width: 220px;
 						float: left;
-						margin-left: 45px;
+						margin-left: 41px;
 				}
 				#currentdaycanvas { 
 						position: absolute; 
@@ -214,26 +214,24 @@
 				});
 				// TODO: There's a more efficient way of doing this, but I couldn't figure out how to initialize the collapsibleset
 				$('#expandl3l4').toggle(function() {
-					$('#zodicalreleasingl3l4 .ui-collapsible-themed-content').removeClass('ui-collapsible-themed-content');
+					$('#zodicalreleasingl3l4 .ui-collapsible-themed-content').removeClass('ui-collapsible-collapsed');
 					$('#zodicalreleasingl3l4 .ui-collapsible-heading-collapsed').removeClass('ui-collapsible-heading-collapsed');
 					$('#zodicalreleasingl3l4 .ui-collapsible-heading-toggle').removeClass('ui-icon-plus').addClass('ui-icon-minus');
 					$('#zodicalreleasingl3l4 .ui-collapsible-content').removeClass('ui-collapsible-content-collapsed');
 					$('#expandl3l4').removeClass('ui-icon-carat-d').addClass('ui-icon-carat-u');
 				}, function() {
-					$('#zodicalreleasingl3l4 .ui-collapsible-themed-content').addClass('ui-collapsible-themed-content');
 					$('#zodicalreleasingl3l4 .ui-collapsible-heading-collapsed').addClass('ui-collapsible-heading-collapsed');
 					$('#zodicalreleasingl3l4 .ui-collapsible-heading-toggle').removeClass('ui-icon-minus').addClass('ui-icon-plus');
 					$('#zodicalreleasingl3l4 .ui-collapsible-content').addClass('ui-collapsible-content-collapsed');
 					$('#expandl3l4').removeClass('ui-icon-carat-u').addClass('ui-icon-carat-d');
 				});
 				$('#expandl1l2').toggle(function() {
-					$('#zodicalreleasingl1l2 .ui-collapsible-themed-content').removeClass('ui-collapsible-themed-content');
+					$('#zodicalreleasingl1l2 .ui-collapsible-themed-content').removeClass('ui-collapsible-collapsed');
 					$('#zodicalreleasingl1l2 .ui-collapsible-heading-collapsed').removeClass('ui-collapsible-heading-collapsed');
 					$('#zodicalreleasingl1l2 .ui-collapsible-heading-toggle').removeClass('ui-icon-plus').addClass('ui-icon-minus');
 					$('#zodicalreleasingl1l2 .ui-collapsible-content').removeClass('ui-collapsible-content-collapsed');
 					$('#expandl1l2').removeClass('ui-icon-carat-d').addClass('ui-icon-carat-u');
 				}, function() {
-					$('#zodicalreleasingl1l2 .ui-collapsible-themed-content').addClass('ui-collapsible-themed-content');
 					$('#zodicalreleasingl1l2 .ui-collapsible-heading-collapsed').addClass('ui-collapsible-heading-collapsed');
 					$('#zodicalreleasingl1l2 .ui-collapsible-heading-toggle').removeClass('ui-icon-minus').addClass('ui-icon-plus');
 					$('#zodicalreleasingl1l2 .ui-collapsible-content').addClass('ui-collapsible-content-collapsed');
