@@ -16,17 +16,18 @@ var L1pixelsPerYear = 25;
 var $signColor = [
   "", // ZERO POINT
 	"#cc0052", 
-	"#08b6b6",
 	"#ff9900",
-	"#cc0052", 
 	"#08b6b6",
+	"#cc0052", 
 	"#ff9900",
-	"#cc0052", 
 	"#08b6b6",
+	"#cc0052", 
 	"#ff9900",
-	"#cc0052", 
 	"#08b6b6",
-	"#ff9900"
+	"#cc0052", 
+	"#ff9900",
+	"#08b6b6"
+
 ];
 
 var signNames = [
@@ -45,6 +46,32 @@ var signNames = [
 	"Pisces"
 ];
 
+var timelordImageArray = new Array();
+timelordImageArray[0] = "";
+timelordImageArray[1] = new Image();
+timelordImageArray[1].src =	"timelord_assets/aries.png";
+timelordImageArray[2] = new Image();
+timelordImageArray[2].src =	"timelord_assets/taurus.png";
+timelordImageArray[3] = new Image();
+timelordImageArray[3].src =	"timelord_assets/gemini.png";
+timelordImageArray[4] = new Image();
+timelordImageArray[4].src =	"timelord_assets/cancer.png";
+timelordImageArray[5] = new Image();
+timelordImageArray[5].src =	"timelord_assets/leo.png";
+timelordImageArray[6] = new Image();
+timelordImageArray[6].src =	"timelord_assets/virgo.png";
+timelordImageArray[7] = new Image();
+timelordImageArray[7].src =	"timelord_assets/libra.png";
+timelordImageArray[8] = new Image();
+timelordImageArray[8].src =	"timelord_assets/scorpio.png";
+timelordImageArray[9] = new Image();
+timelordImageArray[9].src =	"timelord_assets/sagittarius.png";  
+timelordImageArray[10] = new Image();
+timelordImageArray[10].src =	"timelord_assets/capricorn.png";
+timelordImageArray[11] = new Image();
+timelordImageArray[11].src =	"timelord_assets/aquarius.png";
+timelordImageArray[12] = new Image();
+timelordImageArray[12].src =	"timelord_assets/pisces.png";
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
@@ -261,11 +288,15 @@ $ns.drawZodicalReleasing = function () {
 	
 	L2pixelsPerYear = 3;
 	
+	
 	while (cumulativeTime < 2505) {
 	  ctx.save();
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
 	  ctx.fillRect(20,cumulativeTime, 161, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
+    
+	  ctx.drawImage(timelordImageArray[L1currentPeriod], 25, cumulativeTime+2);
+	  
 		ctx.restore();
 	
 		L2cumulativeTime = cumulativeTime;

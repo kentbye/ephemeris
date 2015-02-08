@@ -103,31 +103,3 @@ $ns.zodicalReleasing = function (inputDate) {
   
 }
 
-// $("#zodicalreleasing").html("test");
-
-
-/*
-function getList(item, $list) {
-
-    if($.isArray(item)){
-        $.each(item, function (key, value) {
-            getList(value, $list);
-        });
-        return;
-    }
-
-    if (item) {
-        var $li = $('<li />');
-        if (item.name) {
-            $li.append($('<a href="#">' + item.name + '</a>'));
-        }
-        if (item.child && item.child.length) {
-            var $sublist = $("<ul/>");
-            getList(item.child, $sublist)
-            $li.append($sublist);
-        }
-        $list.append($li)
-    }
-}
-*/
-
