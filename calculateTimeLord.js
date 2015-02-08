@@ -3,7 +3,6 @@ var $transitPlanets;
 var $transitInputDate;
 var $natalInputDate;
 var cusp = Array();
-var houseSystem;
 var calculateHouses;
 var latitude;
 var longitude;
@@ -29,6 +28,22 @@ var $signColor = [
 	"#ff9900"
 ];
 
+var signNames = [
+  "", // ZERO POINT
+	"Aries", 
+	"Taurus",
+	"Gemini",
+	"Cancer", 
+	"Leo",
+	"Virgo",
+	"Libra", 
+	"Scorpio",
+	"Sagittarius",
+	"Capricorn", 
+	"Aquarius",
+	"Pisces"
+];
+
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
@@ -37,7 +52,41 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 	
 	$transitInputDate = $e.inputTime("transit");
 	$natalInputDate = $e.inputTime("natal");
+	
+	// HIDE Form elements
+	var houseSystem = document.getElementById("housesystem");
+  var unknowntimeCheckBox = document.getElementById("unknowntime");
+  var city = document.getElementById("city");
+  var latitude = document.getElementById("latitude");
+  var longitude = document.getElementById("longitude");
+  var transitmonthfield = document.getElementById("transitmonthfield")
+  var transitdayfield = document.getElementById("transitdayfield")
+  var transityearfield = document.getElementById("transityearfield");
+  var transithourfield = document.getElementById("transithourfield");
+  var transitminutefield = document.getElementById("transitminutefield");
+  var transitsecondfield = document.getElementById("transitsecondfield");
+  
+	houseSystem.style.visibility = "hidden";
+	unknowntimeCheckBox.style.visibility = "hidden";
+	city.style.visibility = "hidden";
+	latitude.style.visibility = "hidden";
+	longitude.style.visibility = "hidden";
+	transitmonthfield.style.visibility = "hidden";
+	transitdayfield.style.visibility = "hidden";
+	transityearfield.style.visibility = "hidden";
+	transithourfield.style.visibility = "hidden";
+	transitminutefield.style.visibility = "hidden";
+	transitsecondfield.style.visibility = "hidden";
 
+  // Populate the Sign dropdown
+  var releasingFromSign = document.getElementById("releasingfrom");
+  for(var i=1; i<13; i++) {
+      var signOption = document.createElement("option");
+      signOption.textContent = signNames[i];
+      signOption.value = i;
+      releasingFromSign.appendChild(signOption);
+  }
+	
 	// If there is an unknown time checkbox marked, then don't calculate houses and set global flag
 	if (document.getElementById("unknowntime").checked) {
 		calculateHouses = false;
@@ -65,6 +114,7 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 	  createCookie('natalhours',$natalInputDate.hours,30);
 	  createCookie('natalminutes',$natalInputDate.minutes,30);
 	  createCookie('natalseconds',$natalInputDate.seconds,30);
+	  createCookie('releasingfrom',releasingFromSign.value,30);
 	  if (calculateHouses) {
 			createCookie('housesystem',houseSystem,30);
 			createCookie('citystate',citystate,30);
@@ -198,7 +248,13 @@ $ns.drawZodicalReleasing = function () {
 	var pixelsPerYear;
 	var L2currentPeriod;
 	cumulativeTime = 0;
-	L1currentPeriod = 11;
+	
+	if (getCookieValue("releasingfrom")) {
+		L1currentPeriod = getCookieValue("releasingfrom");
+	} else {
+		L1currentPeriod = 1;
+	}
+	
 	L1pixelsPerYear = 25;
 	L2pixelsPerYear = 3;
 	
@@ -206,7 +262,7 @@ $ns.drawZodicalReleasing = function () {
 	  ctx.save();
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
-	  ctx.fillRect(10,cumulativeTime, 230, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
+	  ctx.fillRect(10,cumulativeTime, 220, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
 		ctx.restore();
 	
 		L2cumulativeTime = cumulativeTime;
@@ -218,8 +274,7 @@ $ns.drawZodicalReleasing = function () {
 		  ctx.save();
 			ctx.beginPath();
 		  ctx.fillStyle = $signColor[L2currentPeriod];
-		  ctx.fillRect(240,L2cumulativeTime, 460, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
-		  console.log(240,L2cumulativeTime, 460, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
+		  ctx.fillRect(235,L2cumulativeTime, 450, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
 			ctx.restore();
 		
 		  L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear;

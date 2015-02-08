@@ -50,6 +50,7 @@
 				#datewrapper {
 						width: 430px;
 				}
+				
 				.attribution {
 						width: 430px;
 				}
@@ -61,6 +62,10 @@
 						height: 460px; 
 						width: 460px;
 				}
+				#container, #latlong, #chartcanvas, #transitcanvas, #natalcanvas, #cityinput {
+						display: none;
+				}
+
 				#chartcanvas { 
 						z-index: 0;
 				}
@@ -76,31 +81,22 @@
 						left: 0px; 
 						z-index: 2;
 				}
+				
 				#transitingaspects {
 						height: 310px;
 						margin-top: 10px;
 				}
-				#graphicalephemeris {
-						position: relative; 
-						height: 770px; 
-						width: 460px;
-						float: right;
+				#transitingaspects {
+						display: none;
 				}
-				#zodicalreleasingdata {
+				#zodicalreleasingdatal3 {
+						width: 450px;
+				}
+
+				#zodicalreleasingdatal3 {
 						position: relative; 
 						width: 450px;
 						float: right;
-				}
-				#zodicalreleasingl1l2 {
-						position: relative; 
-						width: 170px;
-						float: left;
-				}
-				#zodicalreleasingl3l4 {
-						position: relative; 
-						width: 220px;
-						float: left;
-						margin-left: 41px;
 				}
 				#currentdaycanvas { 
 						position: absolute; 
@@ -131,6 +127,7 @@
         	margin-top: 2px;
         	margin-bottom: -5px;
         }
+        
 
 			
 		</style>
@@ -195,7 +192,7 @@
 			$(document).ready(function() {
 				$('#search').click(function() {
 					$("#search").prop('value', 'Searching...');
-					$.getJSON('http://ws.geonames.org/searchJSON?q='+$('#city').val()+'&maxRows=1&user=kentbye&style=medium&callback=?',
+					$.getJSON('http://ws.geonames.org/searchJSON?q='+$('#city').val()+'&maxRows=1&user=kentbye2&style=medium&callback=?',
 					function(data){
 						$('#city').val(data.geonames[0].name + ", " + data.geonames[0].adminName1 + ", " +  data.geonames[0].countryCode);
 						$('#latitude').val(data.geonames[0].lat);
@@ -238,6 +235,7 @@
 			};
 		</script>
 
+
 </head>
 <body onload='$e.currenttime ("timelord")'>
   <div data-role="page" id="home">
@@ -255,27 +253,24 @@
 		</div>
 
 		<div id="datewrapper">
-		Enter Transit Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)
+		<!--Enter Transit Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)-->
 			<form id="transitdateinput">
-				<label for = "transitmonthfield">Month</label>
-				<select id = "transitmonthfield">
-				</select>
-				<label for = "transitdayfield">Day</label>
-				<select id = "transitdayfield">
-				</select>
-				<label for = "transityearfield">Year</label>
-				<select id = "transityearfield">
-				</select><br>
-				<label for = "transithourfield">Hour</label>
-				<select id = "transithourfield">
-				</select>
-				<label for = "transitminutefield">Minute</label>
-				<select id = "transitminutefield">
-				</select>
-				<label for = "transitsecondfield">Second</label>
-				<select id = "transitsecondfield">
-				</select><br>
-				<br>Enter Birth Time in <a href="http://www.timeanddate.com/worldclock/converter.html">UTC/GMT</a><br>
+				<!--<label for = "transitmonthfield">Month</label>-->
+				<select id = "transitmonthfield"></select>
+				<!--<label for = "transitdayfield">Day</label>-->
+				<select id = "transitdayfield"></select>
+				<!--<label for = "transityearfield">Year</label>-->
+				<select id = "transityearfield"></select><!--<br>-->
+				<!--<label for = "transithourfield">Hour</label>-->
+				<select id = "transithourfield"></select>
+				<!--<label for = "transitminutefield">Minute</label>-->
+				<select id = "transitminutefield"></select>
+				<!--<label for = "transitsecondfield">Second</label>-->
+				<select id = "transitsecondfield"></select><!--<br>-->
+
+
+				<br>
+				Enter Birth Time <!--in <a href="http://www.timeanddate.com/worldclock/converter.html">UTC/GMT</a>--><br>
 				<label for = "natalmonthfield">Month</label>
 				<select id = "natalmonthfield">
 				</select>
@@ -294,30 +289,36 @@
 				<label for = "natalsecondfield">Second</label>
 				<select id = "natalsecondfield">
 				</select><br>
-				<label for = "housesystem">House System</label>
 				<select id = "housesystem">
-				<input type="checkbox" id="unknowntime">Unknown Time
+				<input type="checkbox" id="unknowntime">
 				</select>
 				<div id="cityinput"><label for="city">City, State</label>
 				<input id="city" name="city" type="text" onfocus="$e.disableSpacebarAnimate(false)" onfocus="$e.disableSpacebarAnimate(true)">
 				</div>
-				<div id="debug"></div>
+				<div id="releasingfromdropdowns">
+					<p><label for="releasingfrom">Release from (Spirit)</label></p>
+					<select id = "releasingfrom">
+				</div>
 				<div id="latlong">
-					<input id="search" type="button" value="Look up GPS of City" />
-					<p><label for="Latitude">Latitude</label>
-					<input id="latitude" name="latitude" type="text"></p>
-					<p><label for="longitude">Longitude</label>
-					<input id="longitude" name="longitude" type="text"></p>
+					<!--<input id="search" type="button" value="Look up GPS of City" />-->
+					<!--<p><label for="Latitude">Latitude</label>-->
+					<input id="latitude" name="latitude" type="text"><!--</p>-->
+					<!--<p><label for="longitude">Longitude</label>-->
+					<input id="longitude" name="longitude" type="text"><!--</p>-->
 				</div>
 			</form>
-		<p>
-			 <input type='button' value='Calculate Planetary Positions' onclick='$e.calculateTimeLord (true, true)'>
-		</p>
+			<p>
+				<input type='button' value='Release!' onclick='$e.calculateTimeLord (true, true)'>
+			</p>
+		</div>
+
+		<div id="datewrapperhidden">
 		</div>
 
 		
+		
 		<div class="attribution">
-		<p>Made by <a href="mailto:kent@kentbye.com">Kent Bye</a></p>
+		<p>Made by <a href="mailto:kent@kentbye.com">Kent Bye</a> & <a href="http://jennzahrt.com"<>Jenn Zahrt</a></p>
 		</div>
   </div>
 </body>
