@@ -11,6 +11,7 @@ var nextPhase;
 var startDate;
 var startDateEpoch;
 var oneDay;
+var L1pixelsPerYear = 25;
 
 var $signColor = [
   "", // ZERO POINT
@@ -179,6 +180,42 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 
   // Show Zodical releasing
   $e.zodicalReleasing($natalInputDate);
+  
+
+  // Draw degree tick marks every 5 years
+  var ctx = document.getElementById('zodicalreleasing').getContext('2d');
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1;
+  ctx.save();
+  ctx.lineWidth = 0.5;
+  for (var i = 0; i < 19; i++) {
+    ctx.beginPath();
+    ctx.moveTo(12, L1pixelsPerYear*5*i);
+    ctx.lineTo(20, L1pixelsPerYear*5*i);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(460, L1pixelsPerYear*5*i);
+    ctx.lineTo(460-10, L1pixelsPerYear*5*i);
+    ctx.stroke();
+    ctx.fillText(i*5, 0, L1pixelsPerYear*5*i+4);
+  }
+  ctx.restore();
+
+  // Draw degree tick marks every 1 year
+  ctx.save();
+  ctx.lineWidth = 0.25;
+  for (var i = 0; i < 90; i++) {
+    ctx.beginPath();
+    ctx.moveTo(15, L1pixelsPerYear*i);
+    ctx.lineTo(20, L1pixelsPerYear*i);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(455, L1pixelsPerYear*i);
+    ctx.lineTo(455-5, L1pixelsPerYear*i);
+    ctx.stroke();
+
+  }
+  ctx.restore();
 	
 };
 
@@ -212,7 +249,7 @@ $ns.drawZodicalReleasing = function () {
 	var currentPeriod;
 	var previousPeriod;
 	var cumulativeTime;
-	var pixelsPerYear;
+
 	var L2currentPeriod;
 	cumulativeTime = 0;
 	
@@ -222,14 +259,13 @@ $ns.drawZodicalReleasing = function () {
 		L1currentPeriod = 1;
 	}
 	
-	L1pixelsPerYear = 25;
 	L2pixelsPerYear = 3;
 	
-	while (cumulativeTime < 2310) {
+	while (cumulativeTime < 2255) {
 	  ctx.save();
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
-	  ctx.fillRect(10,cumulativeTime, 161, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
+	  ctx.fillRect(20,cumulativeTime, 161, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
 		ctx.restore();
 	
 		L2cumulativeTime = cumulativeTime;
@@ -241,7 +277,7 @@ $ns.drawZodicalReleasing = function () {
 		  ctx.save();
 			ctx.beginPath();
 		  ctx.fillStyle = $signColor[L2currentPeriod];
-		  ctx.fillRect(176,L2cumulativeTime, 450, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
+		  ctx.fillRect(186,L2cumulativeTime, 264, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
 			ctx.restore();
 		
 		  L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear;
