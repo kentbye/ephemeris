@@ -361,6 +361,12 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		  ctx.drawImage(timelordImageArray[L2currentPeriod], 191, L2cumulativeTime+1, 16, 16);
 		  if (showLoosingIcon) {
 		  	ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
+		  	
+		  	ctx.globalAlpha = 0.5;
+		  	ctx.fillStyle = "#6600cc";
+		  	//ctx.fillStyle = "black";
+		  	ctx.fillRect(20,L2cumulativeTime-1, 430, 3);
+		  	ctx.globalAlpha = 1;
 		  	showLoosingIcon = false;
 		  }
 		  ctx.fillStyle = "black";
