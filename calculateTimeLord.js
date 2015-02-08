@@ -321,8 +321,11 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		L1currentPeriod = 1;
 	}
 	
+	var initialPass = true;
+	
 	L2pixelsPerYear = 3;
 	var L1currentTime = new Date(birthTime.getTime());
+	
 	
 	while (cumulativeTime < 2505) {
 	  ctx.save();
@@ -341,32 +344,54 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	  cumulativeTime = cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear;
 	  L2currentPeriod = L1currentPeriod;
 	  var L2currentTime = new Date(L1currentTime.getTime());
-	  
+
+	  var L2Loosing = L1currentPeriod;
+	  initialPass = true;
+	  var showLoosingIcon = false;
+
 		while (L2cumulativeTime < cumulativeTime) {
 		  ctx.save();
 			ctx.beginPath();
 		  ctx.fillStyle = $signColor[L2currentPeriod];
 		  ctx.fillRect(188,L2cumulativeTime, 262, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
 		  ctx.drawImage(timelordImageArray[L2currentPeriod], 191, L2cumulativeTime+1, 16, 16);
+		  if (showLoosingIcon) {
+		  	ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
+		  	showLoosingIcon = false;
+		  }
 		  ctx.fillStyle = "black";
 		  ctx.font = '13px Helvetica';
 	    ctx.fillText(L2currentTime.getMonth() + 1 +"/"+ L2currentTime.getDate() +"/"+ L2currentTime.getFullYear(), 210, L2cumulativeTime+14);
-			ctx.restore();
+	    ctx.restore();
+
 
 		  L2currentTime.setTime(L2currentTime.getTime() + $planetaryPeriod[L2currentPeriod][2]);
 		  L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear;
 
-		  
 		  L2currentPeriod++;
 		  if (L2currentPeriod > 12) {L2currentPeriod = 1;}
+
+		  if (initialPass) { 
+				initialPass = false;
+			} else {
+	    	if (L2currentPeriod == L2Loosing) {
+		      // TODO: Store the loosing the bond trigger within the data array
+		      ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
+		      L2currentPeriod = L2currentPeriod + 6;
+		      if (L2currentPeriod > 12) {
+			      L2currentPeriod = L2currentPeriod - 12;  
+			    }
+			    initialPass = true;
+			    showLoosingIcon = true;
+	      }
+	    }
+
 	  }
 	  
 	  L1currentTime.setTime(L1currentTime.getTime() + $planetaryPeriod[L1currentPeriod][1]);
 
-
 	  L1currentPeriod++;
 	  if (L1currentPeriod > 12) {L1currentPeriod = 1;}
+	  
   }
-	
-
 }
