@@ -8,7 +8,7 @@ var currentDayMarker;
   
 // Draw a 90-degree graphical ephemeris after calculating 7 months of outer planet positions
 $ns.drawEphemeris = function () {
-  var monthfield = document.getElementById("transitmonthfield")
+  var monthfield = document.getElementById("transitmonthfield");
   var yearfield = document.getElementById("transityearfield");
   var monthMarker = new Array();
   var monthLabel = new Array();

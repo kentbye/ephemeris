@@ -9,6 +9,26 @@ var latitude;
 var longitude;
 var $illuminatedFraction;
 var nextPhase;
+var startDate;
+var startDateEpoch;
+var oneDay;
+
+var $signColor = [
+  "", // ZERO POINT
+	"#cc0052", 
+	"#08b6b6",
+	"#ff9900",
+	"#cc0052", 
+	"#08b6b6",
+	"#ff9900",
+	"#cc0052", 
+	"#08b6b6",
+	"#ff9900",
+	"#cc0052", 
+	"#08b6b6",
+	"#ff9900"
+];
+
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
@@ -137,7 +157,80 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
   	//$e.drawEphemeris ();
   }
 
+  $e.drawZodicalReleasing();
+
+
   // Show Zodical releasing
   $e.zodicalReleasing($natalInputDate);
 	
 };
+
+$ns.drawZodicalReleasing = function () {
+	var ctx = document.getElementById('zodicalreleasing').getContext('2d');
+	// Clear out the chartcanvas for multiple executions
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	ctx.clearRect(0, 0, zodicalreleasing.width, zodicalreleasing.height);
+	ctx.globalAlpha = 1;
+
+	var showCurrentDay = false;
+	if (showCurrentDay) {	
+		var monthfield = document.getElementById("transitmonthfield");
+	  var yearfield = document.getElementById("transityearfield");
+		// This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
+	  startDate = new Date(parseInt(monthfield.value)+"/"+1+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
+		// Calculate the number of days from the start date to the current date in the date field
+	  startDateEpoch = startDate.getTime();
+	  oneDay=1000*60*60*24;
+		
+		// Draw the current day line
+		currentDayMarker = Math.round(($transitInputDate.epoch*1000 - startDateEpoch)/oneDay); 
+		ctx.globalAlpha = 0.2;
+		ctx.save();
+		ctx.beginPath();
+		ctx.fillStyle = "red";
+		ctx.fillRect(currentDayMarker*1.75-1.75,-30,3.5,770);
+		ctx.restore();
+	}
+	// Color in L1
+	var currentPeriod;
+	var previousPeriod;
+	var cumulativeTime;
+	var pixelsPerYear;
+	var L2currentPeriod;
+	cumulativeTime = 0;
+	L1currentPeriod = 1;
+	L1pixelsPerYear = 25;
+	L2pixelsPerYear = 3;
+	
+	while (cumulativeTime < 770) {
+	  ctx.save();
+		ctx.beginPath();
+	  ctx.fillStyle = $signColor[L1currentPeriod];
+	  ctx.fillRect(10,cumulativeTime, 230, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
+		ctx.restore();
+	
+		L2cumulativeTime = cumulativeTime;
+	  cumulativeTime = cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear;
+	  
+	  L2currentPeriod = L1currentPeriod;
+	  
+		while (L2cumulativeTime < cumulativeTime) {
+		  ctx.save();
+			ctx.beginPath();
+		  ctx.fillStyle = $signColor[L2currentPeriod];
+		  ctx.fillRect(240,L2cumulativeTime, 460, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
+		  console.log(240,L2cumulativeTime, 460, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
+			ctx.restore();
+		
+		  L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear;
+		  
+		  L2currentPeriod++;
+		  if (L2currentPeriod > 12) {L2currentPeriod = 1;}
+	  }
+
+	  L1currentPeriod++;
+	  if (L1currentPeriod > 12) {L1currentPeriod = 1;}
+  }
+	
+
+}

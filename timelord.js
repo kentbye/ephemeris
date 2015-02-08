@@ -38,8 +38,9 @@ $ns.zodicalReleasing = function (inputDate) {
   $L1Date[1] = new Date();
   $L1Date[1] = birthTime;
   $L1Sign[1] = releasingSign;
-  console.log("L1 BEGIN");
-  console.log("L1 " + $L1Sign[1] + " " + $L1Date[1]);
+  // LOG
+  // console.log("L1 BEGIN");
+  // console.log("L1 " + $L1Sign[1] + " " + $L1Date[1]);
 
 
   // Calculate 10 L1 periods
@@ -82,19 +83,22 @@ $ns.zodicalReleasing = function (inputDate) {
       }
       // TODO: Add logic so that the 2nd return to Capricorn doesn't trigger this loosing the bond logic
       if (L2releasingSign == $L1Sign[x-1]) {
-        console.log("Loosing the Bond!!!")
+        // LOG
+        // console.log("Loosing the Bond!!!")
         L2releasingSign = L2releasingSign + 6;
         if (L2releasingSign > 12) {
 	        L2releasingSign = 1;  
         }
       }
       $L2Sign[L2Counter] = L2releasingSign;
-      console.log("** L2 " + $L2Sign[L2Counter] + " " + $L2Date[L2Counter]);
+      // LOG
+      // console.log("** L2 " + $L2Sign[L2Counter] + " " + $L2Date[L2Counter]);
 	    L2Counter++;  
       L2StartDate.setTime(L2StartDate.getTime() + $planetaryPeriod[L2releasingSign][2])
     }
     
-    console.log("L1 " + $L1Sign[x] + " " + $L1Date[x]);
+    // LOG
+    // console.log("L1 " + $L1Sign[x] + " " + $L1Date[x]);
   }
   
 }
