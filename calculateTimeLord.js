@@ -188,7 +188,7 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
   ctx.globalAlpha = 1;
   ctx.save();
   ctx.lineWidth = 0.5;
-  for (var i = 0; i < 19; i++) {
+  for (var i = 0; i < 21; i++) {
     ctx.beginPath();
     ctx.moveTo(12, L1pixelsPerYear*5*i);
     ctx.lineTo(20, L1pixelsPerYear*5*i);
@@ -204,7 +204,7 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
   // Draw degree tick marks every 1 year
   ctx.save();
   ctx.lineWidth = 0.25;
-  for (var i = 0; i < 90; i++) {
+  for (var i = 0; i < 100; i++) {
     ctx.beginPath();
     ctx.moveTo(15, L1pixelsPerYear*i);
     ctx.lineTo(20, L1pixelsPerYear*i);
@@ -261,7 +261,7 @@ $ns.drawZodicalReleasing = function () {
 	
 	L2pixelsPerYear = 3;
 	
-	while (cumulativeTime < 2255) {
+	while (cumulativeTime < 2505) {
 	  ctx.save();
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
