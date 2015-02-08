@@ -46,6 +46,23 @@ var signNames = [
 	"Pisces"
 ];
 
+// Set the Planetary Years from Aries/Mars being 15 Egyptian years to Pisces/Jupiter being 12 Egyptian years
+var $planetaryPeriodYears = new Array();
+$planetaryPeriodYears = Array(0, 15, 8, 20, 25, 19, 20, 8, 15, 12, 27, 30, 12);
+
+// Calculate four levels planetary periods in milliseconds
+var $planetaryPeriod = new Array();
+for(var sign=1; sign<13; sign++) {
+  $planetaryPeriod[sign] = new Array();
+  // Convert years to milliseconds: 360 days/year, 24 hours/day, 3600 seconds/hour & 1000 milliseconds/second
+  $planetaryPeriod[sign][1] = $planetaryPeriodYears[sign] * 360 * 24 * 3600000;
+  for(var level=2; level<5; level++) {
+    // The next level is 1/12 the previous level
+    $planetaryPeriod[sign][level] = $planetaryPeriod[sign][level-1]/12;
+  }  
+}
+
+// Set up the image glyphs for the signs and special moments
 var timelordImageArray = new Array();
 timelordImageArray[0] = "";
 timelordImageArray[1] = new Image();
@@ -72,6 +89,16 @@ timelordImageArray[11] = new Image();
 timelordImageArray[11].src =	"timelord_assets/aquarius.png";
 timelordImageArray[12] = new Image();
 timelordImageArray[12].src =	"timelord_assets/pisces.png";
+timelordImageArray[13] = new Image();
+timelordImageArray[13].src =	"timelord_assets/loosingthebond.png";
+timelordImageArray[14] = new Image();
+timelordImageArray[14].src =	"timelord_assets/majorpeak.png";
+timelordImageArray[15] = new Image();
+timelordImageArray[15].src =	"timelord_assets/malefic.png";
+timelordImageArray[16] = new Image();
+timelordImageArray[16].src =	"timelord_assets/moderatepeak.png";
+
+
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
@@ -202,11 +229,11 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
   	//$e.drawEphemeris ();
   }
 
-  $e.drawZodicalReleasing();
+  $e.drawZodicalReleasing($natalInputDate);
 
 
   // Show Zodical releasing
-  $e.zodicalReleasing($natalInputDate);
+  //$e.zodicalReleasing($natalInputDate);
   
 
   // Draw degree tick marks every 5 years
@@ -246,13 +273,19 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 	
 };
 
-$ns.drawZodicalReleasing = function () {
+$ns.drawZodicalReleasing = function (inputDate) {
+
+	var utcSeconds = inputDate.epoch;
+	var birthTime = new Date(0);
+	birthTime.setUTCSeconds(utcSeconds);
+
 	var ctx = document.getElementById('zodicalreleasing').getContext('2d');
 	// Clear out the chartcanvas for multiple executions
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, zodicalreleasing.width, zodicalreleasing.height);
 	ctx.globalAlpha = 1;
 
+	// TODO: Change this code around to show the current date
 	var showCurrentDay = false;
 	if (showCurrentDay) {	
 		var monthfield = document.getElementById("transitmonthfield");
@@ -272,6 +305,8 @@ $ns.drawZodicalReleasing = function () {
 		ctx.fillRect(currentDayMarker*1.75-1.75,-30,3.5,770);
 		ctx.restore();
 	}
+	
+	
 	// Color in L1
 	var currentPeriod;
 	var previousPeriod;
@@ -287,35 +322,47 @@ $ns.drawZodicalReleasing = function () {
 	}
 	
 	L2pixelsPerYear = 3;
-	
+	var L1currentTime = new Date(birthTime.getTime());
 	
 	while (cumulativeTime < 2505) {
 	  ctx.save();
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
-	  ctx.fillRect(20,cumulativeTime, 161, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
+	  ctx.fillRect(20,cumulativeTime, 164, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
 	  ctx.drawImage(timelordImageArray[L1currentPeriod], 25, cumulativeTime+2);
-	  
+
+	  // Calculate the new time
+	  ctx.fillStyle = "black";
+	  ctx.font = '20px Helvetica';
+	  ctx.fillText(L1currentTime.getMonth() + 1 +"/"+ L1currentTime.getDate() +"/"+ L1currentTime.getFullYear(), 55, cumulativeTime+26);
 		ctx.restore();
-	
+
 		L2cumulativeTime = cumulativeTime;
 	  cumulativeTime = cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear;
-	  
 	  L2currentPeriod = L1currentPeriod;
+	  var L2currentTime = new Date(L1currentTime.getTime());
 	  
 		while (L2cumulativeTime < cumulativeTime) {
 		  ctx.save();
 			ctx.beginPath();
 		  ctx.fillStyle = $signColor[L2currentPeriod];
-		  ctx.fillRect(186,L2cumulativeTime, 264, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
+		  ctx.fillRect(188,L2cumulativeTime, 262, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
 		  ctx.drawImage(timelordImageArray[L2currentPeriod], 191, L2cumulativeTime+1, 16, 16);
+		  ctx.fillStyle = "black";
+		  ctx.font = '13px Helvetica';
+	    ctx.fillText(L2currentTime.getMonth() + 1 +"/"+ L2currentTime.getDate() +"/"+ L2currentTime.getFullYear(), 210, L2cumulativeTime+14);
 			ctx.restore();
-		
+
+		  L2currentTime.setTime(L2currentTime.getTime() + $planetaryPeriod[L2currentPeriod][2]);
 		  L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear;
+
 		  
 		  L2currentPeriod++;
 		  if (L2currentPeriod > 12) {L2currentPeriod = 1;}
 	  }
+	  
+	  L1currentTime.setTime(L1currentTime.getTime() + $planetaryPeriod[L1currentPeriod][1]);
+
 
 	  L1currentPeriod++;
 	  if (L1currentPeriod > 12) {L1currentPeriod = 1;}

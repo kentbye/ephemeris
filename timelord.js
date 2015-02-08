@@ -1,27 +1,12 @@
-var $planetaryPeriodYears = new Array();
-var $planetaryPeriod = new Array();
 var $L1Date = new Array();
 var $L2Date = new Array();
 var $L1Sign = new Array();
 var $L2Sign = new Array();
 var L2StartDate = new Date();
 
-// Set the Planetary Years from Aries/Mars being 15 years to Pisces/Jupiter being 12 years
-$planetaryPeriodYears = Array(0, 15, 8, 20, 25, 19, 20, 8, 15, 12, 27, 30, 12);
-
-// Calculate four levels planetary periods in milliseconds
-for(var sign=1; sign<13; sign++) {
-  $planetaryPeriod[sign] = new Array();
-  // Convert years to milliseconds: 360 days/year, 24 hours/day, 3600 seconds/hour & 1000 milliseconds/second
-  $planetaryPeriod[sign][1] = $planetaryPeriodYears[sign] * 360 * 24 * 3600000;
-  for(var level=2; level<5; level++) {
-    // The next level is 1/12 the previous level
-    $planetaryPeriod[sign][level] = $planetaryPeriod[sign][level-1]/12;
-  }  
-}
-
 // Calculate the Zodical Releasing Dates given an input date (and a starting time)
 $ns.zodicalReleasing = function (inputDate) {
+  console.log(inputDate);
   var utcSeconds = inputDate.epoch;
   var birthTime = new Date(0);
   var L2Counter = 1;

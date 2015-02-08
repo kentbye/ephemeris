@@ -158,8 +158,7 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
     housesystem.value = 'P';
 
     // Change this flag to the latest cookies added, otherwise Chrome will give a TypeError
-    areCookiesSet = getCookieValue("releasingfrom");
-    console.log(document.cookie);
+    areCookiesSet = getCookieValue("natalyear");
 
     // If cookies are set, then populate the text fields with the saved values
     if (areCookiesSet) {
