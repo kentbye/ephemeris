@@ -322,6 +322,9 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	}
 	
 	var initialPass = true;
+	var firstLoosing = true;
+	var showLoosingIcon = false;
+
 	
 	L2pixelsPerYear = 3;
 	var L1currentTime = new Date(birthTime.getTime());
@@ -347,7 +350,8 @@ $ns.drawZodicalReleasing = function (inputDate) {
 
 	  var L2Loosing = L1currentPeriod;
 	  initialPass = true;
-	  var showLoosingIcon = false;
+	  firstLoosing = true;
+	  showLoosingIcon = false;
 
 		while (L2cumulativeTime < cumulativeTime) {
 		  ctx.save();
@@ -374,15 +378,17 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		  if (initialPass) { 
 				initialPass = false;
 			} else {
-	    	if (L2currentPeriod == L2Loosing) {
-		      // TODO: Store the loosing the bond trigger within the data array
-		      ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
-		      L2currentPeriod = L2currentPeriod + 6;
-		      if (L2currentPeriod > 12) {
-			      L2currentPeriod = L2currentPeriod - 12;  
-			    }
-			    initialPass = true;
-			    showLoosingIcon = true;
+			  if (firstLoosing) {
+		    	if (L2currentPeriod == L2Loosing) {
+			      ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
+			      L2currentPeriod = L2currentPeriod + 6;
+			      if (L2currentPeriod > 12) {
+				      L2currentPeriod = L2currentPeriod - 12;  
+				    }
+				    initialPass = true;
+				    firstLoosing = false;
+				    showLoosingIcon = true;
+		      }
 	      }
 	    }
 
