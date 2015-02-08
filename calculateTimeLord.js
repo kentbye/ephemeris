@@ -294,7 +294,6 @@ $ns.drawZodicalReleasing = function () {
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
 	  ctx.fillRect(20,cumulativeTime, 161, cumulativeTime + $planetaryPeriodYears[L1currentPeriod]*L1pixelsPerYear);
-    
 	  ctx.drawImage(timelordImageArray[L1currentPeriod], 25, cumulativeTime+2);
 	  
 		ctx.restore();
@@ -309,6 +308,7 @@ $ns.drawZodicalReleasing = function () {
 			ctx.beginPath();
 		  ctx.fillStyle = $signColor[L2currentPeriod];
 		  ctx.fillRect(186,L2cumulativeTime, 264, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
+		  ctx.drawImage(timelordImageArray[L2currentPeriod], 191, L2cumulativeTime+1, 16, 16);
 			ctx.restore();
 		
 		  L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear;
