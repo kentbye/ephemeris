@@ -198,11 +198,11 @@ $ns.drawZodicalReleasing = function () {
 	var pixelsPerYear;
 	var L2currentPeriod;
 	cumulativeTime = 0;
-	L1currentPeriod = 1;
+	L1currentPeriod = 11;
 	L1pixelsPerYear = 25;
 	L2pixelsPerYear = 3;
 	
-	while (cumulativeTime < 770) {
+	while (cumulativeTime < 2310) {
 	  ctx.save();
 		ctx.beginPath();
 	  ctx.fillStyle = $signColor[L1currentPeriod];
