@@ -164,7 +164,7 @@ $ns.currenttime = function (sourcePageFlag) {
       natalminutefield.value = 0;
       natalsecondfield.value = 0;
       // Set the default house system to Placidus
-      housesystem.value = 'P';
+      housesystem.value = 'W';
       unknowntimeCheckBox.checked = false;
       city.value = "";
       // Set a default Lat/Long of New York City

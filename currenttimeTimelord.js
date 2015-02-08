@@ -155,11 +155,12 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
     houseOption4.text = "Whole Sign";
     houseOption4.value = 'W';
     housesystem.options.add(houseOption4);
-    
     housesystem.value = 'P';
 
     // Change this flag to the latest cookies added, otherwise Chrome will give a TypeError
-    areCookiesSet = getCookieValue("housesystem");
+    areCookiesSet = getCookieValue("releasingfrom");
+    console.log(document.cookie);
+
     // If cookies are set, then populate the text fields with the saved values
     if (areCookiesSet) {
       natalmonthfield.value = getCookieValue("natalmonth");
@@ -169,6 +170,7 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
       natalminutefield.value = getCookieValue("natalminutes");
       natalsecondfield.value = getCookieValue("natalseconds");
       housesystem.value = getCookieValue("housesystem");
+      releasingFromSign.value = getCookieValue("releasingfrom");
       var timeFlag = getCookieValue("unknowntime");
       if (timeFlag == 'true') {
       	unknowntimeCheckBox.checked = true;
@@ -186,8 +188,10 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
       natalhourfield.value = 0;
       natalminutefield.value = 0;
       natalsecondfield.value = 0;
+      releasingFromSign.value = 1;
+
       // Set the default house system to Placidus
-      housesystem.value = 'P';
+      housesystem.value = 'W';
       unknowntimeCheckBox.checked = false;
       city.value = "";
       // Set a default Lat/Long of New York City
