@@ -32,7 +32,7 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
 		// HIDE Form elements
 		housesystem.style.visibility = "hidden";
 		unknowntimeCheckBox.style.visibility = "hidden";
-		city.style.visibility = "hidden";
+/* 		city.style.visibility = "hidden"; */
 		latitude.style.visibility = "hidden";
 		longitude.style.visibility = "hidden";
 		transitmonthfield.style.visibility = "hidden";
@@ -42,16 +42,31 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
 		transitminutefield.style.visibility = "hidden";
 		transitsecondfield.style.visibility = "hidden";
 	
-	  // Populate the Sign dropdown
+	  // Populate the releasing & fortune sign dropdown
 	  var releasingFromSign = document.getElementById("releasingfrom");
+	  var fortuneSign = document.getElementById("fortune");
 	  for(var i=1; i<13; i++) {
 	      var signOption = document.createElement("option");
 	      signOption.textContent = signNames[i];
 	      signOption.value = i;
 	      releasingFromSign.appendChild(signOption);
+	      var fortuneSignOption = document.createElement("option");
+	      fortuneSignOption.textContent = signNames[i];
+	      fortuneSignOption.value = i;
+	      fortuneSign.appendChild(fortuneSignOption);	      
 	  }
 
-
+	  var chartSect = document.getElementById("chartsect");
+	  var sectOptions = Array();
+	  sectOptions[1] = "Day Chart";
+	  sectOptions[2] = "Night Chart";
+	  for(var i=1; i<3; i++) {
+	      var sectOption = document.createElement("option");
+	      sectOption.textContent = sectOptions[i];
+	      sectOption.value = i;
+	      chartSect.appendChild(sectOption);
+	  }
+	  
     // Populate the month dropdown
     for(var i=1; i<13; i++) {
         var monthOption = document.createElement("option");
@@ -170,13 +185,15 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
       natalsecondfield.value = getCookieValue("natalseconds");
       housesystem.value = getCookieValue("housesystem");
       releasingFromSign.value = getCookieValue("releasingfrom");
+      fortuneSign.value = getCookieValue("fortune");
+      chartSect.value = getCookieValue("chartsect");
       var timeFlag = getCookieValue("unknowntime");
       if (timeFlag == 'true') {
       	unknowntimeCheckBox.checked = true;
       } else {
 	      unknowntimeCheckBox.checked = false;
       }
-      city.value = getCookieValue("citystate");
+/*       city.value = getCookieValue("citystate"); */
       latitude.value = getCookieValue("latitude");
       longitude.value = getCookieValue("longitude");
 
@@ -188,11 +205,14 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
       natalminutefield.value = 0;
       natalsecondfield.value = 0;
       releasingFromSign.value = 1;
+      fortuneSign.value = 1;
+      chartSect.value = 1;
+
 
       // Set the default house system to Placidus
       housesystem.value = 'W';
       unknowntimeCheckBox.checked = false;
-      city.value = "";
+/*       city.value = ""; */
       // Set a default Lat/Long of New York City
       latitude.value = "";
       longitude.value = "";

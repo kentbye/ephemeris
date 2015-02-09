@@ -105,6 +105,8 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 	var $transitPlanetLongitude = Array();
 	var $natalPlanetLongitude = Array();
   var releasingFromSign = document.getElementById("releasingfrom");
+  var fortuneSign = document.getElementById("fortune");
+  var chartSectOption = document.getElementById("chartsect");
 	
 	$transitInputDate = $e.inputTime("transit");
 	$natalInputDate = $e.inputTime("natal");
@@ -118,7 +120,7 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
   
 	if (calculateHouses) {
 		houseSystem = document.getElementById("housesystem").value;
-		citystate = document.getElementById("city").value;
+/* 		citystate = document.getElementById("city").value; */
 		latitude = parseFloat(document.getElementById("latitude").value);
 		longitude = parseFloat(document.getElementById("longitude").value);
 	}
@@ -137,9 +139,11 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 	  createCookie('natalminutes',$natalInputDate.minutes,30);
 	  createCookie('natalseconds',$natalInputDate.seconds,30);
 	  createCookie('releasingfrom',releasingFromSign.value,30);
+	  createCookie('fortune',fortuneSign.value,30);
+	  createCookie('chartsect',chartSectOption.value,30);
 	  if (calculateHouses) {
 			createCookie('housesystem',houseSystem,30);
-			createCookie('citystate',citystate,30);
+/* 			createCookie('citystate',citystate,30); */
 			createCookie('latitude',latitude,30);
 			createCookie('longitude',longitude,30);
 		}

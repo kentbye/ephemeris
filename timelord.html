@@ -120,19 +120,6 @@
 				#levelheader {
 					margin-left: -18px;
 				}
-        #expandl1l2 {
-          float: left;
-	        width: 170px;
-	        margin-top: 2px;
-	        margin-bottom: -5px;
-        }
-        #expandl3l4 {
-        	width: 220px;
-        	float: right;
-        	margin-top: 2px;
-        	margin-bottom: -5px;
-        }
-        
 
 			
 		</style>
@@ -193,6 +180,7 @@
 		<script type='text/javascript' src='astronomy/moshier/plan404/pluto.js' charset='utf-8'></script>
 		<script type='text/javascript' src='shortcut.js' charset='utf-8'></script>
 
+<!--
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#search').click(function() {
@@ -206,6 +194,7 @@
 					});
 				});
 			});
+-->
 			
 		</script>
 
@@ -277,7 +266,7 @@
 
 
 				<br>
-				Enter Birth Time <!--in <a href="http://www.timeanddate.com/worldclock/converter.html">UTC/GMT</a>--><br>
+				Enter Birth Time in <a href="http://www.timeanddate.com/worldclock/converter.html">UTC/GMT</a><br>
 				<label for = "natalmonthfield">Month</label>
 				<select id = "natalmonthfield">
 				</select>
@@ -299,13 +288,25 @@
 				<select id = "housesystem">
 				<input type="checkbox" id="unknowntime">
 				</select>
+<!--
 				<div id="cityinput"><label for="city">City, State</label>
 				<input id="city" name="city" type="text" onfocus="$e.disableSpacebarAnimate(false)" onfocus="$e.disableSpacebarAnimate(true)">
 				</div>
+-->
 				<div id="releasingfromdropdowns">
-					<p><label for="releasingfrom">Release from (Spirit)</label></p>
-					<select id = "releasingfrom">
+					<p><label for="releasingfrom">Release from (Spirit)</label></div>
+					<select id = "releasingfrom"></select></p>
 				</div>
+				<div id="fortunedropdown">
+					<label for="fortune">Sign of Fortune</label><br>
+					<select id = "fortune"></select>
+				</div>
+				<div id="sectdropdown">
+					<label for="chartsect">Sect?</label><br>
+					<select id = "chartsect"></select>
+				</div>
+
+
 				<div id="latlong">
 					<!--<input id="search" type="button" value="Look up GPS of City" />-->
 					<!--<p><label for="Latitude">Latitude</label>-->
@@ -314,6 +315,7 @@
 					<input id="longitude" name="longitude" type="text"><!--</p>-->
 				</div>
 			</form>
+			
 			<p>
 				<input type='button' value='Release!' onclick='$e.calculateTimeLord (true, true)'>
 			</p>
