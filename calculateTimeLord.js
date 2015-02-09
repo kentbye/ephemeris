@@ -342,9 +342,9 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		  if (showLoosingIcon) {
 		  	ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
 		  	
-		  	ctx.globalAlpha = 0.5;
+		  	ctx.globalAlpha = 0.75;
 		  	ctx.fillStyle = "#6600cc";
-		  	ctx.fillRect(20,L2cumulativeTime-1, 430, 3);
+		  	ctx.fillRect(170,L2cumulativeTime-1, 430, 3);
 		  	ctx.globalAlpha = 1;
 		  	showLoosingIcon = false;
 		  }
@@ -359,7 +359,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
 
 		  L2currentPeriod++;
 		  if (L2currentPeriod > 12) {L2currentPeriod = 1;}
-
+		  // Loosing the Bond!	
 		  if (initialPass) { 
 				initialPass = false;
 			} else {
@@ -370,7 +370,6 @@ $ns.drawZodicalReleasing = function (inputDate) {
 			      if (L2currentPeriod > 12) {
 				      L2currentPeriod = L2currentPeriod - 12;  
 				    }
-				    initialPass = true;
 				    firstLoosing = false;
 				    showLoosingIcon = true;
 		      }
@@ -405,5 +404,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		ctx.fillRect(-5,currentDayMarker-1,470,3);
 		ctx.restore();
 	}
+  //console.log(signDegree = Math.floor($transitPlanets["mercury"] % 30));
+
 
 }
