@@ -404,7 +404,19 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		ctx.fillRect(-5,currentDayMarker-1,470,3);
 		ctx.restore();
 	}
-  //console.log(signDegree = Math.floor($transitPlanets["mercury"] % 30));
 
+	//signDegree = Math.floor($transitPlanets["mercury"] % 30)
+	
+	if (false) {
+		// Jupiter
+		// Math.floor($natalPlanets["jupiter"] / 30)+1
+		// Mars
+		// Math.floor($natalPlanets["mars"] / 30)+1
+	} else {
+		// Venus
+		// Math.floor($natalPlanets["venus"] / 30)+1
+		// Saturn
+		// Math.floor($natalPlanets["saturn"] / 30)+1
+	}
 
 }

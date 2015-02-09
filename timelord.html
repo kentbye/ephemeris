@@ -61,8 +61,15 @@
 						position: relative; 
 						height: 460px; 
 						width: 460px;
+						float: right;
+
 				}
+/*
 				#container, #latlong, #chartcanvas, #transitcanvas, #natalcanvas, #cityinput, #transitingaspects {
+						display: none;
+				}
+*/
+				#latlong, #cityinput {
 						display: none;
 				}
 
@@ -85,6 +92,7 @@
 				#transitingaspects {
 						height: 310px;
 						margin-top: 10px;
+						float: right;
 				}
 				#zodicalreleasingdatal3 {
 						width: 450px;
@@ -236,18 +244,20 @@
 </head>
 <body onload='$e.currenttimeTimelord ("timelord")'>
   <div data-role="page" id="home">
-		<div id="zodicalreleasingdata">
-				<canvas id="zodicalreleasing" width = "460" height = "2505" ></canvas>
-		</div>		
-    
 		<div id="container">
 			<canvas id="chartcanvas" width = "460" height = "460" ></canvas>
 			<canvas id="transitcanvas" width = "460" height = "460" ></canvas>
 			<canvas id="natalcanvas" width = "460" height = "460" ></canvas>
+			<div id="transitingaspects">
+				<canvas id="aspectcanvas" width = "460" height = "310" ></canvas>
+				</div>
 		</div>
-		<div id="transitingaspects">
-			<canvas id="aspectcanvas" width = "460" height = "310" ></canvas>
-		</div>
+
+
+		<div id="zodicalreleasingdata">
+				<canvas id="zodicalreleasing" width = "460" height = "2505" ></canvas>
+		</div>		
+    
 
 		<div id="datewrapper">
 		<!--Enter Transit Date (<a href="http://www.timeanddate.com/worldclock/converter.html">UTC time</a>)-->
