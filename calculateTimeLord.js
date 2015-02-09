@@ -97,6 +97,10 @@ timelordImageArray[14].src = "timelord_assets/majorpeak.png";
 timelordImageArray[15] = new Image();
 timelordImageArray[15].src = "timelord_assets/moderatepeak.png";
 
+var sectImageArray = [];
+sectImageArray[1] = new Image();
+sectImageArray[2] = new Image();
+
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
     var $transitPlanetLongitude = [];
@@ -274,9 +278,9 @@ $ns.drawZodicalReleasing = function (inputDate) {
     var chartSect;
 	
 	if (getCookieValue("releasingfrom")) {
-		L1currentPeriod = getCookieValue("releasingfrom");
-        fortuneSign = getCookieValue("fortune");
-        chartSect = getCookieValue("chartsect");
+		L1currentPeriod = parseInt(getCookieValue("releasingfrom"));
+        fortuneSign = parseInt(getCookieValue("fortune"));
+        chartSect = parseInt(getCookieValue("chartsect"));
 	} else {
 		L1currentPeriod = 1;
         fortuneSign = 1;
@@ -291,37 +295,31 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	var L1currentTime = new Date(birthTime.getTime());
 
     // Set the out of sect malific and in sect benefic flags
-    var sectImageArray = [];
     var beneficSign = 0;
     var maleficSign = 0;
     if (parseInt(chartSect) == 1) {
         // Set the benefic to Jupiter
-        sectImageArray[1] = new Image();
         sectImageArray[1].src =	"timelord_assets/jupiter.png";
         beneficSign = Math.floor($natalPlanets["jupiter"] / 30) + 1;
         
         // Set the malefic to Mars
-        sectImageArray[2] = new Image();
         sectImageArray[2].src =	"timelord_assets/mars.png";
         maleficSign = Math.floor($natalPlanets["mars"] / 30) + 1;
     } else {
         // Set the benefic to Venus
-        sectImageArray[1] = new Image();
         sectImageArray[1].src =	"timelord_assets/venus.png";
         beneficSign = Math.floor($natalPlanets["venus"] / 30) + 1;
         
         // Set the malefic to Saturn
-        sectImageArray[2] = new Image();
         sectImageArray[2].src =	"timelord_assets/saturn.png";
         maleficSign = Math.floor($natalPlanets["saturn"] / 30) + 1;
     }
-    console.log(beneficSign, maleficSign);
     
-    var tenthFromFortune = parseInt(fortuneSign) + 9;
+    var tenthFromFortune = fortuneSign + 9;
     if (tenthFromFortune > 12) {tenthFromFortune = tenthFromFortune - 12;}
-    var fourthFromFortune = parseInt(fortuneSign) + 3;
+    var fourthFromFortune = fortuneSign + 3;
     if (fourthFromFortune > 12) {fourthFromFortune = fourthFromFortune - 12;}
-    var seventhFromFortune = parseInt(fortuneSign) + 6;
+    var seventhFromFortune = fortuneSign + 6;
     if (seventhFromFortune > 12) {seventhFromFortune = seventhFromFortune - 12;}
 
 	while (cumulativeTime < 2505) {
@@ -337,11 +335,9 @@ $ns.drawZodicalReleasing = function (inputDate) {
         
         // Add in the benefic or malefic signs
         if (L1currentPeriod == beneficSign) {
-            console.log(beneficSign, sectImageArray[1], 25, cumulativeTime + 32);
             ctx.drawImage(sectImageArray[1], 25, cumulativeTime + 32);
         }
         if (L1currentPeriod == maleficSign) {
-            console.log(maleficSign, sectImageArray[2], 25, cumulativeTime+62);
             ctx.drawImage(sectImageArray[2], 25, cumulativeTime + 62);
         }
         if (L1currentPeriod == tenthFromFortune || L1currentPeriod == fortuneSign) {
@@ -388,15 +384,16 @@ $ns.drawZodicalReleasing = function (inputDate) {
                 showLoosingIcon = false;
             }
             if (L2currentPeriod == beneficSign) {
+                console.log(beneficSign, sectImageArray[1], 430-40, L2cumulativeTime + 1, 16, 16);
                 ctx.drawImage(sectImageArray[1], 430-40, L2cumulativeTime + 1, 16, 16);
             }
             if (L2currentPeriod == maleficSign) {
                 ctx.drawImage(sectImageArray[2], 430-60, L2cumulativeTime + 1, 16, 16);
             }
-            if (L2currentPeriod == tenthFromFortune || L1currentPeriod == fortuneSign) {
+            if (L2currentPeriod == tenthFromFortune || L2currentPeriod == fortuneSign) {
                 ctx.drawImage(timelordImageArray[14], 430-20, L2cumulativeTime + 1, 16, 16);
             }
-            if (L2currentPeriod == fourthFromFortune || L1currentPeriod == seventhFromFortune) {
+            if (L2currentPeriod == fourthFromFortune || L2currentPeriod == seventhFromFortune) {
                 ctx.drawImage(timelordImageArray[15], 430-20, L2cumulativeTime + 1, 16, 16);
             }
             
