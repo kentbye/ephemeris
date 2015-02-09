@@ -395,7 +395,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		// This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
 	  startDate = new Date(parseInt(monthfield.value)+"/"+parseInt(dayfield.value)+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
 		// Calculate the number of days from the start date to the current date in the date field
-		currentDayMarker = ((startDate.getTime()-birthTime.getTime())/31557600000)*L1pixelsPerYear;
+		currentDayMarker = ((startDate.getTime()-birthTime.getTime())/31104000000)*L1pixelsPerYear;
 		
 		// Draw the current day line
 		ctx.globalAlpha = 0.6;
