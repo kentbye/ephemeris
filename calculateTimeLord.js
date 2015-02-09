@@ -2,7 +2,7 @@ var $natalPlanets;
 var $transitPlanets;
 var $transitInputDate;
 var $natalInputDate;
-var cusp = Array();
+var cusp = [];
 var calculateHouses;
 var latitude;
 var longitude;
@@ -14,56 +14,57 @@ var oneDay;
 var L1pixelsPerYear = 25;
 
 var $signColor = [
-  "", // ZERO POINT
-	"#cc0052", 
-	"#ff9900",
-	"#08b6b6",
-	"#cc0052", 
-	"#ff9900",
-	"#08b6b6",
-	"#cc0052", 
-	"#ff9900",
-	"#08b6b6",
-	"#cc0052", 
-	"#ff9900",
-	"#08b6b6"
-
-];
+        "", // ZERO POINT
+	    "#cc0052",
+	    "#ff9900",
+	    "#08b6b6",
+	    "#cc0052",
+	    "#ff9900",
+	    "#08b6b6",
+	    "#cc0052",
+	    "#ff9900",
+	    "#08b6b6",
+	    "#cc0052",
+	    "#ff9900",
+	    "#08b6b6"
+    ];
 
 var signNames = [
-  "", // ZERO POINT
-	"Aries", 
-	"Taurus",
-	"Gemini",
-	"Cancer", 
-	"Leo",
-	"Virgo",
-	"Libra", 
-	"Scorpio",
-	"Sagittarius",
-	"Capricorn", 
-	"Aquarius",
-	"Pisces"
-];
+        "", // ZERO POINT
+	    "Aries",
+	    "Taurus",
+        "Gemini",
+	    "Cancer",
+	    "Leo",
+	    "Virgo",
+	    "Libra",
+	    "Scorpio",
+	    "Sagittarius",
+	    "Capricorn",
+	    "Aquarius",
+	    "Pisces"
+    ];
 
 // Set the Planetary Years from Aries/Mars being 15 Egyptian years to Pisces/Jupiter being 12 Egyptian years
-var $planetaryPeriodYears = new Array();
-$planetaryPeriodYears = Array(0, 15, 8, 20, 25, 19, 20, 8, 15, 12, 27, 30, 12);
+var $planetaryPeriodYears = [];
+$planetaryPeriodYears = [0, 15, 8, 20, 25, 19, 20, 8, 15, 12, 27, 30, 12];
 
 // Calculate four levels planetary periods in milliseconds
-var $planetaryPeriod = new Array();
-for(var sign=1; sign<13; sign++) {
-  $planetaryPeriod[sign] = new Array();
-  // Convert years to milliseconds: 360 days/year, 24 hours/day, 3600 seconds/hour & 1000 milliseconds/second
-  $planetaryPeriod[sign][1] = $planetaryPeriodYears[sign] * 360 * 24 * 3600000;
-  for(var level=2; level<5; level++) {
-    // The next level is 1/12 the previous level
-    $planetaryPeriod[sign][level] = $planetaryPeriod[sign][level-1]/12;
-  }  
+var $planetaryPeriod = [];
+var sign;
+var level;
+for (sign = 1; sign < 13; sign++) {
+    $planetaryPeriod[sign] = [];
+    // Convert years to milliseconds: 360 days/year, 24 hours/day, 3600 seconds/hour & 1000 milliseconds/second
+    $planetaryPeriod[sign][1] = $planetaryPeriodYears[sign] * 360 * 24 * 3600000;
+    for (level = 2; level < 5; level++) {
+        // The next level is 1/12 the previous level
+        $planetaryPeriod[sign][level] = $planetaryPeriod[sign][level - 1] / 12;
+    }
 }
 
 // Set up the image glyphs for the signs and special moments
-var timelordImageArray = new Array();
+var timelordImageArray = [];
 timelordImageArray[0] = "";
 timelordImageArray[1] = new Image();
 timelordImageArray[1].src =	"timelord_assets/aries.png";
@@ -82,7 +83,7 @@ timelordImageArray[7].src =	"timelord_assets/libra.png";
 timelordImageArray[8] = new Image();
 timelordImageArray[8].src =	"timelord_assets/scorpio.png";
 timelordImageArray[9] = new Image();
-timelordImageArray[9].src =	"timelord_assets/sagittarius.png";  
+timelordImageArray[9].src =	"timelord_assets/sagittarius.png";
 timelordImageArray[10] = new Image();
 timelordImageArray[10].src =	"timelord_assets/capricorn.png";
 timelordImageArray[11] = new Image();
@@ -102,8 +103,8 @@ timelordImageArray[16].src =	"timelord_assets/moderatepeak.png";
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
-	var $transitPlanetLongitude = Array();
-	var $natalPlanetLongitude = Array();
+	var $transitPlanetLongitude = [];
+	var $natalPlanetLongitude = [];
   var releasingFromSign = document.getElementById("releasingfrom");
   var fortuneSign = document.getElementById("fortune");
   var chartSectOption = document.getElementById("chartsect");
