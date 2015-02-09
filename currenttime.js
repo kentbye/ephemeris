@@ -29,6 +29,8 @@ $ns.currenttime = function (sourcePageFlag) {
 
     var leadingZero = "";
 
+    city.style.visibility = "hidden";
+    
     // Populate the month dropdown
     for(var i=1; i<13; i++) {
         var monthOption = document.createElement("option");

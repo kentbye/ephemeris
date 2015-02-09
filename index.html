@@ -169,6 +169,7 @@
 		<script type='text/javascript' src='astronomy/moshier/plan404/neptune.js' charset='utf-8'></script>
 		<script type='text/javascript' src='astronomy/moshier/plan404/pluto.js' charset='utf-8'></script>
 		<script type='text/javascript' src='shortcut.js' charset='utf-8'></script>
+<!--
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#search').click(function() {
@@ -183,6 +184,7 @@
 				});
 			});
 		</script>
+-->
 		
 		
 		<script type="text/javascript">
@@ -296,12 +298,14 @@
 				<select id = "housesystem">
 				<input type="checkbox" id="unknowntime">Unknown Time
 				</select>
-				<div id="cityinput"><label for="city">City, State</label>
-				<input id="city" name="city" type="text" onfocus="$e.disableSpacebarAnimate(false)" onfocus="$e.disableSpacebarAnimate(true)">
+				<div id="cityinput">
+<!--                <label for="city">City, State</label>-->
+<!--				<input id="city" name="city" type="text" onfocus="$e.disableSpacebarAnimate(false)" onfocus="$e.disableSpacebarAnimate(true)">-->
+                <input id="city" name="city" type="text">
 				</div>
 				<div id="debug"></div>
 				<div id="latlong">
-					<input id="search" type="button" value="Look up GPS of City" />
+<!--					<input id="search" type="button" value="Look up GPS of City" />-->
 					<p><label for="Latitude">Latitude</label>
 					<input id="latitude" name="latitude" type="text"></p>
 					<p><label for="longitude">Longitude</label>
