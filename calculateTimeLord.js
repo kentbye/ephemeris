@@ -12,6 +12,9 @@ var startDate;
 var startDateEpoch;
 var oneDay;
 var L1pixelsPerYear = 25;
+var chartSectOption = document.getElementById("chartsect");
+var beneficSign = 0;
+var maleficSign = 0;
 
 var $signColor = [
         "", // ZERO POINT
@@ -100,6 +103,20 @@ timelordImageArray[15].src = "timelord_assets/moderatepeak.png";
 var sectImageArray = [];
 sectImageArray[1] = new Image();
 sectImageArray[2] = new Image();
+if (parseInt(chartSectOption) == 1) {
+    // Set the benefic to Jupiter
+    sectImageArray[1].src =	"timelord_assets/jupiter.png";
+
+    // Set the malefic to Mars
+    sectImageArray[2].src =	"timelord_assets/mars.png";
+} else {
+    // Set the benefic to Venus
+    sectImageArray[1].src =	"timelord_assets/venus.png";
+
+    // Set the malefic to Saturn
+    sectImageArray[2].src =	"timelord_assets/saturn.png";
+}
+
 
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
@@ -107,7 +124,6 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 	var $natalPlanetLongitude = [];
     var releasingFromSign = document.getElementById("releasingfrom");
     var fortuneSign = document.getElementById("fortune");
-    var chartSectOption = document.getElementById("chartsect");
 	
 	$transitInputDate = $e.inputTime("transit");
 	$natalInputDate = $e.inputTime("natal");
@@ -293,27 +309,21 @@ $ns.drawZodicalReleasing = function (inputDate) {
 
 	L2pixelsPerYear = 3;
 	var L1currentTime = new Date(birthTime.getTime());
-
-    // Set the out of sect malific and in sect benefic flags
-    var beneficSign = 0;
-    var maleficSign = 0;
+    
     if (parseInt(chartSect) == 1) {
         // Set the benefic to Jupiter
-        sectImageArray[1].src =	"timelord_assets/jupiter.png";
         beneficSign = Math.floor($natalPlanets["jupiter"] / 30) + 1;
-        
+
         // Set the malefic to Mars
-        sectImageArray[2].src =	"timelord_assets/mars.png";
         maleficSign = Math.floor($natalPlanets["mars"] / 30) + 1;
     } else {
         // Set the benefic to Venus
-        sectImageArray[1].src =	"timelord_assets/venus.png";
         beneficSign = Math.floor($natalPlanets["venus"] / 30) + 1;
-        
+
         // Set the malefic to Saturn
-        sectImageArray[2].src =	"timelord_assets/saturn.png";
         maleficSign = Math.floor($natalPlanets["saturn"] / 30) + 1;
     }
+    
     
     var tenthFromFortune = fortuneSign + 9;
     if (tenthFromFortune > 12) {tenthFromFortune = tenthFromFortune - 12;}
@@ -384,7 +394,6 @@ $ns.drawZodicalReleasing = function (inputDate) {
                 showLoosingIcon = false;
             }
             if (L2currentPeriod == beneficSign) {
-                console.log(beneficSign, sectImageArray[1], 430-40, L2cumulativeTime + 1, 16, 16);
                 ctx.drawImage(sectImageArray[1], 430-40, L2cumulativeTime + 1, 16, 16);
             }
             if (L2currentPeriod == maleficSign) {
