@@ -334,21 +334,21 @@ $ns.drawZodicalReleasing = function (inputDate) {
         // Add in the sign glyph
         ctx.drawImage(timelordImageArray[L1currentPeriod], 25, cumulativeTime+2);
         
-//        // Add in the benefic or malefic signs
-//        if (L1currentPeriod == beneficSign) {
-//            if (chartSect = 1) {
-//                ctx.drawImage(sectImageArray[1], 25, cumulativeTime + 32);
-//            } else {
-//                ctx.drawImage(sectImageArray[3], 25, cumulativeTime + 32);
-//            }
-//        }
-//        if (L1currentPeriod == maleficSign) {
-//            if (chartSect = 1) {
-//                ctx.drawImage(sectImageArray[2], 25, cumulativeTime + 62);
-//            } else {
-//                ctx.drawImage(sectImageArray[4], 25, cumulativeTime + 62);
-//            }
-//        }
+        // Add in the benefic or malefic signs
+        if (L1currentPeriod == beneficSign) {
+            if (chartSect == 1) {
+                ctx.drawImage(sectImageArray[1], 25, cumulativeTime + 32);
+            } else {
+                ctx.drawImage(sectImageArray[3], 25, cumulativeTime + 32);
+            }
+        }
+        if (L1currentPeriod == maleficSign) {
+            if (chartSect == 1) {
+                ctx.drawImage(sectImageArray[2], 25, cumulativeTime + 62);
+            } else {
+                ctx.drawImage(sectImageArray[4], 25, cumulativeTime + 62);
+            }
+        }
         if (L1currentPeriod == tenthFromFortune || L1currentPeriod == fortuneSign) {
             ctx.drawImage(timelordImageArray[14], 25, cumulativeTime+92);
         }
@@ -392,12 +392,21 @@ $ns.drawZodicalReleasing = function (inputDate) {
                 ctx.globalAlpha = 1;
                 showLoosingIcon = false;
             }
-//            if (L2currentPeriod == beneficSign) {
-//                ctx.drawImage(sectImageArray[1], 430-40, L2cumulativeTime + 1, 16, 16);
-//            }
-//            if (L2currentPeriod == maleficSign) {
-//                ctx.drawImage(sectImageArray[2], 430-60, L2cumulativeTime + 1, 16, 16);
-//            }
+            if (L2currentPeriod == beneficSign) {
+                if (chartSect == 1) {
+                    ctx.drawImage(sectImageArray[1], 430-40, L2cumulativeTime + 1, 16, 16);
+                } else {
+                    ctx.drawImage(sectImageArray[3], 430-40, L2cumulativeTime + 1, 16, 16);
+                }
+            }
+            if (L2currentPeriod == maleficSign) {
+                if (chartSect == 1) {
+                    ctx.drawImage(sectImageArray[2], 430-60, L2cumulativeTime + 1, 16, 16);
+                } else {
+                    ctx.drawImage(sectImageArray[4], 430-60, L2cumulativeTime + 1, 16, 16);
+                }
+            }
+
             if (L2currentPeriod == tenthFromFortune || L2currentPeriod == fortuneSign) {
                 ctx.drawImage(timelordImageArray[14], 430-20, L2cumulativeTime + 1, 16, 16);
             }
