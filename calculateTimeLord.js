@@ -231,11 +231,9 @@ $ns.calculateTimeLord = function (setCookieFlag, initialRenderingFlag) {
 
   $e.drawZodicalReleasing($natalInputDate);
 
-
   // Show Zodical releasing
   //$e.zodicalReleasing($natalInputDate);
   
-
   // Draw degree tick marks every 5 years
   var ctx = document.getElementById('zodicalreleasing').getContext('2d');
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -285,28 +283,6 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	ctx.clearRect(0, 0, zodicalreleasing.width, zodicalreleasing.height);
 	ctx.globalAlpha = 1;
 
-	// TODO: Change this code around to show the current date
-	var showCurrentDay = false;
-	if (showCurrentDay) {	
-		var monthfield = document.getElementById("transitmonthfield");
-	  var yearfield = document.getElementById("transityearfield");
-		// This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
-	  startDate = new Date(parseInt(monthfield.value)+"/"+1+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
-		// Calculate the number of days from the start date to the current date in the date field
-	  startDateEpoch = startDate.getTime();
-	  oneDay=1000*60*60*24;
-		
-		// Draw the current day line
-		currentDayMarker = Math.round(($transitInputDate.epoch*1000 - startDateEpoch)/oneDay); 
-		ctx.globalAlpha = 0.2;
-		ctx.save();
-		ctx.beginPath();
-		ctx.fillStyle = "red";
-		ctx.fillRect(currentDayMarker*1.75-1.75,-30,3.5,770);
-		ctx.restore();
-	}
-	
-	
 	// Color in L1
 	var currentPeriod;
 	var previousPeriod;
@@ -328,7 +304,6 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	
 	L2pixelsPerYear = 3;
 	var L1currentTime = new Date(birthTime.getTime());
-	
 	
 	while (cumulativeTime < 2505) {
 	  ctx.save();
@@ -358,13 +333,17 @@ $ns.drawZodicalReleasing = function (inputDate) {
 			ctx.beginPath();
 		  ctx.fillStyle = $signColor[L2currentPeriod];
 		  ctx.fillRect(188,L2cumulativeTime, 262, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod]/12)*L1pixelsPerYear);
-		  ctx.drawImage(timelordImageArray[L2currentPeriod], 191, L2cumulativeTime+1, 16, 16);
+    	if (initialPass) { 
+		  	ctx.fillStyle = "black";
+		  	ctx.fillRect(20,L2cumulativeTime, 430, 2);
+		  }
+
+		  ctx.drawImage(timelordImageArray[L2currentPeriod], 191, L2cumulativeTime+2, 16, 16);
 		  if (showLoosingIcon) {
 		  	ctx.drawImage(timelordImageArray[13], 430, L2cumulativeTime+1, 16, 16);
 		  	
 		  	ctx.globalAlpha = 0.5;
 		  	ctx.fillStyle = "#6600cc";
-		  	//ctx.fillStyle = "black";
 		  	ctx.fillRect(20,L2cumulativeTime-1, 430, 3);
 		  	ctx.globalAlpha = 1;
 		  	showLoosingIcon = false;
@@ -406,4 +385,25 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	  if (L1currentPeriod > 12) {L1currentPeriod = 1;}
 	  
   }
+	
+	// TODO: Change this code around to show the current date
+	var showCurrentDay = true;
+	if (showCurrentDay) {	
+		var monthfield = document.getElementById("transitmonthfield");
+	  var yearfield = document.getElementById("transityearfield");
+	  var dayfield = document.getElementById("transitdayfield");
+		// This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
+	  startDate = new Date(parseInt(monthfield.value)+"/"+parseInt(dayfield.value)+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
+		// Calculate the number of days from the start date to the current date in the date field
+		currentDayMarker = ((startDate.getTime()-birthTime.getTime())/31557600000)*L1pixelsPerYear;
+		
+		// Draw the current day line
+		ctx.globalAlpha = 0.6;
+		ctx.save();
+		ctx.beginPath();
+		ctx.fillStyle = "red";
+		ctx.fillRect(-5,currentDayMarker-1,470,3);
+		ctx.restore();
+	}
+
 }
