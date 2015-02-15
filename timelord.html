@@ -228,6 +228,16 @@
 				}
 			};
 		</script>
+		<script>
+			$(document).ready(function() {
+				$('#zodicalreleasingdata').click(function (e) {
+		    var clickedX = e.pageX - this.offsetLeft;
+		    var clickedY = e.pageY - this.offsetTop;
+		    alert(clickedX + ' ' + clickedY);
+		
+		    });
+		  });
+		</script>
 
 
 </head>

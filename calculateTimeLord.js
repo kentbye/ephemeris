@@ -375,7 +375,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
 
 		while (L2cumulativeTime < cumulativeTime) {
             ctx.save();
-			ctx.beginPath();
+            ctx.beginPath();
             ctx.fillStyle = $signColor[L2currentPeriod];
             ctx.fillRect(188, L2cumulativeTime, 262, L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod] / 12) * L1pixelsPerYear);
             if (initialPass) { 
