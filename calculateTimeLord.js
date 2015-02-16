@@ -12,7 +12,7 @@ var startDate;
 var startDateEpoch;
 var oneDay;
 var L1pixelsPerYear = 25;
-var L3pixelsPerYear = 83.5;
+var L3pixelsPerYear = 100;
 var beneficSign = 0;
 var maleficSign = 0;
 var zodicalReleasingArray = new Array();
@@ -485,12 +485,13 @@ $ns.drawZodicalReleasing = function (inputDate) {
 }
 
 $ns.displayL3FromClick = function (clickedY) {
+		$e.calculateTimeLord (true, true);
 		var counter = 1;
 		while (clickedY > zodicalReleasingArray[counter][2]) {
 			  counter++;
 		}
+/* 		console.log(clickedY); */
 		$e.drawL3L4periods(counter-1);
-
 }
 
 
@@ -661,14 +662,15 @@ $ns.drawL3L4periods = function (counter) {
     ctx.font = '16px Helvetica';
     ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 102, cumulativeTime + 26);
     ctx.restore();
+    var L2PixelBoxHeight = $planetaryPeriodYears[L2currentPeriod] * L3pixelsPerYear;
 
-	while (cumulativeTime < 2505) {
+	while (cumulativeTime < L2PixelBoxHeight) {
         ctx.save();
         ctx.beginPath();
 
         // Draw the L3 period
         ctx.fillStyle = $signColor[L3currentPeriod];
-        ctx.fillRect(188,cumulativeTime, 262, cumulativeTime + ($planetaryPeriodYears[L3currentPeriod]/12)*L3pixelsPerYear);
+        ctx.fillRect(188,cumulativeTime, 180, cumulativeTime + ($planetaryPeriodYears[L3currentPeriod]/12)*L3pixelsPerYear);
 
         // Add in the sign glyph
         ctx.drawImage(timelordImageArray[L3currentPeriod], 191, cumulativeTime+2, 16, 16);
@@ -676,34 +678,34 @@ $ns.drawL3L4periods = function (counter) {
         // Add in the benefic or malefic signs
         if (L3currentPeriod == beneficSign) {
             if (chartSect == 1) {
-                ctx.drawImage(sectImageArray[1], 430-40, cumulativeTime + 1, 16, 16);
+                ctx.drawImage(sectImageArray[1], 430-120, cumulativeTime + 1, 16, 16);
             } else {
-                ctx.drawImage(sectImageArray[3], 430-40, cumulativeTime + 1, 16, 16);
+                ctx.drawImage(sectImageArray[3], 430-120, cumulativeTime + 1, 16, 16);
             }
         }
         if (L3currentPeriod == maleficSign) {
             if (chartSect == 1) {
-                ctx.drawImage(sectImageArray[2], 430-60, cumulativeTime + 1, 16, 16);
+                ctx.drawImage(sectImageArray[2], 430-140, cumulativeTime + 1, 16, 16);
             } else {
-                ctx.drawImage(sectImageArray[4], 430-60, cumulativeTime + 1, 16, 16);
+                ctx.drawImage(sectImageArray[4], 430-140, cumulativeTime + 1, 16, 16);
             }
         }
         if (L3currentPeriod == tenthFromFortune || L3currentPeriod == fortuneSign) {
-            ctx.drawImage(timelordImageArray[14], 430-20, cumulativeTime+1, 1, 16);
+            ctx.drawImage(timelordImageArray[14], 430-100, cumulativeTime+1, 16, 16);
         }
         if (L3currentPeriod == fourthFromFortune || L3currentPeriod == seventhFromFortune) {
-            ctx.drawImage(timelordImageArray[15], 430-20, cumulativeTime+1, 16, 16);
+            ctx.drawImage(timelordImageArray[15], 430-100, cumulativeTime+1, 16, 16);
         }
     
         // Display the current L3 date
         ctx.fillStyle = "black";
         ctx.font = '13px Helvetica';
         ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 210, cumulativeTime + 14);
-		ctx.restore();
+        ctx.restore();
 
         // Calculate the new for the next L3 period
         L4cumulativeTime = cumulativeTime;
-        cumulativeTime = cumulativeTime + $planetaryPeriodYears[L3currentPeriod] * L3pixelsPerYear;
+        cumulativeTime = cumulativeTime + $planetaryPeriodYears[L3currentPeriod]/12 * L3pixelsPerYear;
         L4currentPeriod = L3currentPeriod;
         var L4currentTime = new Date(L3currentTime.getTime());
 
@@ -712,7 +714,6 @@ $ns.drawL3L4periods = function (counter) {
         firstLoosing = true;
         showLoosingIcon = false;
 
-/*
 		while (L4cumulativeTime < cumulativeTime) {
 						// Store the data for later
 						zodicalReleasingArrayL3[zodicalReleasingCounter] = new Array();
@@ -722,15 +723,15 @@ $ns.drawL3L4periods = function (counter) {
             ctx.save();
             ctx.beginPath();
             ctx.fillStyle = $signColor[L4currentPeriod];
-            ctx.fillRect(188, L4cumulativeTime, 262, L4cumulativeTime + ($planetaryPeriodYears[L4currentPeriod] / 12) * L3pixelsPerYear);
+            ctx.fillRect(372, L4cumulativeTime, 80, L4cumulativeTime + (($planetaryPeriodYears[L4currentPeriod] / 12)/12) * L3pixelsPerYear);
             if (initialPass) { 
                 ctx.fillStyle = "black";
-                ctx.fillRect(20,L4cumulativeTime, 430, 2);
+                ctx.fillRect(188,L4cumulativeTime, 264, 2);
             }
 
-            ctx.drawImage(timelordImageArray[L4currentPeriod], 191, L4cumulativeTime+2, 16, 16);
+            ctx.drawImage(timelordImageArray[L4currentPeriod], 372, L4cumulativeTime+1, 9, 9);
             if (showLoosingIcon) {
-                ctx.drawImage(timelordImageArray[13], 430, L4cumulativeTime + 1, 16, 16);
+                //ctx.drawImage(timelordImageArray[13], 430, L4cumulativeTime + 1, 9, 9);
                 ctx.globalAlpha = 0.75;
                 ctx.fillStyle = "#6600cc";
                 ctx.fillRect(170, L4cumulativeTime - 1, 430, 3);
@@ -739,44 +740,44 @@ $ns.drawL3L4periods = function (counter) {
             }
             if (L4currentPeriod == beneficSign) {
                 if (chartSect == 1) {
-                    ctx.drawImage(sectImageArray[1], 430-40, L4cumulativeTime + 1, 16, 16);
+                    ctx.drawImage(sectImageArray[1], 443-10, L4cumulativeTime + 1, 7, 7);
                 } else {
-                    ctx.drawImage(sectImageArray[3], 430-40, L4cumulativeTime + 1, 16, 16);
+                    ctx.drawImage(sectImageArray[3], 443-10, L4cumulativeTime + 1, 7, 7);
                 }
             }
             if (L4currentPeriod == maleficSign) {
                 if (chartSect == 1) {
-                    ctx.drawImage(sectImageArray[2], 430-60, L4cumulativeTime + 1, 16, 16);
+                    ctx.drawImage(sectImageArray[2], 443-20, L4cumulativeTime + 1, 7, 7);
                 } else {
-                    ctx.drawImage(sectImageArray[4], 430-60, L4cumulativeTime + 1, 16, 16);
+                    ctx.drawImage(sectImageArray[4], 443-20, L4cumulativeTime + 1, 7, 7);
                 }
             }
 
             if (L4currentPeriod == tenthFromFortune || L4currentPeriod == fortuneSign) {
-                ctx.drawImage(timelordImageArray[14], 430-20, L4cumulativeTime + 1, 16, 16);
+                ctx.drawImage(timelordImageArray[14], 443, L4cumulativeTime + 1, 9, 9);
             }
             if (L4currentPeriod == fourthFromFortune || L4currentPeriod == seventhFromFortune) {
-                ctx.drawImage(timelordImageArray[15], 430-20, L4cumulativeTime + 1, 16, 16);
+                ctx.drawImage(timelordImageArray[15], 443, L4cumulativeTime + 1, 9, 9);
             }
             
             ctx.fillStyle = "black";
-            ctx.font = '13px Helvetica';
-            ctx.fillText(L4currentTime.getMonth() + 1 + "/" + L4currentTime.getDate() + "/" + L4currentTime.getFullYear(), 210, L4cumulativeTime + 14);
+            ctx.font = '8px Helvetica';
+            ctx.fillText(L4currentTime.getMonth() + 1 + "/" + L4currentTime.getDate() + "/" + L4currentTime.getFullYear(), 382, L4cumulativeTime+7);
             ctx.restore();
 
             L4currentTime.setTime(L4currentTime.getTime() + $planetaryPeriod[L4currentPeriod][4]);
-            L4cumulativeTime = L4cumulativeTime + ($planetaryPeriodYears[L4currentPeriod] / 12) * L3pixelsPerYear;
+            L4cumulativeTime = L4cumulativeTime + (($planetaryPeriodYears[L4currentPeriod] / 12)/12) * L3pixelsPerYear;
 
             zodicalReleasingCounter++;
             L4currentPeriod++;
             if (L4currentPeriod > 12) {L4currentPeriod = 1;}
             // Loosing the Bond!	
             if (initialPass) { 
-				initialPass = false;
-			} else {
+	            	initialPass = false;
+	          } else {
                 if (firstLoosing) {
                     if (L4currentPeriod == L4Loosing) {
-                        ctx.drawImage(timelordImageArray[13], 430, L4cumulativeTime + 1, 16, 16);
+                        ctx.drawImage(timelordImageArray[13], 450, L4cumulativeTime + 1, 9, 9);
                         L4currentPeriod = L4currentPeriod + 6;
                         if (L4currentPeriod > 12) {
                             L4currentPeriod = L4currentPeriod - 12;
@@ -787,15 +788,19 @@ $ns.drawL3L4periods = function (counter) {
                 }
             }
         }
-*/
-				console.log('BEFORE ' + L3currentTime);
-				console.log($planetaryPeriod[L3currentPeriod][3]);
         L3currentTime.setTime(L3currentTime.getTime() + $planetaryPeriod[L3currentPeriod][3]);
-				console.log('AFTER ' + L3currentTime);
         L3currentPeriod++;
         if (L3currentPeriod > 12) {L3currentPeriod = 1;}
     }
-	
+
+		// Delete extra sections
+		ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, L2PixelBoxHeight, 460, 2500);
+    ctx.restore();
+
+	  
     var monthfield = document.getElementById("transitmonthfield");
     var yearfield = document.getElementById("transityearfield");
     var dayfield = document.getElementById("transitdayfield");
