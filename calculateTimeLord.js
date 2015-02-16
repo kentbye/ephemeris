@@ -495,7 +495,6 @@ $ns.displayL3FromClick = function (clickedY) {
 
 
 $ns.drawL3L4periods = function (counter) {
-
 		// Draw degree tick marks every 5 years
     var ctx = document.getElementById('zodicalreleasingL3').getContext('2d');
     // Clear out the chartcanvas for multiple executions
@@ -514,7 +513,8 @@ $ns.drawL3L4periods = function (counter) {
         ctx.moveTo(460, L3pixelsPerYear * 5 * i);
         ctx.lineTo(460 - 10, L3pixelsPerYear * 5 * i);
         ctx.stroke();
-        ctx.fillText(i * 5, 0, L3pixelsPerYear * 5 * i + 4);
+        // TODO: Fix this to regular years, and then to a more sane decimal increment added to Years Old
+        ctx.fillText(Math.round(((i * 5)/12)*100)/100, 0, L3pixelsPerYear * 5 * i + 4);
     }
     ctx.restore();
     // Draw degree tick marks every 1 year
@@ -531,6 +531,7 @@ $ns.drawL3L4periods = function (counter) {
         ctx.stroke();
     }
     ctx.restore();
+
 
 	ctx.globalAlpha = 1;
 
@@ -552,13 +553,16 @@ $ns.drawL3L4periods = function (counter) {
         chartSect = 1;
 	}
 
-  var L3currentPeriod = zodicalReleasingArray[counter][1];
+  var L1currentPeriod = zodicalReleasingArray[counter][0];
+  var L2currentPeriod = zodicalReleasingArray[counter][1];
+  var L3currentPeriod = L2currentPeriod;
 	var initialPass = true;
 	var firstLoosing = true;
 	var showLoosingIcon = false;
 
 	// L4pixelsPerYear = 3; // TODO: Remove L2pixelsPerYear above?
 	
+	var L2currentTime = new Date(zodicalReleasingArray[counter][4].getTime());
 	var L3currentTime = new Date(zodicalReleasingArray[counter][4].getTime());
     
     if (parseInt(chartSect) == 1) {
@@ -575,6 +579,7 @@ $ns.drawL3L4periods = function (counter) {
         maleficSign = Math.floor($natalPlanets["saturn"] / 30) + 1;
     } 
     
+    
     var tenthFromFortune = fortuneSign + 9;
     if (tenthFromFortune > 12) {tenthFromFortune = tenthFromFortune - 12;}
     var fourthFromFortune = fortuneSign + 3;
@@ -583,45 +588,117 @@ $ns.drawL3L4periods = function (counter) {
     if (seventhFromFortune > 12) {seventhFromFortune = seventhFromFortune - 12;}
 
     var zodicalReleasingCounter = 1;
+
+    ctx.save();
+    ctx.beginPath();
+
+    // Draw the L1 period
+    ctx.fillStyle = $signColor[L1currentPeriod];
+    ctx.fillRect(20,cumulativeTime, 45, cumulativeTime + $planetaryPeriodYears[L2currentPeriod]*L3pixelsPerYear);
+
+
+    // Draw the L2 period
+    ctx.fillStyle = $signColor[L2currentPeriod];
+    ctx.fillRect(70,cumulativeTime, 114, cumulativeTime + $planetaryPeriodYears[L2currentPeriod]*L3pixelsPerYear);
+
+    // Add in the sign glyph for L1
+    ctx.drawImage(timelordImageArray[L1currentPeriod], 25, cumulativeTime+2);
+
+    // Add in the sign glyph for L2
+    ctx.drawImage(timelordImageArray[L2currentPeriod], 75, cumulativeTime+2);
+
     
-    var drawL2 = true;
-	while (drawL2) {
+    // Add in the benefic or malefic signs
+    if (L2currentPeriod == beneficSign) {
+        if (chartSect == 1) {
+            ctx.drawImage(sectImageArray[1], 75, cumulativeTime + 32);
+        } else {
+            ctx.drawImage(sectImageArray[3], 75, cumulativeTime + 32);
+        }
+    }
+    if (L1currentPeriod == beneficSign) {
+        if (chartSect == 1) {
+            ctx.drawImage(sectImageArray[1], 25, cumulativeTime + 32);
+        } else {
+            ctx.drawImage(sectImageArray[3], 25, cumulativeTime + 32);
+        }
+    }
+    if (L2currentPeriod == maleficSign) {
+        if (chartSect == 1) {
+            ctx.drawImage(sectImageArray[2], 75, cumulativeTime + 62);
+        } else {
+            ctx.drawImage(sectImageArray[4], 75, cumulativeTime + 62);
+        }
+    }
+    if (L1currentPeriod == maleficSign) {
+        if (chartSect == 1) {
+            ctx.drawImage(sectImageArray[2], 25, cumulativeTime + 62);
+        } else {
+            ctx.drawImage(sectImageArray[4], 25, cumulativeTime + 62);
+        }
+    }
+
+    if (L2currentPeriod == tenthFromFortune || L2currentPeriod == fortuneSign) {
+        ctx.drawImage(timelordImageArray[14], 75, cumulativeTime+92);
+    }
+    if (L2currentPeriod == fourthFromFortune || L2currentPeriod == seventhFromFortune) {
+        ctx.drawImage(timelordImageArray[15], 75, cumulativeTime+92);
+    }
+    if (L1currentPeriod == tenthFromFortune || L1currentPeriod == fortuneSign) {
+        ctx.drawImage(timelordImageArray[14], 25, cumulativeTime+92);
+    }
+    if (L1currentPeriod == fourthFromFortune || L1currentPeriod == seventhFromFortune) {
+        ctx.drawImage(timelordImageArray[15], 25, cumulativeTime+92);
+    }
+    
+    
+    if (zodicalReleasingArray[counter][3]) {
+        ctx.drawImage(timelordImageArray[13], 75, cumulativeTime+122);
+    }
+
+    // Display the current L2 date
+    ctx.fillStyle = "black";
+    ctx.font = '16px Helvetica';
+    ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 102, cumulativeTime + 26);
+    ctx.restore();
+
+	while (cumulativeTime < 2505) {
         ctx.save();
         ctx.beginPath();
 
         // Draw the L3 period
         ctx.fillStyle = $signColor[L3currentPeriod];
-        ctx.fillRect(20,cumulativeTime, 164, cumulativeTime + $planetaryPeriodYears[L3currentPeriod]*L3pixelsPerYear);
+        ctx.fillRect(188,cumulativeTime, 262, cumulativeTime + ($planetaryPeriodYears[L3currentPeriod]/12)*L3pixelsPerYear);
 
         // Add in the sign glyph
-        ctx.drawImage(timelordImageArray[L3currentPeriod], 25, cumulativeTime+2);
+        ctx.drawImage(timelordImageArray[L3currentPeriod], 191, cumulativeTime+2, 16, 16);
         
         // Add in the benefic or malefic signs
         if (L3currentPeriod == beneficSign) {
             if (chartSect == 1) {
-                ctx.drawImage(sectImageArray[1], 25, cumulativeTime + 32);
+                ctx.drawImage(sectImageArray[1], 430-40, cumulativeTime + 1, 16, 16);
             } else {
-                ctx.drawImage(sectImageArray[3], 25, cumulativeTime + 32);
+                ctx.drawImage(sectImageArray[3], 430-40, cumulativeTime + 1, 16, 16);
             }
         }
         if (L3currentPeriod == maleficSign) {
             if (chartSect == 1) {
-                ctx.drawImage(sectImageArray[2], 25, cumulativeTime + 62);
+                ctx.drawImage(sectImageArray[2], 430-60, cumulativeTime + 1, 16, 16);
             } else {
-                ctx.drawImage(sectImageArray[4], 25, cumulativeTime + 62);
+                ctx.drawImage(sectImageArray[4], 430-60, cumulativeTime + 1, 16, 16);
             }
         }
         if (L3currentPeriod == tenthFromFortune || L3currentPeriod == fortuneSign) {
-            ctx.drawImage(timelordImageArray[14], 25, cumulativeTime+92);
+            ctx.drawImage(timelordImageArray[14], 430-20, cumulativeTime+1, 1, 16);
         }
         if (L3currentPeriod == fourthFromFortune || L3currentPeriod == seventhFromFortune) {
-            ctx.drawImage(timelordImageArray[15], 25, cumulativeTime+92);
+            ctx.drawImage(timelordImageArray[15], 430-20, cumulativeTime+1, 16, 16);
         }
     
         // Display the current L3 date
         ctx.fillStyle = "black";
-        ctx.font = '20px Helvetica';
-        ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 55, cumulativeTime + 26);
+        ctx.font = '13px Helvetica';
+        ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 210, cumulativeTime + 14);
 		ctx.restore();
 
         // Calculate the new for the next L3 period
@@ -635,6 +712,7 @@ $ns.drawL3L4periods = function (counter) {
         firstLoosing = true;
         showLoosingIcon = false;
 
+/*
 		while (L4cumulativeTime < cumulativeTime) {
 						// Store the data for later
 						zodicalReleasingArrayL3[zodicalReleasingCounter] = new Array();
@@ -686,7 +764,7 @@ $ns.drawL3L4periods = function (counter) {
             ctx.fillText(L4currentTime.getMonth() + 1 + "/" + L4currentTime.getDate() + "/" + L4currentTime.getFullYear(), 210, L4cumulativeTime + 14);
             ctx.restore();
 
-            L4currentTime.setTime(L4currentTime.getTime() + $planetaryPeriod[L4currentPeriod][3]);
+            L4currentTime.setTime(L4currentTime.getTime() + $planetaryPeriod[L4currentPeriod][4]);
             L4cumulativeTime = L4cumulativeTime + ($planetaryPeriodYears[L4currentPeriod] / 12) * L3pixelsPerYear;
 
             zodicalReleasingCounter++;
@@ -709,11 +787,13 @@ $ns.drawL3L4periods = function (counter) {
                 }
             }
         }
-
-        L3currentTime.setTime(L3currentTime.getTime() + $planetaryPeriod[L3currentPeriod][1]);
+*/
+				console.log('BEFORE ' + L3currentTime);
+				console.log($planetaryPeriod[L3currentPeriod][3]);
+        L3currentTime.setTime(L3currentTime.getTime() + $planetaryPeriod[L3currentPeriod][3]);
+				console.log('AFTER ' + L3currentTime);
         L3currentPeriod++;
         if (L3currentPeriod > 12) {L3currentPeriod = 1;}
-        drawL2 = false;
     }
 	
     var monthfield = document.getElementById("transitmonthfield");
