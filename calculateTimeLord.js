@@ -12,8 +12,11 @@ var startDate;
 var startDateEpoch;
 var oneDay;
 var L1pixelsPerYear = 25;
+var L3pixelsPerYear = 83.5;
 var beneficSign = 0;
 var maleficSign = 0;
+var zodicalReleasingArray = new Array();
+var zodicalReleasingArrayL3 = new Array();
 
 var $signColor = [
         "", // ZERO POINT
@@ -282,8 +285,8 @@ $ns.drawZodicalReleasing = function (inputDate) {
 	var cumulativeTime = 0;
 
 	var L2currentPeriod;
-    var fortuneSign;
-    var chartSect;
+  var fortuneSign;
+  var chartSect;
 	
 	if (getCookieValue("releasingfrom")) {
 		L1currentPeriod = parseInt(getCookieValue("releasingfrom"));
@@ -323,6 +326,8 @@ $ns.drawZodicalReleasing = function (inputDate) {
     var seventhFromFortune = fortuneSign + 6;
     if (seventhFromFortune > 12) {seventhFromFortune = seventhFromFortune - 12;}
 
+    var zodicalReleasingCounter = 1;
+    
 	while (cumulativeTime < 2505) {
         ctx.save();
         ctx.beginPath();
@@ -363,7 +368,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		ctx.restore();
 
         // Calculate the new for the next L1 period
-		L2cumulativeTime = cumulativeTime;
+        L2cumulativeTime = cumulativeTime;
         cumulativeTime = cumulativeTime + $planetaryPeriodYears[L1currentPeriod] * L1pixelsPerYear;
         L2currentPeriod = L1currentPeriod;
         var L2currentTime = new Date(L1currentTime.getTime());
@@ -374,6 +379,11 @@ $ns.drawZodicalReleasing = function (inputDate) {
         showLoosingIcon = false;
 
 		while (L2cumulativeTime < cumulativeTime) {
+						// Store the data for later
+						zodicalReleasingArray[zodicalReleasingCounter] = new Array();
+						zodicalReleasingArray[zodicalReleasingCounter] = [L1currentPeriod, L2currentPeriod, L2cumulativeTime, showLoosingIcon];
+						zodicalReleasingArray[zodicalReleasingCounter][4] = new Date(L2currentTime.getTime());
+
             ctx.save();
             ctx.beginPath();
             ctx.fillStyle = $signColor[L2currentPeriod];
@@ -422,6 +432,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
             L2currentTime.setTime(L2currentTime.getTime() + $planetaryPeriod[L2currentPeriod][2]);
             L2cumulativeTime = L2cumulativeTime + ($planetaryPeriodYears[L2currentPeriod] / 12) * L1pixelsPerYear;
 
+            zodicalReleasingCounter++;
             L2currentPeriod++;
             if (L2currentPeriod > 12) {L2currentPeriod = 1;}
             // Loosing the Bond!	
@@ -441,9 +452,11 @@ $ns.drawZodicalReleasing = function (inputDate) {
                 }
             }
         }
+
         L1currentTime.setTime(L1currentTime.getTime() + $planetaryPeriod[L1currentPeriod][1]);
         L1currentPeriod++;
         if (L1currentPeriod > 12) {L1currentPeriod = 1;}
+
     }
 	
     var monthfield = document.getElementById("transitmonthfield");
@@ -461,4 +474,262 @@ $ns.drawZodicalReleasing = function (inputDate) {
     ctx.fillStyle = "red";
     ctx.fillRect(-5,currentDayMarker-1,470,3);
     ctx.restore();
+    
+    // Send the Current Time to the L3 calculation
+		var counter = 1;
+		while (startDate.getTime() > zodicalReleasingArray[counter][4].getTime()) {
+			  counter++;
+		}
+		$e.drawL3L4periods(counter-1);
+
+}
+
+$ns.displayL3FromClick = function (clickedY) {
+		var counter = 1;
+		while (clickedY > zodicalReleasingArray[counter][2]) {
+			  counter++;
+		}
+		$e.drawL3L4periods(counter-1);
+
+}
+
+
+$ns.drawL3L4periods = function (counter) {
+
+		// Draw degree tick marks every 5 years
+    var ctx = document.getElementById('zodicalreleasingL3').getContext('2d');
+    // Clear out the chartcanvas for multiple executions
+    ctx.clearRect(0, 0, zodicalreleasingL3.width, zodicalreleasingL3.height);
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1;
+    ctx.save();
+    ctx.lineWidth = 0.5;
+    for (var i = 0; i < 21; i++) {
+        ctx.beginPath();
+        ctx.moveTo(12, L3pixelsPerYear * 5 * i);
+        ctx.lineTo(20, L3pixelsPerYear * 5 * i);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(460, L3pixelsPerYear * 5 * i);
+        ctx.lineTo(460 - 10, L3pixelsPerYear * 5 * i);
+        ctx.stroke();
+        ctx.fillText(i * 5, 0, L3pixelsPerYear * 5 * i + 4);
+    }
+    ctx.restore();
+    // Draw degree tick marks every 1 year
+    ctx.save();
+    ctx.lineWidth = 0.25;
+    for (var i = 0; i < 100; i++) {
+        ctx.beginPath();
+        ctx.moveTo(15, L3pixelsPerYear * i);
+        ctx.lineTo(20, L3pixelsPerYear * i);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(455, L3pixelsPerYear * i);
+        ctx.lineTo(455 - 5, L3pixelsPerYear * i);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+	ctx.globalAlpha = 1;
+
+	// Color in L3
+	var currentPeriod;
+	var previousPeriod;
+	var cumulativeTime = 0;
+
+	var L3currentPeriod;
+  var fortuneSign;
+  var chartSect;
+    
+	
+	if (getCookieValue("releasingfrom")) {
+        fortuneSign = parseInt(getCookieValue("fortune"));
+        chartSect = parseInt(getCookieValue("chartsect"));
+	} else {
+        fortuneSign = 1;
+        chartSect = 1;
+	}
+
+  var L3currentPeriod = zodicalReleasingArray[counter][1];
+	var initialPass = true;
+	var firstLoosing = true;
+	var showLoosingIcon = false;
+
+	// L4pixelsPerYear = 3; // TODO: Remove L2pixelsPerYear above?
+	
+	var L3currentTime = new Date(zodicalReleasingArray[counter][4].getTime());
+    
+    if (parseInt(chartSect) == 1) {
+        // Set the benefic to Jupiter
+        beneficSign = Math.floor($natalPlanets["jupiter"] / 30) + 1;
+
+        // Set the malefic to Mars
+        maleficSign = Math.floor($natalPlanets["mars"] / 30) + 1;
+    } else {
+        // Set the benefic to Venus
+        beneficSign = Math.floor($natalPlanets["venus"] / 30) + 1;
+
+        // Set the malefic to Saturn
+        maleficSign = Math.floor($natalPlanets["saturn"] / 30) + 1;
+    } 
+    
+    var tenthFromFortune = fortuneSign + 9;
+    if (tenthFromFortune > 12) {tenthFromFortune = tenthFromFortune - 12;}
+    var fourthFromFortune = fortuneSign + 3;
+    if (fourthFromFortune > 12) {fourthFromFortune = fourthFromFortune - 12;}
+    var seventhFromFortune = fortuneSign + 6;
+    if (seventhFromFortune > 12) {seventhFromFortune = seventhFromFortune - 12;}
+
+    var zodicalReleasingCounter = 1;
+    
+    var drawL2 = true;
+	while (drawL2) {
+        ctx.save();
+        ctx.beginPath();
+
+        // Draw the L3 period
+        ctx.fillStyle = $signColor[L3currentPeriod];
+        ctx.fillRect(20,cumulativeTime, 164, cumulativeTime + $planetaryPeriodYears[L3currentPeriod]*L3pixelsPerYear);
+
+        // Add in the sign glyph
+        ctx.drawImage(timelordImageArray[L3currentPeriod], 25, cumulativeTime+2);
+        
+        // Add in the benefic or malefic signs
+        if (L3currentPeriod == beneficSign) {
+            if (chartSect == 1) {
+                ctx.drawImage(sectImageArray[1], 25, cumulativeTime + 32);
+            } else {
+                ctx.drawImage(sectImageArray[3], 25, cumulativeTime + 32);
+            }
+        }
+        if (L3currentPeriod == maleficSign) {
+            if (chartSect == 1) {
+                ctx.drawImage(sectImageArray[2], 25, cumulativeTime + 62);
+            } else {
+                ctx.drawImage(sectImageArray[4], 25, cumulativeTime + 62);
+            }
+        }
+        if (L3currentPeriod == tenthFromFortune || L3currentPeriod == fortuneSign) {
+            ctx.drawImage(timelordImageArray[14], 25, cumulativeTime+92);
+        }
+        if (L3currentPeriod == fourthFromFortune || L3currentPeriod == seventhFromFortune) {
+            ctx.drawImage(timelordImageArray[15], 25, cumulativeTime+92);
+        }
+    
+        // Display the current L3 date
+        ctx.fillStyle = "black";
+        ctx.font = '20px Helvetica';
+        ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 55, cumulativeTime + 26);
+		ctx.restore();
+
+        // Calculate the new for the next L3 period
+        L4cumulativeTime = cumulativeTime;
+        cumulativeTime = cumulativeTime + $planetaryPeriodYears[L3currentPeriod] * L3pixelsPerYear;
+        L4currentPeriod = L3currentPeriod;
+        var L4currentTime = new Date(L3currentTime.getTime());
+
+        var L4Loosing = L3currentPeriod;
+        initialPass = true;
+        firstLoosing = true;
+        showLoosingIcon = false;
+
+		while (L4cumulativeTime < cumulativeTime) {
+						// Store the data for later
+						zodicalReleasingArrayL3[zodicalReleasingCounter] = new Array();
+						zodicalReleasingArrayL3[zodicalReleasingCounter] = [L3currentPeriod, L4currentPeriod, L4cumulativeTime, showLoosingIcon];
+						zodicalReleasingArrayL3[zodicalReleasingCounter][4] = new Date(L4currentTime.getTime());
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = $signColor[L4currentPeriod];
+            ctx.fillRect(188, L4cumulativeTime, 262, L4cumulativeTime + ($planetaryPeriodYears[L4currentPeriod] / 12) * L3pixelsPerYear);
+            if (initialPass) { 
+                ctx.fillStyle = "black";
+                ctx.fillRect(20,L4cumulativeTime, 430, 2);
+            }
+
+            ctx.drawImage(timelordImageArray[L4currentPeriod], 191, L4cumulativeTime+2, 16, 16);
+            if (showLoosingIcon) {
+                ctx.drawImage(timelordImageArray[13], 430, L4cumulativeTime + 1, 16, 16);
+                ctx.globalAlpha = 0.75;
+                ctx.fillStyle = "#6600cc";
+                ctx.fillRect(170, L4cumulativeTime - 1, 430, 3);
+                ctx.globalAlpha = 1;
+                showLoosingIcon = false;
+            }
+            if (L4currentPeriod == beneficSign) {
+                if (chartSect == 1) {
+                    ctx.drawImage(sectImageArray[1], 430-40, L4cumulativeTime + 1, 16, 16);
+                } else {
+                    ctx.drawImage(sectImageArray[3], 430-40, L4cumulativeTime + 1, 16, 16);
+                }
+            }
+            if (L4currentPeriod == maleficSign) {
+                if (chartSect == 1) {
+                    ctx.drawImage(sectImageArray[2], 430-60, L4cumulativeTime + 1, 16, 16);
+                } else {
+                    ctx.drawImage(sectImageArray[4], 430-60, L4cumulativeTime + 1, 16, 16);
+                }
+            }
+
+            if (L4currentPeriod == tenthFromFortune || L4currentPeriod == fortuneSign) {
+                ctx.drawImage(timelordImageArray[14], 430-20, L4cumulativeTime + 1, 16, 16);
+            }
+            if (L4currentPeriod == fourthFromFortune || L4currentPeriod == seventhFromFortune) {
+                ctx.drawImage(timelordImageArray[15], 430-20, L4cumulativeTime + 1, 16, 16);
+            }
+            
+            ctx.fillStyle = "black";
+            ctx.font = '13px Helvetica';
+            ctx.fillText(L4currentTime.getMonth() + 1 + "/" + L4currentTime.getDate() + "/" + L4currentTime.getFullYear(), 210, L4cumulativeTime + 14);
+            ctx.restore();
+
+            L4currentTime.setTime(L4currentTime.getTime() + $planetaryPeriod[L4currentPeriod][3]);
+            L4cumulativeTime = L4cumulativeTime + ($planetaryPeriodYears[L4currentPeriod] / 12) * L3pixelsPerYear;
+
+            zodicalReleasingCounter++;
+            L4currentPeriod++;
+            if (L4currentPeriod > 12) {L4currentPeriod = 1;}
+            // Loosing the Bond!	
+            if (initialPass) { 
+				initialPass = false;
+			} else {
+                if (firstLoosing) {
+                    if (L4currentPeriod == L4Loosing) {
+                        ctx.drawImage(timelordImageArray[13], 430, L4cumulativeTime + 1, 16, 16);
+                        L4currentPeriod = L4currentPeriod + 6;
+                        if (L4currentPeriod > 12) {
+                            L4currentPeriod = L4currentPeriod - 12;
+                        }
+                        firstLoosing = false;
+                        showLoosingIcon = true;
+                    }
+                }
+            }
+        }
+
+        L3currentTime.setTime(L3currentTime.getTime() + $planetaryPeriod[L3currentPeriod][1]);
+        L3currentPeriod++;
+        if (L3currentPeriod > 12) {L3currentPeriod = 1;}
+        drawL2 = false;
+    }
+	
+    var monthfield = document.getElementById("transitmonthfield");
+    var yearfield = document.getElementById("transityearfield");
+    var dayfield = document.getElementById("transitdayfield");
+    // This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
+    startDate = new Date(parseInt(monthfield.value)+"/"+parseInt(dayfield.value)+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
+    // Calculate the number of days from the start date to the current date in the date field
+    //currentDayMarker = ((startDate.getTime()-birthTime.getTime())/31557600000)*(365.24/360)*L3pixelsPerYear;
+    currentDayMarker = 0;
+
+    // Draw the current day line
+    ctx.globalAlpha = 0.6;
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.fillRect(-5,currentDayMarker-1,470,3);
+		
 }
