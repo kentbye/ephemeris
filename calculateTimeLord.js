@@ -663,7 +663,12 @@ $ns.drawL3L4periods = function (counter) {
     ctx.fillText(L3currentTime.getMonth() + 1 + "/" + L3currentTime.getDate() + "/" + L3currentTime.getFullYear(), 102, cumulativeTime + 26);
     ctx.restore();
     var L2PixelBoxHeight = $planetaryPeriodYears[L2currentPeriod] * L3pixelsPerYear;
+    var L3initialPass = true;
+    var L3firstLoosing = true;
+    var L3showLoosingIcon = false;
+    var L3Loosing = L2currentPeriod;
 
+  // Create the L3 & L4 periods
 	while (cumulativeTime < L2PixelBoxHeight) {
         ctx.save();
         ctx.beginPath();
@@ -672,8 +677,38 @@ $ns.drawL3L4periods = function (counter) {
         ctx.fillStyle = $signColor[L3currentPeriod];
         ctx.fillRect(188,cumulativeTime, 180, cumulativeTime + ($planetaryPeriodYears[L3currentPeriod]/12)*L3pixelsPerYear);
 
+        if (L3initialPass) { 
+          	L3initialPass = false;
+        } else {
+            if (L3firstLoosing) {
+                if (L3currentPeriod == L3Loosing) {
+                    //ctx.drawImage(timelordImageArray[13], 450, cumulativeTime + 1, 16, 16);
+                    L3currentPeriod = L3currentPeriod + 6;
+                    if (L3currentPeriod > 12) {
+                        L3currentPeriod = L3currentPeriod - 12;
+                    }
+                    L3firstLoosing = false;
+                    L3showLoosingIcon = true;
+                }
+            }
+        }
+
+
+        if (L3showLoosingIcon) {
+		        ctx.drawImage(timelordImageArray[13], 430-80, cumulativeTime + 1, 16, 16);
+		        ctx.globalAlpha = 0.75;
+		        ctx.fillStyle = "#6600cc";
+		        // Draw loosing line at L3
+		        ctx.fillRect(170, cumulativeTime, 310, 3);
+		        ctx.globalAlpha = 1;
+		        L3showLoosingIcon = false;
+        }
+
+
+
         // Add in the sign glyph
         ctx.drawImage(timelordImageArray[L3currentPeriod], 191, cumulativeTime+2, 16, 16);
+
         
         // Add in the benefic or malefic signs
         if (L3currentPeriod == beneficSign) {
@@ -708,7 +743,7 @@ $ns.drawL3L4periods = function (counter) {
         cumulativeTime = cumulativeTime + $planetaryPeriodYears[L3currentPeriod]/12 * L3pixelsPerYear;
         L4currentPeriod = L3currentPeriod;
         var L4currentTime = new Date(L3currentTime.getTime());
-
+            
         var L4Loosing = L3currentPeriod;
         initialPass = true;
         firstLoosing = true;
@@ -722,6 +757,7 @@ $ns.drawL3L4periods = function (counter) {
 
             ctx.save();
             ctx.beginPath();
+            // Draw the L4 period
             ctx.fillStyle = $signColor[L4currentPeriod];
             ctx.fillRect(372, L4cumulativeTime, 80, L4cumulativeTime + (($planetaryPeriodYears[L4currentPeriod] / 12)/12) * L3pixelsPerYear);
             if (initialPass) { 
@@ -734,7 +770,8 @@ $ns.drawL3L4periods = function (counter) {
                 //ctx.drawImage(timelordImageArray[13], 430, L4cumulativeTime + 1, 9, 9);
                 ctx.globalAlpha = 0.75;
                 ctx.fillStyle = "#6600cc";
-                ctx.fillRect(170, L4cumulativeTime - 1, 430, 3);
+                // Draw loosing line at L4
+                ctx.fillRect(360, L4cumulativeTime - 1, 110, 3);
                 ctx.globalAlpha = 1;
                 showLoosingIcon = false;
             }
@@ -793,14 +830,14 @@ $ns.drawL3L4periods = function (counter) {
         if (L3currentPeriod > 12) {L3currentPeriod = 1;}
     }
 
-		// Delete extra sections
+		// Delete extra sections with a white rectangle
 		ctx.save();
     ctx.beginPath();
     ctx.fillStyle = 'white';
     ctx.fillRect(0, L2PixelBoxHeight, 460, 2500);
     ctx.restore();
 
-	  
+	  // Draw the current day
     var monthfield = document.getElementById("transitmonthfield");
     var yearfield = document.getElementById("transityearfield");
     var dayfield = document.getElementById("transitdayfield");
