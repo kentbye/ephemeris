@@ -471,7 +471,8 @@ $ns.drawZodicalReleasing = function (inputDate) {
 		}
 		
 		$e.drawL3L4periods(counter-1, false);
-		$e.drawCurrentDayZodicalReleasing(transitDate);
+		$e.drawCurrentDayZodicalReleasingL2(transitDate);
+		$e.drawCurrentDayZodicalReleasingL4(zodicalReleasingArray[counter-1][4], transitDate);
 
 }
 
@@ -546,10 +547,10 @@ $ns.drawL3L4periods = function (counter, snapToBoundary) {
 	var L2currentTime = new Date(zodicalReleasingArray[counter][4].getTime());
 	var L3currentTime = new Date(zodicalReleasingArray[counter][4].getTime());
 
-
 	if (snapToBoundary) {
 			// Draw the current day line now that the L2 time is found
-		  $e.drawCurrentDayZodicalReleasing(L2currentTime);
+		  $e.drawCurrentDayZodicalReleasingL2(L2currentTime);
+		  $e.drawCurrentDayZodicalReleasingL4(L2currentTime, L2currentTime);
 		   
 		  // Set the Drop down menus to be whatever the clicked L2 current time was
 		  var monthfield = document.getElementById("transitmonthfield")
@@ -706,12 +707,9 @@ $ns.drawL3L4periods = function (counter, snapToBoundary) {
 		        L3showLoosingIcon = false;
         }
 
-
-
         // Add in the sign glyph
         ctx.drawImage(timelordImageArray[L3currentPeriod], 191, cumulativeTime+2, 16, 16);
 
-        
         // Add in the benefic or malefic signs
         if (L3currentPeriod == beneficSign) {
             if (chartSect == 1) {
@@ -839,25 +837,9 @@ $ns.drawL3L4periods = function (counter, snapToBoundary) {
     ctx.fillRect(0, L2PixelBoxHeight, 460, 2500);
     ctx.restore();
 
-	  // Draw the current day
-    var monthfield = document.getElementById("transitmonthfield");
-    var yearfield = document.getElementById("transityearfield");
-    var dayfield = document.getElementById("transitdayfield");
-    // This sets the date according to the local timezone, which should be sufficient for getting ephemeris data
-    startDate = new Date(parseInt(monthfield.value)+"/"+parseInt(dayfield.value)+"/"+parseInt(yearfield.value)+" "+0+":"+0+":"+0);
-    // Calculate the number of days from the start date to the current date in the date field
-    //currentDayMarker = ((startDate.getTime()-birthTime.getTime())/31557600000)*(365.24/360)*L3pixelsPerYear;
-    currentDayMarker = 0;
-
-    // Draw the current day line
-    ctx.globalAlpha = 0.6;
-    ctx.save();
-    ctx.beginPath();
-    ctx.fillStyle = "red";
-    ctx.fillRect(-5,currentDayMarker-1,470,3);
 }
 
-$ns.drawCurrentDayZodicalReleasing = function (transitDate) {
+$ns.drawCurrentDayZodicalReleasingL2 = function (transitDate) {
 		var birthTime = new Date(0);
 		birthTime.setUTCSeconds($natalInputDate.epoch);
 		var ctx = document.getElementById('currentDayZodicalReleasing').getContext('2d');
@@ -877,13 +859,31 @@ $ns.drawCurrentDayZodicalReleasing = function (transitDate) {
     ctx.restore();
 }
 
+$ns.drawCurrentDayZodicalReleasingL4 = function (L2StartDate, transitDate) {
+		var ctx = document.getElementById('currentDayZodicalReleasingL3').getContext('2d');
+		// Clear out the chartcanvas for multiple executions
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.clearRect(0, 0, currentDayZodicalReleasingL3.width, currentDayZodicalReleasingL3.height);
+		
+    // Calculate the number of days from the start date to the current date in the date field
+    currentDayMarker = ((transitDate.getTime()-L2StartDate.getTime())/31557600000)*(365.24/360)*L3pixelsPerYear*12;
+
+    // Draw the current day line
+    ctx.globalAlpha = 0.6;
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.fillRect(-5,currentDayMarker-1,470,3);
+    ctx.restore();
+}
+
+
 $ns.displayL3FromClick = function (clickedY) {
 		var counter = 1;
 		while (clickedY > zodicalReleasingArray[counter][2]) {
 			  counter++;
 		}
 		$e.drawL3L4periods(counter-1, true);
-
 }
 
 $ns.displayL4FromClick = function (clickedY) {
@@ -891,5 +891,26 @@ $ns.displayL4FromClick = function (clickedY) {
 		while (clickedY > zodicalReleasingL4Array[counter][2]) {
 			  counter++;
 		}
-		// TODO: Send counter-1 into a place to draw the currentday line for L1/L2 & L3/L4 & draw the chart
+		var L4currentTime = new Date(zodicalReleasingL4Array[counter-1][4].getTime());
+
+		$e.drawCurrentDayZodicalReleasingL4(zodicalReleasingL4Array[1][4], L4currentTime);
+		$e.drawCurrentDayZodicalReleasingL2(L4currentTime);		
+		
+		// Set the Drop down menus to be whatever the clicked L2 current time was
+		var monthfield = document.getElementById("transitmonthfield")
+		var dayfield = document.getElementById("transitdayfield")
+		var yearfield = document.getElementById("transityearfield");
+		var hourfield = document.getElementById("transithourfield");
+		var minutefield = document.getElementById("transitminutefield");
+		var secondfield = document.getElementById("transitsecondfield");
+		monthfield.value = L4currentTime.getMonth() + 1;
+		dayfield.value = L4currentTime.getDate();
+		yearfield.value = L4currentTime.getFullYear();
+		hourfield.value = L4currentTime.getHours();
+		minutefield.value = L4currentTime.getMinutes();
+		secondfield.value = L4currentTime.getSeconds();
+
+		// Recalculate the natal positions of the planets with the new dates, but not initial pass
+		$e.calculateTimeLord (true, false);
+
 }

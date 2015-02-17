@@ -74,10 +74,6 @@
 				#transitingaspects {
 						display: none;
 				}
-				# zodicalreleasingL3data {
-						position: relative; 
-						float: right;
-				}
 				#latlong, #cityinput {
 						display: none;
 				}
@@ -91,8 +87,18 @@
 						position: absolute; 
 						z-index: 1;
 				}
-				#zodicalreleasingdata {
-						position: static; 
+				
+				#zodicalreleasingL3 {
+						position: absolute; 
+						z-index: 0;
+				}
+				#currentDayZodicalReleasingL3{
+						position: absolute; 
+						z-index: 1;
+				}				
+				#zodicalreleasingL3data {
+						position: absolute; 
+						float: right;
 				}
 				
 				#chartcanvas { 
@@ -282,6 +288,7 @@
 				</div>
 			<div id="zodicalreleasingL3data">
 					<canvas id="zodicalreleasingL3" width = "460" height = "3000" ></canvas>
+					<canvas id="currentDayZodicalReleasingL3" width = "460" height = "3000" ></canvas>
 			</div>		
 
 
