@@ -96,7 +96,7 @@ $ns.currenttimeTimelord = function (sourcePageFlag) {
     transitdayfield.value = day;
 
     // Populate the Year Dropdown
-    for(var i = 1900; i < 2101 ; i++) {
+    for(var i = 1800; i < 2101 ; i++) {
         var yearOption = document.createElement("option");
         yearOption.textContent = i;
         yearOption.value = i;
