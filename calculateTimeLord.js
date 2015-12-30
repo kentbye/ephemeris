@@ -327,7 +327,7 @@ $ns.drawZodicalReleasing = function (inputDate) {
 
     var zodicalReleasingCounter = 1;
     
-	while (cumulativeTime < 2505) {
+	while (cumulativeTime < 5280) {
         ctx.save();
         ctx.beginPath();
 
