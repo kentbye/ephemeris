@@ -32,6 +32,10 @@ $ns.currenttime = function (sourcePageFlag) {
 	const urlParams = new URLSearchParams(queryString);
 	const lat = urlParams.get('lat');
 	const long = urlParams.get('long');
+    console.log("Latitude: " + lat + ", Longitude: " + long);
+    latitude.value = lat;
+    longitude.value = long;
+
     const urlYear = parseInt(urlParams.get('year'));
     if (urlYear) {
         year = urlYear;
@@ -52,13 +56,11 @@ $ns.currenttime = function (sourcePageFlag) {
     if (urlminutes) {
         minutes = urlminutes;
     }
-    const urlseconds = parseInt(urlParams.get('seconds'));
+    const urlseconds = parseInt(urlParams.get('second'));
     if (urlseconds) {
         seconds = urlseconds;
     }
 	
-    latitude.value = lat;
-    longitude.value = long;
 
     var leadingZero = "";
 
