@@ -125,8 +125,6 @@
 		<script type='text/javascript' src='calculatedTime.js' charset='utf-8'></script>
 		<script type='text/javascript' src='loadglyphs.js' charset='utf-8'></script>	
 		<script type='text/javascript' src='graphicalephemeris.js' charset='utf-8'></script>		
-
-
 		<script type='text/javascript' src='astronomy/index.js' charset='utf-8'></script>
 		<script type='text/javascript' src='astronomy/moshier/index.js' charset='utf-8'></script>
 		<script type='text/javascript' src='astronomy/moshier/constant.js' charset='utf-8'></script>
@@ -185,7 +183,6 @@
 			});
 		</script>
 -->
-		
 		
 		<script type="text/javascript">
 			var animateFlag = false;
@@ -315,11 +312,12 @@
 		</div>
 		<p>
 		<div id="calculateHere">
-			<input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTimeRedirect("calculate")'>
+			<input type='button' value='Chart of the Moment - Only Natal in URL' onclick='$e.calculatedTimeRedirect("current")'>
 		</div>
 		<div id="resetButtons">
-			<input type='button' value='Current Transits' onclick='$e.calculatedTimeRedirect("current")'>
-			<input type='button' value='Reset All' onclick='$e.calculatedTimeRedirect("reset")'>
+			<input type='button' value='Store Transit Biwheel Data in URL' onclick='$e.calculatedTimeRedirect("calculate")'>
+
+			<input type='button' value='Clear GPS & All Data' onclick='$e.calculatedTimeRedirect("reset")'>
 		</div>
 
 		</p>
