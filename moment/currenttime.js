@@ -30,8 +30,8 @@ $ns.currenttime = function (sourcePageFlag) {
     // Read the lat/long from the URL parameters
     const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-	const lat = urlParams.get('lat');
-	const long = urlParams.get('long');
+	const lat = parseFloat(urlParams.get('lat'));
+	const long = parseFloat(urlParams.get('long'));
     console.log("Latitude: " + lat + ", Longitude: " + long);
     latitude.value = lat;
     longitude.value = long;
@@ -49,15 +49,15 @@ $ns.currenttime = function (sourcePageFlag) {
         day = urlday;
     }
     const urlhours = parseInt(urlParams.get('hour'));
-    if (urlhours) {
+    if (typeof urlhours === "number") {
         hours = urlhours;
     }
 	    const urlminutes = parseInt(urlParams.get('minute'));
-    if (urlminutes) {
+    if (typeof urlminutes === "number") {
         minutes = urlminutes;
     }
     const urlseconds = parseInt(urlParams.get('second'));
-    if (urlseconds) {
+    if (typeof urlseconds === "number" ) {
         seconds = urlseconds;
     }
 	
