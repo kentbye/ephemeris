@@ -30,11 +30,16 @@ $ns.currenttime = function (sourcePageFlag) {
     // Read the lat/long from the URL parameters
     const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-	const lat = parseFloat(urlParams.get('lat'));
-	const long = parseFloat(urlParams.get('long'));
-    console.log("Latitude: " + lat + ", Longitude: " + long);
-    latitude.value = lat;
-    longitude.value = long;
+	
+    const lat = parseFloat(urlParams.get('lat'));
+    if (lat) {
+        latitude.value = lat;
+    }
+
+    const long = parseFloat(urlParams.get('long'));
+    if (long) {
+        longitude.value = long;
+    }
 
     const urlYear = parseInt(urlParams.get('year'));
     if (urlYear) {
@@ -49,18 +54,18 @@ $ns.currenttime = function (sourcePageFlag) {
         day = urlday;
     }
     const urlhours = parseInt(urlParams.get('hour'));
-    if (typeof urlhours === "number") {
+    if (urlhours || urlhours == 0) {
         hours = urlhours;
     }
-	    const urlminutes = parseInt(urlParams.get('minute'));
-    if (typeof urlminutes === "number") {
+
+	const urlminutes = parseInt(urlParams.get('minute'));
+    if (urlminutes || urlminutes == 0) {
         minutes = urlminutes;
     }
     const urlseconds = parseInt(urlParams.get('second'));
-    if (typeof urlseconds === "number" ) {
+    if (urlseconds || urlseconds == 0) {
         seconds = urlseconds;
-    }
-	
+    }	
 
     var leadingZero = "";
 
@@ -172,6 +177,12 @@ $ns.currenttime = function (sourcePageFlag) {
     
     housesystem.value = 'P';
 
+    // Change the house system if it was passed in the URL
+    const urlHouse = urlParams.get('house');
+    if (urlHouse) {
+        housesystem.value = urlHouse;
+    }
+
     // Change this flag to the latest cookies added, otherwise Chrome will give a TypeError
     areCookiesSet = getCookieValue("housesystem");
     // If cookies are set, then populate the text fields with the saved values
@@ -201,7 +212,11 @@ $ns.currenttime = function (sourcePageFlag) {
 //      natalminutefield.value = 0;
 //      natalsecondfield.value = 0;
       // Set the default house system to Placidus
-      housesystem.value = 'P';
+      if (urlHouse) {
+        housesystem.value = urlHouse;
+      } else {
+        housesystem.value = 'P';
+      }
 //      unknowntimeCheckBox.checked = false;
       //city.value = "";
       // Set a default Lat/Long of New York City
