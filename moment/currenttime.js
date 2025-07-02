@@ -32,6 +32,31 @@ $ns.currenttime = function (sourcePageFlag) {
 	const urlParams = new URLSearchParams(queryString);
 	const lat = urlParams.get('lat');
 	const long = urlParams.get('long');
+    const urlYear = parseInt(urlParams.get('year'));
+    if (urlYear) {
+        year = urlYear;
+    }
+    const urlmonth = parseInt(urlParams.get('month'));
+    if (urlmonth) {
+        month = urlmonth;
+    }
+    const urlday = parseInt(urlParams.get('day'));
+    if (urlday) {
+        day = urlday;
+    }
+    const urlhours = parseInt(urlParams.get('hour'));
+    if (urlhours) {
+        hours = urlhours;
+    }
+	    const urlminutes = parseInt(urlParams.get('minute'));
+    if (urlminutes) {
+        minutes = urlminutes;
+    }
+    const urlseconds = parseInt(urlParams.get('seconds'));
+    if (urlseconds) {
+        seconds = urlseconds;
+    }
+	
     latitude.value = lat;
     longitude.value = long;
 
