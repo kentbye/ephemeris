@@ -174,14 +174,21 @@
 		</div>
 
 <script src="rangeslider.js"></script>
-        <script type="text/javascript">
+<script type="text/javascript">
      var x = document.getElementById("demo");
+	 const queryString = window.location.search;
+	 const urlParams = new URLSearchParams(queryString);
+	 const urlLat = urlParams.get('lat');
+	 const urlLong = urlParams.get('long');
+	 document.getElementById("latitude").value = urlLat;
+     document.getElementById("longitude").value = urlLong;
+
     function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
+        // if (navigator.geolocation) {
+        //    navigator.geolocation.getCurrentPosition(showPosition);
+        // } else {
+        //    x.innerHTML = "Geolocation is not supported by this browser.";
+        //}
     }
     
     function showPosition(position) {
@@ -191,17 +198,13 @@
         tomorrow.setDate(tomorrow.getDate()+1);
 
         // Dynamically determine lat & long from browser
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
+        //var lat = position.coords.latitude;
+        //var long = position.coords.longitude;
         
         document.getElementById("latitude").value = lat;
         document.getElementById("longitude").value = long;
         $e.calculatedChart (true, true);
-         
-        //Save load time by hardcoding lat & long
-//        var lat = 45.554092499999996;
-//        var long = -122.65187180000001;
-        
+                 
         var sunPos = SunCalc.getPosition(today, lat, long);
         var todayTimes = SunCalc.getTimes(today, lat, long);
         var tomorrowTimes = SunCalc.getTimes(tomorrow, lat, long);

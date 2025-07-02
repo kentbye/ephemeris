@@ -48,8 +48,8 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	  if (calculateHouses) {
 			createCookie('housesystem',houseSystem,30);
 			createCookie('citystate',citystate,30);
-			createCookie('latitude',latitude,30);
-			createCookie('longitude',longitude,30);
+			//createCookie('latitude',latitude,30);
+			//createCookie('longitude',longitude,30);
 		}
 		createCookie('unknowntime',document.getElementById("unknowntime").checked,30);
 		

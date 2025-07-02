@@ -27,6 +27,14 @@ $ns.currenttime = function (sourcePageFlag) {
     var latitude = document.getElementById("latitude");
     var longitude = document.getElementById("longitude");
 
+    // Read the lat/long from the URL parameters
+    const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const lat = urlParams.get('lat');
+	const long = urlParams.get('long');
+    latitude.value = lat;
+    longitude.value = long;
+
     var leadingZero = "";
 
     city.style.visibility = "hidden";
@@ -154,9 +162,9 @@ $ns.currenttime = function (sourcePageFlag) {
 //      } else {
 //	      unknowntimeCheckBox.checked = false;
 //      }
-      city.value = getCookieValue("citystate");
-      latitude.value = getCookieValue("latitude");
-      longitude.value = getCookieValue("longitude");
+      //city.value = getCookieValue("citystate");
+      //latitude.value = getCookieValue("latitude");
+      //longitude.value = getCookieValue("longitude");
 
     } else {
 //      natalmonthfield.value = 1;
@@ -168,10 +176,10 @@ $ns.currenttime = function (sourcePageFlag) {
       // Set the default house system to Placidus
       housesystem.value = 'P';
 //      unknowntimeCheckBox.checked = false;
-      city.value = "";
+      //city.value = "";
       // Set a default Lat/Long of New York City
-      latitude.value = "";
-      longitude.value = "";
+      //latitude.value = "";
+      //longitude.value = "";
     }
 
     // Calculate the current positions of the planets

@@ -49,8 +49,8 @@ $ns.calculatedChart = function (setCookieFlag, initialRenderingFlag) {
 	  if (calculateHouses) {
 			createCookie('housesystem',houseSystem,30);
 			createCookie('citystate',citystate,30);
-			createCookie('latitude',latitude,30);
-			createCookie('longitude',longitude,30);
+			// createCookie('latitude',latitude,30);
+			// createCookie('longitude',longitude,30);
 		}
 //		createCookie('unknowntime',document.getElementById("unknowntime").checked,30);	
 	}
@@ -152,6 +152,7 @@ $ns.calculateLongitude = function ($inputdate) {
               $planetLongitude[key] = Math.round(parseFloat($const.body.position.apparentLongitude)*10000)/10000;
               $astrologicalSign = signs[Math.ceil($const.body.position.apparentLongitude/30)];
               if (key=='moon') {
+				  //console.log($moshier);
                   $illuminatedFraction = $const.body.position.illuminatedFraction;
                   if ($const.body.position.phaseDaysBefore) {
                       nextPhase = Math.round($const.body.position.phaseDaysBefore*24*100)/100 + " hrs until ";
