@@ -23,7 +23,7 @@ $ns.currenttime = function (sourcePageFlag) {
 //    var natalsecondfield = document.getElementById("natalsecondfield");
     var housesystem = document.getElementById("housesystem");
 //    var unknowntimeCheckBox = document.getElementById("unknowntime");
-    var city = document.getElementById("city");
+    //var city = document.getElementById("city");
     var latitude = document.getElementById("latitude");
     var longitude = document.getElementById("longitude");
 

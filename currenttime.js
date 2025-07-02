@@ -23,14 +23,33 @@ $ns.currenttime = function (sourcePageFlag) {
     var natalsecondfield = document.getElementById("natalsecondfield");
     var housesystem = document.getElementById("housesystem");
     var unknowntimeCheckBox = document.getElementById("unknowntime");
-    var city = document.getElementById("city");
+    // var city = document.getElementById("city");
     var latitude = document.getElementById("latitude");
     var longitude = document.getElementById("longitude");
 
     var leadingZero = "";
 
     city.style.visibility = "hidden";
-    
+
+    // Use the URL parameters as input if present
+    const queryString = window.location.search;
+	  const urlParams = new URLSearchParams(queryString);
+    const urlLat = parseFloat(urlParams.get('lat'));
+    const urlLong = parseFloat(urlParams.get('long'));
+    const urlYear = parseInt(urlParams.get('year'));
+    const urlMonth = parseInt(urlParams.get('month'));
+    const urlDay = parseInt(urlParams.get('day'));
+    const urlHours = parseInt(urlParams.get('hour'));
+	  const urlMinutes = parseInt(urlParams.get('minute'));
+    const urlSeconds = parseInt(urlParams.get('second'));
+    const urlYearTransit = parseInt(urlParams.get('t_year'));
+    const urlMonthTransit = parseInt(urlParams.get('t_month'));
+    const urlDayTransit = parseInt(urlParams.get('t_day'));
+    const urlHoursTransit = parseInt(urlParams.get('t_hour'));
+	  const urlMinutesTransit = parseInt(urlParams.get('t_minute'));
+    const urlSecondsTransit = parseInt(urlParams.get('t_second'));
+
+
     // Populate the month dropdown
     for(var i=1; i<13; i++) {
         var monthOption = document.createElement("option");
@@ -42,7 +61,6 @@ $ns.currenttime = function (sourcePageFlag) {
         natalMonthOption.value = i;
         natalmonthfield.appendChild(natalMonthOption);
     }
-    transitmonthfield.value = month;
 
     leadingZero = "0";
     // Populate the Day Dropdown
@@ -57,8 +75,7 @@ $ns.currenttime = function (sourcePageFlag) {
         natalDayOption.value = i;
         nataldayfield.appendChild(natalDayOption);
     }
-    transitdayfield.value = day;
-
+    
     // Populate the Year Dropdown
     for(var i = 1800; i < 2101 ; i++) {
         var yearOption = document.createElement("option");
@@ -69,8 +86,7 @@ $ns.currenttime = function (sourcePageFlag) {
         natalYearOption.textContent = i;
         natalYearOption.value = i;
         natalyearfield.appendChild(natalYearOption);
-    }
-    transityearfield.value = year;
+    }   
 
     // Populate the Hour Dropdown
     leadingZero = "0";
@@ -85,7 +101,6 @@ $ns.currenttime = function (sourcePageFlag) {
         natalHourOption.value = i;
         natalhourfield.appendChild(natalHourOption);
     }
-    transithourfield.value = hours;
 
     // Populate the Minute Dropdown
     leadingZero = "0";
@@ -100,7 +115,6 @@ $ns.currenttime = function (sourcePageFlag) {
         natalMinuteOption.value = i;
         natalminutefield.appendChild(natalMinuteOption);
     }
-    transitminutefield.value = minutes;
 
     // Populate the Second Dropdown
     leadingZero = "0";
@@ -115,7 +129,6 @@ $ns.currenttime = function (sourcePageFlag) {
         natalSecondOption.value = i;
         natalsecondfield.appendChild(natalSecondOption);
     }
-    transitsecondfield.value = seconds;
     
     // Populate the House System
     var houseOption1 = document.createElement("option");
@@ -135,43 +148,195 @@ $ns.currenttime = function (sourcePageFlag) {
     houseOption4.value = 'W';
     housesystem.options.add(houseOption4);
     
-    housesystem.value = 'P';
+
+    // Fill in natal chart fields with URL parameters or defaults
+    if (urlYear) {
+        natalyearfield.value = urlYear;
+    } else {
+        natalyearfield.value = 1970;
+    }
+    if (urlMonth) {
+        natalmonthfield.value = urlMonth;
+    } else {
+        natalmonthfield.value = 1;
+    }
+    if (urlDay) {
+        nataldayfield.value = urlDay;
+    } else {
+        nataldayfield.value = 1;
+    }
+
+    if (urlHours || urlHours == 0) {
+        natalhourfield.value = urlHours;
+    } else {
+        natalhourfield.value = 0;
+    }
+    if (urlMinutes || urlMinutes == 0) {
+        natalminutefield.value = urlMinutes;
+    } else {
+        natalminutefield.value = 0;
+    }
+    if (urlSeconds || urlSeconds == 0) {
+        natalsecondfield.value = urlSeconds;
+    } else {
+        natalsecondfield.value = 0;
+    }	
+
+    // Fill in transit chart fields with URL parameters or current time  
+    if (urlYearTransit) {
+        transityearfield.value = urlYearTransit;
+    } else {
+        transityearfield.value = year;
+    }
+    if (urlMonthTransit) {
+        transitmonthfield.value = urlMonthTransit;
+    } else {
+        transitmonthfield.value = month;
+    }
+    if (urlDayTransit) {
+        transitdayfield.value = urlDayTransit;
+    } else {
+        transitdayfield.value = day;
+    }
+
+    if (urlHoursTransit || urlHoursTransit == 0) {
+        transithourfield.value = urlHoursTransit;
+    } else {
+        transithourfield.value = hours;
+    }
+    if (urlMinutesTransit || urlMinutesTransit == 0) {
+        transitminutefield.value = urlMinutesTransit;
+    } else {
+        transitminutefield.value = minutes;
+    }
+    if (urlSecondsTransit || urlSecondsTransit == 0) {
+        transitsecondfield.value = urlSecondsTransit;
+    } else {
+        transitsecondfield.value = seconds;
+    }	
+
+    // Change the house system if it was passed in the URL
+    const urlHouse = urlParams.get('house');
+    if (urlHouse) {
+        housesystem.value = urlHouse;
+    } else {
+      housesystem.value = 'P';
+    }
 
     // Change this flag to the latest cookies added, otherwise Chrome will give a TypeError
     areCookiesSet = getCookieValue("housesystem");
     // If cookies are set, then populate the text fields with the saved values
     if (areCookiesSet) {
-      natalmonthfield.value = getCookieValue("natalmonth");
-      nataldayfield.value = getCookieValue("natalday");
-      natalyearfield.value = getCookieValue("natalyear");
-      natalhourfield.value = getCookieValue("natalhours");
-      natalminutefield.value = getCookieValue("natalminutes");
-      natalsecondfield.value = getCookieValue("natalseconds");
-      housesystem.value = getCookieValue("housesystem");
+      if (urlYear) {
+        natalyearfield.value = urlYear;
+      } else {
+        natalyearfield.value = getCookieValue("natalyear");
+      }
+      if (urlMonth) {
+        natalmonthfield.value = urlMonth;
+      } else {
+        natalmonthfield.value = getCookieValue("natalmonth");
+      }
+      if (urlDay) {
+        nataldayfield.value = urlDay;
+      } else {
+        nataldayfield.value = getCookieValue("natalday");
+      }
+
+      if (urlHours || urlHours == 0) {
+        natalhourfield.value = urlHours;
+      } else {
+        natalhourfield.value = getCookieValue("natalhours");
+      }
+      if (urlMinutes || urlMinutes == 0) {
+        natalminutefield.value = urlMinutes;
+      } else {
+        natalminutefield.value = getCookieValue("natalminutes");
+      }
+      if (urlSeconds || urlSeconds == 0) {
+        natalsecondfield.value = urlSeconds;
+      } else {
+        natalsecondfield.value = getCookieValue("natalseconds");
+      }	
+      
+      if (urlHouse) {
+        housesystem.value = urlHouse;
+      } else {
+        housesystem.value = getCookieValue("housesystem");
+      }
+
       var timeFlag = getCookieValue("unknowntime");
       if (timeFlag == 'true') {
       	unknowntimeCheckBox.checked = true;
       } else {
 	      unknowntimeCheckBox.checked = false;
       }
-      city.value = getCookieValue("citystate");
-      latitude.value = getCookieValue("latitude");
-      longitude.value = getCookieValue("longitude");
+      //city.value = getCookieValue("citystate");
+   
+      if (urlLat) {
+        latitude.value = urlLat;
+      } else {
+        latitude.value = getCookieValue("latitude");
+      }
+      if (urlLong) {
+        longitude.value = urlLong;
+      } else {
+        longitude.value = getCookieValue("longitude");
+      }
 
     } else {
-      natalmonthfield.value = 1;
-      nataldayfield.value = 1;
-      natalyearfield.value = 1970;
-      natalhourfield.value = 0;
-      natalminutefield.value = 0;
-      natalsecondfield.value = 0;
-      // Set the default house system to Placidus
-      housesystem.value = 'W';
+      if (urlYear) {
+        natalyearfield.value = urlYear;
+      } else {
+        natalyearfield.value = 1970;
+      }
+      if (urlMonth) {
+        natalmonthfield.value = urlMonth;
+      } else {
+        natalmonthfield.value = 1;
+      }
+      if (urlDay) {
+        nataldayfield.value = urlDay;
+      } else {
+        nataldayfield.value = 1;
+      }
+
+      if (urlHours || urlHours == 0) {
+        natalhourfield.value = urlHours;
+      } else {
+        natalhourfield.value = 0;
+      }
+      if (urlMinutes || urlMinutes == 0) {
+        natalminutefield.value = urlMinutes;
+      } else {
+        natalminutefield.value = 0;
+      }
+      if (urlSeconds || urlSeconds == 0) {
+        natalsecondfield.value = urlSeconds;
+      } else {
+        natalsecondfield.value = 0;
+      }	
+      
+      // Set the default house system to Whole Sign if there is no data
+      if (urlHouse) {
+        housesystem.value = urlHouse;
+      } else {
+        housesystem.value = 'P';
+      }
+
       unknowntimeCheckBox.checked = false;
-      city.value = "";
+      //city.value = "";
       // Set a default Lat/Long of New York City
-      latitude.value = "";
-      longitude.value = "";
+      if (urlLat) {
+        latitude.value = urlLat;
+      } else {
+        latitude.value = "";
+      }
+      if (urlLong) {
+        longitude.value = urlLong;
+      } else {
+        longitude.value = "";
+      }
     }
 
     // Calculate the current positions of the planets

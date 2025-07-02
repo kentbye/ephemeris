@@ -10,6 +10,49 @@ var longitude;
 var $illuminatedFraction;
 var nextPhase;
 
+
+$ns.calculatedTimeRedirect = function (inputFlag) {
+    var urlTest = new URL("http://nataltransits.com");
+	$natalInputDate = $e.inputTime("natal");
+	$transitInputDate = $e.inputTime("transit");
+
+	if (inputFlag == 'calculate') {
+		console.log("transitInputDate: ", $transitInputDate);
+		urlTest.searchParams.set('x', 0);
+    	urlTest.searchParams.set('year', $natalInputDate.year);
+		urlTest.searchParams.set('month', $natalInputDate.month);
+		urlTest.searchParams.set('day', $natalInputDate.day);
+		urlTest.searchParams.set('hour', $natalInputDate.hours);
+		urlTest.searchParams.set('minute', $natalInputDate.minutes);
+		urlTest.searchParams.set('second', $natalInputDate.seconds);
+		urlTest.searchParams.set('house', document.getElementById("housesystem").value);
+		urlTest.searchParams.set('lat', document.getElementById("latitude").value);
+		urlTest.searchParams.set('long', document.getElementById("longitude").value);
+		urlTest.searchParams.set('t_year', $transitInputDate.year);
+		urlTest.searchParams.set('t_month', $transitInputDate.month);
+		urlTest.searchParams.set('t_day', $transitInputDate.day);
+		urlTest.searchParams.set('t_hour', $transitInputDate.hours);
+		urlTest.searchParams.set('t_minute', $transitInputDate.minutes);
+		urlTest.searchParams.set('t_second', $transitInputDate.seconds);
+	} else if (inputFlag == 'current') {
+		// One set the natal chart data, and then take the current time
+		urlTest.searchParams.set('x', 0);
+    	urlTest.searchParams.set('year', $natalInputDate.year);
+		urlTest.searchParams.set('month', $natalInputDate.month);
+		urlTest.searchParams.set('day', $natalInputDate.day);
+		urlTest.searchParams.set('hour', $natalInputDate.hours);
+		urlTest.searchParams.set('minute', $natalInputDate.minutes);
+		urlTest.searchParams.set('second', $natalInputDate.seconds);
+		urlTest.searchParams.set('house', document.getElementById("housesystem").value);
+		urlTest.searchParams.set('lat', document.getElementById("latitude").value);
+		urlTest.searchParams.set('long', document.getElementById("longitude").value);
+	} else if (inputFlag == 'reset') {
+		urlTest.searchParams.set('x', 0);
+	} 
+
+    document.location.search = urlTest.search;
+}
+
 // Calculate the transiting and natal planets, and set cookie when new input is submitted
 $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	var $transitPlanetLongitude = Array();
@@ -27,7 +70,7 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
   
 	if (calculateHouses) {
 		houseSystem = document.getElementById("housesystem").value;
-		citystate = document.getElementById("city").value;
+		//citystate = document.getElementById("city").value;
 		latitude = parseFloat(document.getElementById("latitude").value);
 		longitude = parseFloat(document.getElementById("longitude").value);
 	}
@@ -38,32 +81,32 @@ $ns.calculatedTime = function (setCookieFlag, initialRenderingFlag) {
 	}
 	
 	// Store the calculated Natal position as a cookie if the calculated button is clicked
-	if (setCookieFlag){
-	  createCookie('natalday',$natalInputDate.day,30);
-	  createCookie('natalmonth',$natalInputDate.month,30);
-	  createCookie('natalyear',$natalInputDate.year,30);
-	  createCookie('natalhours',$natalInputDate.hours,30);
-	  createCookie('natalminutes',$natalInputDate.minutes,30);
-	  createCookie('natalseconds',$natalInputDate.seconds,30);
-	  if (calculateHouses) {
-			createCookie('housesystem',houseSystem,30);
-			createCookie('citystate',citystate,30);
-			createCookie('latitude',latitude,30);
-			createCookie('longitude',longitude,30);
-		}
-		createCookie('unknowntime',document.getElementById("unknowntime").checked,30);
+	//if (setCookieFlag){
+	  //createCookie('natalday',$natalInputDate.day,30);
+	  //createCookie('natalmonth',$natalInputDate.month,30);
+	  //createCookie('natalyear',$natalInputDate.year,30);
+	  //createCookie('natalhours',$natalInputDate.hours,30);
+	  //createCookie('natalminutes',$natalInputDate.minutes,30);
+	  //createCookie('natalseconds',$natalInputDate.seconds,30);
+	  //if (calculateHouses) {
+			//createCookie('housesystem',houseSystem,30);
+			//createCookie('citystate',citystate,30);
+			//createCookie('latitude',latitude,30);
+			//createCookie('longitude',longitude,30);
+		//}
+		//createCookie('unknowntime',document.getElementById("unknowntime").checked,30);
 		
-	}
+	//}
 	
 	// The epoch conversion took a UTC input and assumes a PDT output. Correcting it here for display
 	var correctedEpoch = $transitInputDate.epoch - ($transitInputDate.timezoneoffset)*60;
-  var chartDate = new Date(1000*(correctedEpoch));
+    var chartDate = new Date(1000*(correctedEpoch));
 
 	$const.date = $natalInputDate;
 	$processor.init ();
-  $natalPlanets = $e.calculateLongitude($natalInputDate);
+    $natalPlanets = $e.calculateLongitude($natalInputDate);
   
-  $const.date = $transitInputDate;
+    $const.date = $transitInputDate;
 	$transitPlanets = $e.calculateLongitude($transitInputDate);
   
   // Only need to draw the natal chart and natal planets once. Animation can skip these steps

@@ -244,7 +244,7 @@
 			<input type='button' value='-yr' onclick='$e.increment(-31557600)'>
 			<input type='button' value='-mth' onclick='$e.increment(-2678400)'>
 			<input type='button' value='-dy' onclick='$e.increment(-86400)'>
-			<input type='button' value='+dy' onclick='$e.increment(3600)'>
+			<input type='button' value='+dy' onclick='$e.increment(86400)'>
 			<input type='button' value='+mth' onclick='$e.increment(2678400)'>
 			<input type='button' value='+yr' onclick='$e.increment(31557600)'>
 	
@@ -314,7 +314,14 @@
 			</form>
 		</div>
 		<p>
-			 <input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTime (true, true)'>
+		<div id="calculateHere">
+			<input type='button' value='Calculate Planetary Positions' onclick='$e.calculatedTimeRedirect("calculate")'>
+		</div>
+		<div id="resetButtons">
+			<input type='button' value='Current Transits' onclick='$e.calculatedTimeRedirect("current")'>
+			<input type='button' value='Reset All' onclick='$e.calculatedTimeRedirect("reset")'>
+		</div>
+
 		</p>
 
 
